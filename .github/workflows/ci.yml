@@ -31,10 +31,6 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
-      - name: PR16 Prettier-Diff für Abnahme
-        run: |
-          npx prettier --write src/pages/fuer-takeaways/index.astro tests/e2e/takeaway-landing.spec.ts
-          git diff -- src/pages/fuer-takeaways/index.astro tests/e2e/takeaway-landing.spec.ts
       - name: Format prüfen
         run: npm run format:check
 
