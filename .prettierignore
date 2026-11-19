@@ -1,0 +1,9 @@
+dist/
+.astro/
+node_modules/
+public/prototyp/
+package-lock.json
+test-results/
+playwright-report/
+# Dokumentation wird manuell gepflegt (Tabellen bleiben lesbar formatiert)
+**/*.md

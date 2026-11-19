@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Prüfen, testen, bauen
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # CI-Builds sind nie indexierbar (ADR 0005).
+      CONTEXT: ci
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Format prüfen
+        run: npm run format:check
+
+      - name: Linting
+        run: npm run lint
+
+      - name: Typprüfung
+        run: npm run check
+
+      - name: Unit-Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Prototyp unverändert im Build
+        run: cmp public/prototyp/index.html dist/prototyp/index.html
+
+      - name: Playwright-Browser installieren
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E- und Accessibility-Tests
+        run: npm run test:e2e
+
+      - name: Testbericht hochladen
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
