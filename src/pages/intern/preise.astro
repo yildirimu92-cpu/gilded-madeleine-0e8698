@@ -1,0 +1,187 @@
+---
+/**
+ * Interne, öffentlich erreichbare, dauerhaft nicht indexierte Preisstudie.
+ * Kein Vertrieb, keine Kaufmöglichkeit und keine verbindliche Preisaussage.
+ */
+import Badge from '../../components/ui/Badge.astro';
+import Card from '../../components/ui/Card.astro';
+import { pricingDraft, draftPlanPrice } from '../../config/pricing';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatChf } from '../../lib/format';
+---
+
+<BaseLayout
+  title="Tarifentwurf – IzyOrder (intern)"
+  description="Interne und unverbindliche Tarifvorschau zur Abstimmung."
+  noindex
+>
+  <section class="container pricing" aria-labelledby="pricing-title">
+    <div class="pricing__heading">
+      <Badge tone="warning">Interner Entwurf – nicht freigegeben</Badge>
+      <h1 id="pricing-title" class="text-h1">Einfache Tarife. Klare Rechnung.</h1>
+      <p class="text-lead">
+        Diese Vorschau ist ausschliesslich für die interne Planung vorgesehen. Keine Angebote,
+        Bestellungen oder Vertragsabschlüsse sind hier möglich.
+      </p>
+      <p class="pricing__disclaimer">
+        Alle Preisangaben in CHF, <strong>exkl. MWST</strong>. Die konkreten Leistungen je Tarif,
+        Setup-Gebühren und der vorgeschlagene Jahresrabatt sind noch nicht freigegeben.
+      </p>
+    </div>
+
+    <div class="pricing__cards">
+      {pricingDraft.plans.map((plan) => {
+        const calculated = draftPlanPrice(plan.id);
+        return (
+          <Card title={plan.name} variant={plan.id === 'professional' ? 'featured' : 'neutral'} padding="lg">
+            <p class="pricing__plan-label">Vorgesehener Monatstarif</p>
+            <p class="pricing__number">
+              <strong>{formatChf(calculated.monthlyCHF)}</strong>
+              <span>/Monat</span>
+            </p>
+            <p class="pricing__tax">exkl. MWST</p>
+            <div class="pricing__annual">
+              <span>Rechenbeispiel bei 15 % Jahresrabatt</span>
+              <strong>{formatChf(calculated.annualTotalCHF)}</strong>
+              <small>
+                Pro Jahr · entspricht {formatChf(calculated.annualMonthlyEquivalentCHF)} pro
+                Monat
+              </small>
+            </div>
+            <p class="pricing__pending">Leistungsumfang und Vertragsdetails ausstehend</p>
+            <span slot="footer" class="pricing__no-sale">Noch nicht buchbar</span>
+          </Card>
+        );
+      })}
+    </div>
+
+    <div class="pricing__notes">
+      <h2 class="text-h4">Wichtige Abgrenzungen</h2>
+      <p>
+        Das geplante Modell sieht 0 % Plattformprovision auf Direktbestellungen vor. Gebühren
+        externer Zahlungsanbieter können zusätzlich anfallen. Der Jahresrabatt von 15 % ist eine
+        interne Planung, keine verbindliche Aktion.
+      </p>
+      <p>
+        Der Online-Bestellshop ist ein eigenständiges Angebot. Die spätere KI-Telefonassistenz
+        gehört nicht automatisch zu diesen Tarifen.
+      </p>
+      <p>
+        Diese Seite bleibt dauerhaft <strong>noindex</strong> und ist nicht aus der öffentlichen
+        Navigation verlinkt. Sie ist über die URL dennoch öffentlich erreichbar und kein
+        geschützter Mitgliederbereich.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pricing {
+    padding-block: var(--section-y-sm) var(--section-y);
+  }
+
+  .pricing__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+    max-width: var(--container-md);
+    margin-bottom: var(--space-12);
+  }
+
+  .pricing__disclaimer {
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-warning-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-warning-bg);
+    color: var(--color-warning);
+    font-size: var(--text-body-sm);
+  }
+
+  .pricing__cards {
+    display: grid;
+    gap: var(--grid-gap);
+  }
+
+  .pricing__plan-label {
+    font-size: var(--text-caption);
+  }
+
+  .pricing__number {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .pricing__number strong {
+    color: var(--color-text);
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    white-space: nowrap;
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .pricing__number span {
+    color: var(--color-text-muted);
+  }
+
+  .pricing__tax {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .pricing__annual {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    padding-block: var(--space-5);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .pricing__annual span,
+  .pricing__annual small {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .pricing__annual strong {
+    color: var(--color-text);
+    font-size: var(--text-h5);
+  }
+
+  .pricing__pending {
+    margin-top: var(--space-5);
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  .pricing__no-sale {
+    font-size: var(--text-label);
+    color: var(--color-text-accent);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .pricing__notes {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--container-md);
+    margin-top: var(--space-12);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .pricing__notes p {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  @media (min-width: 768px) {
+    .pricing__cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
