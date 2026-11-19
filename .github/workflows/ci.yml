@@ -31,10 +31,6 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
-      - name: PR15 Formatprüfung temporär präzisieren
-        run: |
-          npx prettier --write src/pages/intern/preise.astro tests/e2e/pricing-study.spec.ts
-          git diff -- src/pages/intern/preise.astro tests/e2e/pricing-study.spec.ts
       - name: Format prüfen
         run: npm run format:check
 
