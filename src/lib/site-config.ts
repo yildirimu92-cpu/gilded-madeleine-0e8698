@@ -24,11 +24,12 @@ export function resolveSiteUrl(env: BuildEnv): string {
 
 export const ROBOTS_NOINDEX = 'noindex, nofollow';
 
-export function robotsTxt(): string {
-  // Crawlen bleibt immer erlaubt, damit Suchmaschinen das noindex (Meta/Header) sehen.
-  // Auch /prototyp/ wird bewusst nicht gesperrt, sondern ist immer noindex (ADR 0005).
-  // Der Sitemap-Verweis folgt mit der Sitemap (Entwicklungsplan, PR „Rechtliches“).
-  return 'User-agent: *\nAllow: /\n';
+export function robotsTxt(env: BuildEnv = {}): string {
+  // Crawling bleibt erlaubt, um den noindex-Meta-Tag und Header lesen zu können.
+  // /intern/, /styleguide/ und /prototyp/ bleiben auch nach Launch noindex.
+  const base = 'User-agent: *\\nAllow: /\\n';
+  if (!isIndexable(env)) return base;
+  return `${base}Sitemap: ${resolveSiteUrl(env)}/sitemap.xml\\n`;
 }
 
 /** Inhalt der generierten Netlify-Datei `_headers` (nur für nicht indexierbare Builds). */
