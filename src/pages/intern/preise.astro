@@ -18,7 +18,9 @@ import { formatChf } from '../../lib/format';
   <section class="container pricing" aria-labelledby="pricing-title">
     <div class="pricing__heading">
       <Badge tone="warning">Interner Entwurf – nicht freigegeben</Badge>
-      <h1 id="pricing-title" class="text-h1">Einfache Tarife. Klare Rechnung.</h1>
+      <h1 id="pricing-title" class="text-h1">
+        Einfache Tarife. Klare Rechnung.
+      </h1>
       <p class="text-lead">
         Diese Vorschau ist ausschliesslich für die interne Planung vorgesehen. Keine Angebote,
         Bestellungen oder Vertragsabschlüsse sind hier möglich.
@@ -33,7 +35,11 @@ import { formatChf } from '../../lib/format';
       {pricingDraft.plans.map((plan) => {
         const calculated = draftPlanPrice(plan.id);
         return (
-          <Card title={plan.name} variant={plan.id === 'professional' ? 'featured' : 'neutral'} padding="lg">
+          <Card
+            title={plan.name}
+            variant={plan.id === 'professional' ? 'featured' : 'neutral'}
+            padding="lg"
+          >
             <p class="pricing__plan-label">Vorgesehener Monatstarif</p>
             <p class="pricing__number">
               <strong>{formatChf(calculated.monthlyCHF)}</strong>
@@ -44,12 +50,13 @@ import { formatChf } from '../../lib/format';
               <span>Rechenbeispiel bei 15 % Jahresrabatt</span>
               <strong>{formatChf(calculated.annualTotalCHF)}</strong>
               <small>
-                Pro Jahr · entspricht {formatChf(calculated.annualMonthlyEquivalentCHF)} pro
-                Monat
+                Pro Jahr · entspricht {formatChf(calculated.annualMonthlyEquivalentCHF)} pro Monat
               </small>
             </div>
             <p class="pricing__pending">Leistungsumfang und Vertragsdetails ausstehend</p>
-            <span slot="footer" class="pricing__no-sale">Noch nicht buchbar</span>
+            <span slot="footer" class="pricing__no-sale">
+              Noch nicht buchbar
+            </span>
           </Card>
         );
       })}
@@ -68,8 +75,8 @@ import { formatChf } from '../../lib/format';
       </p>
       <p>
         Diese Seite bleibt dauerhaft <strong>noindex</strong> und ist nicht aus der öffentlichen
-        Navigation verlinkt. Sie ist über die URL dennoch öffentlich erreichbar und kein
-        geschützter Mitgliederbereich.
+        Navigation verlinkt. Sie ist über die URL dennoch öffentlich erreichbar und kein geschützter
+        Mitgliederbereich.
       </p>
     </div>
   </section>
