@@ -1,0 +1,69 @@
+---
+import Button from '../../components/ui/Button.astro';
+import { approvedDemoUrl } from '../../config/lead';
+import PublicLayout from '../../layouts/PublicLayout.astro';
+
+const demoUrl = approvedDemoUrl();
+---
+
+<PublicLayout
+  title="Produktdemo – IzyOrder"
+  description="Eine geprüfte Produktdemo für IzyOrder wird nach Freigabe bereitgestellt."
+  noindex
+>
+  <section class="container container--md demo-page" aria-labelledby="demo-title">
+    <p class="text-overline">Einblick ins Produkt</p>
+    <h1 id="demo-title">IzyOrder selbst erleben.</h1>
+    <p class="text-lead">
+      Wir entwickeln einen Direktbestellshop für Restaurants und Takeaways – mit Abholung,
+      Lieferung und einer einfachen Bestellübersicht.
+    </p>
+
+    {demoUrl ? (
+      <div class="demo-page__notice">
+        <h2 class="text-h4">Zur freigegebenen Demo</h2>
+        <p>
+          Die Demo zeigt einen Beispielbetrieb. Es handelt sich nicht um einen realen
+          Restaurantpartner.
+        </p>
+        <Button href={demoUrl} target="_blank" rel="noopener noreferrer" iconEnd="arrow-right">
+          Live-Demo in neuem Tab öffnen
+        </Button>
+      </div>
+    ) : (
+      <div class="demo-page__notice" role="status">
+        <h2 class="text-h4">Die Demo ist noch nicht freigegeben.</h2>
+        <p>
+          Wir schalten den Zugang frei, sobald die Bestellstrecke und der Datenschutz geprüft
+          wurden. Bis dahin werden keine externen Demo-Links angezeigt.
+        </p>
+      </div>
+    )}
+
+    <Button href="/" variant="secondary">Zur Startseite</Button>
+  </section>
+</PublicLayout>
+
+<style>
+  .demo-page {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    padding-block: var(--section-y);
+  }
+
+  .demo-page__notice {
+    display: grid;
+    gap: var(--space-4);
+    width: 100%;
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+  }
+
+  .demo-page__notice p {
+    color: var(--color-text-muted);
+  }
+</style>
