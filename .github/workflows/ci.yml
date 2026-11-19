@@ -31,6 +31,11 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
+      - name: Temporär PR17 Prettier-Diff generieren
+        run: |
+          npx prettier --write src/layouts/PublicLayout.astro src/pages/fuer-takeaways/index.astro
+          git diff -- src/layouts/PublicLayout.astro src/pages/fuer-takeaways/index.astro
+          exit 1
       - name: Format prüfen
         run: npm run format:check
 
