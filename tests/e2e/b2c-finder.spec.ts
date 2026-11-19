@@ -11,9 +11,9 @@ test.describe('PR13 – IzyOrder Gästesuche ohne freigegebene Restaurants', () 
     await expect(page.locator('[data-finder-count]')).toHaveText('0 Restaurants');
     await expect(page.locator('[data-finder-results] > li')).toHaveCount(0);
     await expect(page.locator('[data-finder-empty]')).toBeVisible();
-    await expect(page.getByText(/Keine Demo-Restaurants/)).toBeVisible();
+    await expect(page.getByRole('link', { name: /Zur Suche/ })).toHaveAttribute('href', '#suche');
     await expect(
-      page.getByText(/Der öffentliche Bestellbetrieb ist noch nicht gestartet/),
+      page.getByText(/Die Restaurantsuche ist im Aufbau. Bestellungen sind noch nicht möglich/),
     ).toBeVisible();
 
     for (const fictional of [
@@ -24,6 +24,10 @@ test.describe('PR13 – IzyOrder Gästesuche ohne freigegebene Restaurants', () 
       await expect(page.getByText(fictional)).toHaveCount(0);
     }
     await expect(page.locator('a[href^="https://takeaway-demo-"]')).toHaveCount(0);
+    await expect(page.getByText('KONZEPT', { exact: true })).toHaveCount(0);
+    await expect(page.getByText(/Vorschau · ohne Bestellfunktion/)).toHaveCount(0);
+    await page.getByRole('link', { name: /Zur Suche/ }).click();
+    await expect(page).toHaveURL(/#suche$/);
     await page.goto('/');
     await expect(page.locator('a[href="/bestellen/"]')).toHaveCount(0);
   });
