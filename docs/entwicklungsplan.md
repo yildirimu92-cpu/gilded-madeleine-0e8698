@@ -27,7 +27,8 @@
 | 13 | B2C-Oberfläche | `/bestellen/` mit Suche und ehrlichem Leerzustand. Ortsseiten nur für reale, freigegebene Restaurants | Technisch erledigt (#13), echte Partner und Aktivierung offen |
 | 14 | B2C-UX-Polish | Premium-Hero und klarer Sucheinstieg ohne Scheinkatalog | Erledigt (#14) |
 | 15 | Premium-Tarifstudie | Interne Monats-/Jahresansicht mit transparenten Grundlagen und offenen Geschäftsentscheiden | Erledigt (#15), weiterhin nicht für Verkauf freigegeben |
-| 16 | Takeaway-Zielgruppenseite | `/fuer-takeaways/` mit branchenspezifischer Positionierung, Konzept-Ablauf, ehrlichem Kostenvergleich und FAQ | In Review (#16); vor Launch noindex, keine Kontakt-Datenerhebung |
+| 16 | Takeaway-Zielgruppenseite | `/fuer-takeaways/` mit branchenspezifischer Positionierung, Konzept-Ablauf, ehrlichem Kostenvergleich und FAQ | Erledigt (#16); vor Launch noindex, keine Kontakt-Datenerhebung |
+| 17 | Pilot-Conversion-Gates | Freigegebene Pilotanfrage als zentraler CTA in Header und B2B-Zielgruppenseiten, bis dahin vollständig unterdrückt | In Review (#17); keine vorgezogene Lead-Erfassung |
 | später | Launch-Vorbereitung | Domain, Redirects, Rechts- und SEO-Abnahme, `SITE_INDEXING=true` | **Nur nach separater Freigabe** |
 
 ## Später
