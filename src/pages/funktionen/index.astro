@@ -15,13 +15,17 @@ import PublicLayout from '../../layouts/PublicLayout.astro';
     <div class="container container--xl features-hero__grid">
       <div class="features-hero__intro">
         <p class="features-hero__eyebrow">Das IzyOrder-Konzept · In Entwicklung</p>
-        <h1 id="features-heading" class="text-display">Ein Bestellkanal, der zu Ihrem Betrieb passt.</h1>
+        <h1 id="features-heading" class="text-display">
+          Ein Bestellkanal, der zu Ihrem Betrieb passt.
+        </h1>
         <p class="text-lead">
           Ihr eigener Online-Bestellshop, flexibel für Abholung und Lieferung, mit einer
           Bestellübersicht für den Betriebsalltag. Wir entwickeln IzyOrder für Restaurants und
           Takeaways in der Schweiz.
         </p>
-        <Button href="#funktionsbereiche" iconEnd="arrow-right">Funktionen entdecken</Button>
+        <Button href="#funktionsbereiche" iconEnd="arrow-right">
+          Funktionen entdecken
+        </Button>
       </div>
       <div class="features-hero__panel" aria-label="Die drei Bereiche des Produktkonzepts">
         <div class="features-hero__panel-top">
@@ -63,7 +67,9 @@ import PublicLayout from '../../layouts/PublicLayout.astro';
             {feature.icon} · IN ENTWICKLUNG
           </span>
           <p>{feature.intro}</p>
-          <span slot="footer" class="feature-cards__more">Produktkonzept ansehen →</span>
+          <span slot="footer" class="feature-cards__more">
+            Produktkonzept ansehen →
+          </span>
         </Card>
       ))}
     </div>
@@ -75,14 +81,14 @@ import PublicLayout from '../../layouts/PublicLayout.astro';
         <p class="section-heading__eyebrow">Direktbestellungen als Prinzip</p>
         <h2 id="model-heading">Ihr Shop steht im Mittelpunkt.</h2>
         <p>
-          Das geplante Geschäftsmodell setzt auf ein Software-Abonnement und 0 %
-          Plattformprovision für Direktbestellungen. So können Sie einen zusätzlichen
-          Bestellkanal unter Ihrer eigenen Marke aufbauen.
+          Das geplante Geschäftsmodell setzt auf ein Software-Abonnement und 0 % Plattformprovision
+          für Direktbestellungen. So können Sie einen zusätzlichen Bestellkanal unter Ihrer eigenen
+          Marke aufbauen.
         </p>
         <p>
-          Abonnementkosten sowie allfällige Gebühren externer Zahlungsanbieter fallen unabhängig
-          von der Plattformprovision an. Die genauen Leistungen und Vertragsbedingungen werden
-          vor der Vermarktung freigegeben.
+          Abonnementkosten sowie allfällige Gebühren externer Zahlungsanbieter fallen unabhängig von
+          der Plattformprovision an. Die genauen Leistungen und Vertragsbedingungen werden vor der
+          Vermarktung freigegeben.
         </p>
       </div>
       <div class="model__number">
@@ -101,8 +107,8 @@ import PublicLayout from '../../layouts/PublicLayout.astro';
         <h2 id="planned-heading">{voiceFeature.title}</h2>
         <p>{voiceFeature.text}</p>
         <p>
-          Auch Verbindungen zu Drittplattformen und bestehenden Kassensystemen gehören nicht zu
-          den aktuell freigegebenen Leistungsversprechen.
+          Auch Verbindungen zu Drittplattformen und bestehenden Kassensystemen gehören nicht zu den
+          aktuell freigegebenen Leistungsversprechen.
         </p>
       </div>
       <Button href="#funktionsbereiche" variant="secondary" iconEnd="arrow-right">

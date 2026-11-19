@@ -30,7 +30,9 @@ test.describe('PR10 – B2B-Funktionsseiten, noch nicht freigegeben', () => {
       const response = await page.goto(detail.path);
       expect(response?.status()).toBe(200);
       await expect(page.getByRole('heading', { level: 1 })).toHaveText(detail.title);
-      await expect(page.getByText('Illustration · keine freigegebene Produktoberfläche')).toBeVisible();
+      await expect(
+        page.getByText('Illustration · keine freigegebene Produktoberfläche'),
+      ).toBeVisible();
       await expect(page.getByText('Noch vor dem Marktstart.')).toBeVisible();
       await expect(page.getByRole('link', { name: /Zur Funktionsübersicht/ })).toHaveAttribute(
         'href',

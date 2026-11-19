@@ -44,9 +44,18 @@ export const featurePages: readonly Feature[] = [
       },
     ],
     steps: [
-      { title: 'Angebot einrichten', description: 'Gerichte und Kategorien für den Shop vorbereiten.' },
-      { title: 'Gerichte auswählen', description: 'Gäste stellen ihre Bestellung über den digitalen Shop zusammen.' },
-      { title: 'Bestellung empfangen', description: 'Die geplante Bestellverwaltung übernimmt den weiteren Ablauf im Betrieb.' },
+      {
+        title: 'Angebot einrichten',
+        description: 'Gerichte und Kategorien für den Shop vorbereiten.',
+      },
+      {
+        title: 'Gerichte auswählen',
+        description: 'Gäste stellen ihre Bestellung über den digitalen Shop zusammen.',
+      },
+      {
+        title: 'Bestellung empfangen',
+        description: 'Die geplante Bestellverwaltung übernimmt den weiteren Ablauf im Betrieb.',
+      },
     ],
     disclaimer:
       'Die dargestellten Funktionen befinden sich in Entwicklung. Zahlungsarten, Shop-Anpassungen und die technische Freigabe werden vor dem Marktstart geprüft.',
@@ -76,9 +85,18 @@ export const featurePages: readonly Feature[] = [
       },
     ],
     steps: [
-      { title: 'Bestellarten wählen', description: 'Abholung und/oder Lieferung für den Betrieb festlegen.' },
-      { title: 'Zeiten und Gebiet planen', description: 'Öffnungszeiten und geplante Lieferbereiche konfigurieren.' },
-      { title: 'Bestellablauf prüfen', description: 'Die Gastansicht und die betrieblichen Abläufe vor der Aktivierung testen.' },
+      {
+        title: 'Bestellarten wählen',
+        description: 'Abholung und/oder Lieferung für den Betrieb festlegen.',
+      },
+      {
+        title: 'Zeiten und Gebiet planen',
+        description: 'Öffnungszeiten und geplante Lieferbereiche konfigurieren.',
+      },
+      {
+        title: 'Bestellablauf prüfen',
+        description: 'Die Gastansicht und die betrieblichen Abläufe vor der Aktivierung testen.',
+      },
     ],
     disclaimer:
       'Liefergebietskarte, Zeitfenster und Betriebsregeln sind Produktanforderungen, keine bestätigten Live-Funktionen. Eigene Kurierdienste werden nicht automatisch von IzyOrder bereitgestellt.',
@@ -108,9 +126,18 @@ export const featurePages: readonly Feature[] = [
       },
     ],
     steps: [
-      { title: 'Bestellung geht ein', description: 'Eine Direktbestellung soll in der Bestellübersicht erscheinen.' },
-      { title: 'Team verarbeitet sie', description: 'Küche und Betrieb bearbeiten die Bestellung im vorgesehenen Ablauf.' },
-      { title: 'Status aktualisieren', description: 'Der Fortschritt soll für das Team nachvollziehbar bleiben.' },
+      {
+        title: 'Bestellung geht ein',
+        description: 'Eine Direktbestellung soll in der Bestellübersicht erscheinen.',
+      },
+      {
+        title: 'Team verarbeitet sie',
+        description: 'Küche und Betrieb bearbeiten die Bestellung im vorgesehenen Ablauf.',
+      },
+      {
+        title: 'Status aktualisieren',
+        description: 'Der Fortschritt soll für das Team nachvollziehbar bleiben.',
+      },
     ],
     disclaimer:
       'Die abgebildeten Abläufe sind konzeptionell. Integrationen mit Just Eat, Uber Eats, Kassensystemen oder externen Lieferdiensten sind nicht Bestandteil eines freigegebenen V1-Leistungsversprechens.',
@@ -130,6 +157,5 @@ export function featureBySlug(slug: FeatureSlug): Feature {
 export const voiceFeature = {
   status: 'planned',
   title: 'KI-Telefonassistenz',
-  text:
-    'Eine telefonische KI-Unterstützung ist als eigenständige, optionale Erweiterung vorgesehen. Sie gehört nicht automatisch zum Online-Bestellshop und wird hier nicht als verfügbar beworben.',
+  text: 'Eine telefonische KI-Unterstützung ist als eigenständige, optionale Erweiterung vorgesehen. Sie gehört nicht automatisch zum Online-Bestellshop und wird hier nicht als verfügbar beworben.',
 } as const;

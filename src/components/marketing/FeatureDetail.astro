@@ -29,11 +29,17 @@ const { feature } = Astro.props;
       <div class="feature-hero__grid">
         <div class="feature-hero__copy">
           <p class="feature-hero__kicker">{feature.kicker} · In Entwicklung</p>
-          <h1 id="feature-heading" class="text-h1">{feature.title}</h1>
+          <h1 id="feature-heading" class="text-h1">
+            {feature.title}
+          </h1>
           <p class="text-lead">{feature.intro}</p>
           <div class="feature-hero__actions">
-            <Button href="#vorteile" iconEnd="arrow-right">Konzept entdecken</Button>
-            <Button href="/funktionen/" variant="secondary">Alle Funktionen</Button>
+            <Button href="#vorteile" iconEnd="arrow-right">
+              Konzept entdecken
+            </Button>
+            <Button href="/funktionen/" variant="secondary">
+              Alle Funktionen
+            </Button>
           </div>
         </div>
         <div class="concept" aria-label={`Schematische Darstellung: ${feature.label}`}>
@@ -46,12 +52,12 @@ const { feature } = Astro.props;
             <strong>{feature.label}</strong>
             <p>{feature.pitch}</p>
             <div class="concept__lines" aria-hidden="true">
-              <span></span><span></span><span></span>
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
           </div>
-          <div class="concept__bottom">
-            Illustration · keine freigegebene Produktoberfläche
-          </div>
+          <div class="concept__bottom">Illustration · keine freigegebene Produktoberfläche</div>
         </div>
       </div>
     </div>
@@ -66,7 +72,9 @@ const { feature } = Astro.props;
     <div class="feature-benefits">
       {feature.highlights.map((highlight, index) => (
         <article class="benefit">
-          <span class="benefit__index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <span class="benefit__index" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
           <h3>{highlight.title}</h3>
           <p>{highlight.text}</p>
         </article>
@@ -83,7 +91,9 @@ const { feature } = Astro.props;
     <ol class="workflow">
       {feature.steps.map((step, index) => (
         <li>
-          <span class="workflow__index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <span class="workflow__index" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
           <div>
             <h3>{step.title}</h3>
             <p>{step.description}</p>
