@@ -21,9 +21,9 @@
 | 7 | B2B-Startseite | Hero, Nutzen, Funktionsüberblick, Ablauf, FAQ; unfreigegebene Live-Demo- und Pilot-CTA weiterhin gesperrt | Homepage erledigt (#7), Conversion offen |
 | 8 | Preise | Tarifdaten und interne Preisvorschau aus zentraler Datenquelle; Leistungen und Setup-Gebühren müssen vor öffentlicher Vermarktung freigegeben werden | Technische Vorschau erledigt (#8), öffentliche Preisseite offen |
 | 9 | Live-Demo und Pilotplatz | Seiten `/demo` und `/pilot`, gesperrtes Formularschema, Honeypot, Erfolgsseite, Aktivierungsbedingungen für Netlify | Technisch vorbereitet (#9), Aktivierung offen |
-| 10 | Funktionsseiten | Online-Shop, Abholung und Lieferung, Verwaltung. KI-Telefonassistenz als „geplant“ | In Review (#10), keine Vermarktungsfreigabe |
-| 11 | Provisionsrechner | Interaktiv, transparente Annahmen, ohne Garantieversprechen, mit Unit-Tests | Geplant |
-| 12 | B2C-Logik | Suchlogik aus dem Prototyp als getestetes TypeScript-Modul, Datenschema, Escaping | Geplant |
+| 10 | Funktionsseiten | Online-Shop, Abholung und Lieferung, Verwaltung. KI-Telefonassistenz als „geplant“ | Technisch erledigt (#10), Vermarktungsfreigabe offen |
+| 11 | Provisionsrechner | Interaktiv, transparente Annahmen, ohne Garantieversprechen, mit Unit-Tests | Technisch erledigt (#11), öffentliche Vermarktung offen |
+| 12 | B2C-Logik | Suchlogik aus dem Prototyp als getestetes TypeScript-Modul, Datenschema, Escaping | In Review (#12), keine freigegebenen Restaurants |
 | 13 | B2C-Oberfläche | `/bestellen` mit Suche. Ortsseiten nur für reale, freigegebene Restaurants | Geplant |
 | 14 | Launch-Vorbereitung | Domain, Redirects, finale Prüfung, `SITE_INDEXING=true` | **Separate Freigabe** |
 
