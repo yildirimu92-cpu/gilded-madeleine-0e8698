@@ -5,8 +5,14 @@
  * Leads werden auf dieser Seite nicht erhoben.
  */
 import Button from '../../components/ui/Button.astro';
+import { legalNavigation, pilotCta } from '../../config/navigation';
 import Section from '../../components/ui/Section.astro';
 import PublicLayout from '../../layouts/PublicLayout.astro';
+
+const pilotAction = pilotCta(
+  process.env,
+  legalNavigation.some((item) => item.id === 'datenschutz' && item.status === 'live'),
+);
 
 const challenges = [
   {
@@ -277,10 +283,16 @@ const questions = [
       <p class="takeaway-overline">IzyOrder für Schweizer Takeaways</p>
       <h2 id="takeaway-next-heading">Mehr Direktbestellungen. Auf Ihrem eigenen Weg.</h2>
       <p>
-        Die Produktentwicklung läuft. Bis Demo und Pilotanfragen freigegeben sind, können Sie unser
-        Konzept und die geplanten Funktionen kennenlernen.
+        {pilotAction
+          ? 'Die Produktentwicklung läuft. Sie können jetzt unverbindlich Ihr Interesse an der Pilotphase anmelden.'
+          : 'Die Produktentwicklung läuft. Bis Demo und Pilotanfragen freigegeben sind, können Sie unser Konzept und die geplanten Funktionen kennenlernen.'}
       </p>
-      <Button href="/funktionen/" size="lg" iconEnd="arrow-right">
+      {pilotAction && (
+        <Button href={pilotAction.href} size="lg" iconEnd="arrow-right">
+          {pilotAction.label}
+        </Button>
+      )}
+      <Button href="/funktionen/" size="lg" variant={pilotAction ? 'secondary' : 'primary'} iconEnd="arrow-right">
         Bestellkonzept ansehen
       </Button>
     </div>
