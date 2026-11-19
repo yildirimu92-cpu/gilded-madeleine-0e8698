@@ -31,6 +31,16 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
+      - name: Astro-Formatierung für PR14 exportieren (temporär)
+        run: npx prettier --write src/pages/bestellen/index.astro
+
+      - name: Formatiertes Astro-Markup hochladen (temporär)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr14-formatted-astro
+          path: src/pages/bestellen/index.astro
+          retention-days: 1
+
       - name: Format prüfen
         run: npm run format:check
 
