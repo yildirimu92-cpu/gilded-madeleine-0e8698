@@ -2,10 +2,12 @@ import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
 import { generatedHeaders, type BuildEnv } from './site-config';
+import { sitemapXml } from './sitemap';
 
 /**
- * Schreibt nach dem Build eine Netlify-Datei `_headers` mit `X-Robots-Tag: noindex`,
- * solange die Indexierung nicht freigegeben ist (ADR 0005).
+ * Steuert nach dem Build die Indexierungs-Header und die Sitemap.
+ * Vor Freigabe: X-Robots-Tag noindex, keine Sitemap.
+ * Nur nach expliziter Produktionsfreigabe: Sitemap, kein globaler noindex-Header.
  */
 export function noindexHeaders(env: BuildEnv): AstroIntegration {
   return {
@@ -13,12 +15,17 @@ export function noindexHeaders(env: BuildEnv): AstroIntegration {
     hooks: {
       'astro:build:done': async ({ dir, logger }) => {
         const content = generatedHeaders(env);
-        if (!content) {
-          logger.info('Indexierung aktiv – kein X-Robots-Tag gesetzt.');
-          return;
+        if (content) {
+          await writeFile(new URL('_headers', dir), content, 'utf8');
+          logger.info(`noindex aktiv – ${fileURLToPath(new URL('_headers', dir))} geschrieben.`);
+        } else {
+          logger.info('Indexierung aktiv – kein globaler X-Robots-Tag gesetzt.');
         }
-        await writeFile(new URL('_headers', dir), content, 'utf8');
-        logger.info(`noindex aktiv – ${fileURLToPath(new URL('_headers', dir))} geschrieben.`);
+        const sitemap = sitemapXml(env);
+        if (sitemap) {
+          await writeFile(new URL('sitemap.xml', dir), sitemap, 'utf8');
+          logger.info('Indexierung freigegeben – Sitemap mit freigegebenen Seiten erstellt.');
+        }
       },
     },
   };
