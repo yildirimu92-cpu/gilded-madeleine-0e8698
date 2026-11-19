@@ -1,0 +1,30 @@
+name: PR10 one-time formatter
+on:
+  push:
+    branches:
+      - chatgpt/izyorder-pr10-feature-pages
+permissions:
+  contents: write
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Format PR10 files
+        run: |
+          npx prettier --write src/config/features.ts src/components/marketing/FeatureDetail.astro "src/pages/funktionen/**/*.astro" tests/unit/features.test.ts tests/e2e/features.spec.ts docs/design/features-pr10.md docs/entwicklungsplan.md .github/workflows/ci.yml
+      - name: Commit formatted sources
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/config/features.ts src/components/marketing/FeatureDetail.astro src/pages/funktionen tests/unit/features.test.ts tests/e2e/features.spec.ts docs/design/features-pr10.md docs/entwicklungsplan.md .github/workflows/ci.yml
+          git commit -m "style(pr10): format feature pages and tests"
+          git push
