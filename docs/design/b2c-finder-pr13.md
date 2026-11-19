@@ -5,6 +5,8 @@
 ## Was umgesetzt ist
 
 - Neuer responsiver B2C-Auftritt mit der verbindlichen Markenlinie «Dein Restaurant. Deine Bestellungen.» (B2C-Sprache Du)
+- Premium-Hero mit abstrakter IzyOrder-Illustration statt Platzhalter-Restaurantkarte; ein eindeutiger Hinweis auf noch nicht verfügbare Bestellungen und direkter Sprung zur Suche
+- Keine mehrfachen «Demo»-/«Vorschau»-Hinweise im sichtbaren Suchbereich; der ehrliche Leerzustand und die Noindex-/Launch-Sperre bleiben bestehen
 - Ortsauswahl, Freitextsuche nach Name/Küche/Ort/PLZ, Abholung/Lieferung per nativer Radio-Segmentsteuerung
 - Küchenfilter Alle, Pizza, Kebab, Burger, Andere
 - Übernahme des getesteten Suchkerns aus PR #12; unbekannte PLZ dürfen keine Ergebnisse des alten Ortes zeigen
