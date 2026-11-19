@@ -1,0 +1,75 @@
+---
+/**
+ * Textfeld für text · email · tel. Validierung: native Attribute + optionales
+ * Script (src/scripts/form-validation.ts) mit Meldungen direkt am Feld.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import FieldShell from './FieldShell.astro';
+import './controls.css';
+
+interface Props extends Omit<HTMLAttributes<'input'>, 'type' | 'class' | 'size'> {
+  name: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel';
+  id?: string;
+  hint?: string;
+  error?: string;
+  required?: boolean;
+  hideLabel?: boolean;
+  /** Schweizer Telefonnummer verlangen (nur type="tel") */
+  swissPhone?: boolean;
+  size?: 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  name,
+  label,
+  type = 'text',
+  id = `f-${name}`,
+  hint,
+  error,
+  required = false,
+  hideLabel,
+  swissPhone = false,
+  size = 'md',
+  autocomplete,
+  inputmode,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const defaults = {
+  text: { autocomplete: undefined, inputmode: undefined },
+  email: { autocomplete: 'email', inputmode: 'email' },
+  tel: { autocomplete: 'tel', inputmode: 'tel' },
+} as const;
+
+const describedBy =
+  [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined;
+---
+
+<FieldShell
+  id={id}
+  label={label}
+  hint={hint}
+  error={error}
+  required={required}
+  hideLabel={hideLabel}
+  class={className}
+>
+  <input
+    class:list={['control', { 'control--lg': size === 'lg' }]}
+    id={id}
+    name={name}
+    type={type}
+    required={required || undefined}
+    aria-invalid={error ? 'true' : undefined}
+    aria-describedby={describedBy}
+    autocomplete={autocomplete ?? defaults[type].autocomplete}
+    inputmode={inputmode ?? defaults[type].inputmode}
+    spellcheck={type === 'text' ? undefined : 'false'}
+    data-format={type === 'tel' && swissPhone ? 'phone-ch' : undefined}
+    {...rest}
+  />
+</FieldShell>

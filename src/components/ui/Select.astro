@@ -1,0 +1,103 @@
+---
+/**
+ * Auswahlfeld (natives <select> – beste Bedienbarkeit auf Mobilgeräten).
+ * Bei `placeholder` wird eine leere erste Option erzeugt (für Pflichtfelder).
+ */
+import type { HTMLAttributes } from 'astro/types';
+import FieldShell from './FieldShell.astro';
+import Icon from './Icon.astro';
+import './controls.css';
+
+export interface SelectOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+interface Props extends Omit<HTMLAttributes<'select'>, 'class'> {
+  name: string;
+  label: string;
+  options: SelectOption[];
+  id?: string;
+  value?: string;
+  placeholder?: string;
+  hint?: string;
+  error?: string;
+  required?: boolean;
+  hideLabel?: boolean;
+  class?: string;
+}
+
+const {
+  name,
+  label,
+  options,
+  id = `f-${name}`,
+  value,
+  placeholder,
+  hint,
+  error,
+  required = false,
+  hideLabel,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const describedBy =
+  [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined;
+---
+
+<FieldShell
+  id={id}
+  label={label}
+  hint={hint}
+  error={error}
+  required={required}
+  hideLabel={hideLabel}
+  class={className}
+>
+  <div class="select">
+    <select
+      class="control select__control"
+      id={id}
+      name={name}
+      required={required || undefined}
+      aria-invalid={error ? 'true' : undefined}
+      aria-describedby={describedBy}
+      {...rest}
+    >
+      {placeholder && (
+        <option value="" selected={!value}>
+          {placeholder}
+        </option>
+      )}
+      {options.map((o) => (
+        <option value={o.value} disabled={o.disabled} selected={o.value === value}>
+          {o.label}
+        </option>
+      ))}
+    </select>
+    <Icon name="chevron-down" size={18} class="select__icon" />
+  </div>
+</FieldShell>
+
+<style>
+  .select {
+    position: relative;
+  }
+
+  .select__control {
+    appearance: none;
+    padding-inline-end: var(--space-10);
+    cursor: pointer;
+  }
+
+  .select :global(.select__icon) {
+    position: absolute;
+    top: 50%;
+    right: var(--space-3);
+    color: var(--color-text-muted);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+</style>

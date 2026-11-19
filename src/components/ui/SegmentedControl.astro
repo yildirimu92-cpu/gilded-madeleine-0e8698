@@ -1,0 +1,151 @@
+---
+/**
+ * Segmented Control auf Basis nativer Radio-Buttons (fieldset/legend):
+ * Pfeiltasten, Tab und Screenreader-Semantik ohne JavaScript.
+ * Wiederverwendbar z. B. für Abholung/Lieferung oder Abrechnungsperioden.
+ */
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+interface Props {
+  name: string;
+  legend: string;
+  options: Option[];
+  value?: string;
+  hideLegend?: boolean;
+  fullWidth?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const {
+  name,
+  legend,
+  options,
+  value = options[0]?.value,
+  hideLegend = false,
+  fullWidth = false,
+  id = `sc-${name}`,
+  class: className,
+} = Astro.props;
+---
+
+<fieldset class:list={['segmented', { 'segmented--full': fullWidth }, className]} id={id}>
+  <legend class:list={['segmented__legend', { 'visually-hidden': hideLegend }]}>{legend}</legend>
+  <div class="segmented__track">
+    {options.map((o) => (
+      <label class="segmented__option">
+        <input
+          class="segmented__input"
+          type="radio"
+          name={name}
+          value={o.value}
+          checked={o.value === value}
+          disabled={o.disabled}
+        />
+        <span class="segmented__label">{o.label}</span>
+      </label>
+    ))}
+  </div>
+</fieldset>
+
+<style>
+  .segmented {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .segmented__legend {
+    margin-bottom: var(--space-2);
+    padding: 0;
+    color: var(--color-text);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .segmented__track {
+    display: inline-flex;
+    max-width: 100%;
+    gap: var(--space-1);
+    padding: var(--space-1);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--control-radius) + var(--space-1));
+    background-color: var(--color-bg-subtle);
+  }
+
+  .segmented--full .segmented__track {
+    display: flex;
+    width: 100%;
+  }
+
+  .segmented__option {
+    position: relative;
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .segmented__input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .segmented__label {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(var(--touch-target) - 2 * var(--space-1));
+    padding: var(--space-1) var(--space-4);
+    border-radius: var(--control-radius);
+    color: var(--color-text-muted);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard);
+  }
+
+  @media (pointer: coarse) {
+    .segmented__label {
+      min-height: var(--touch-target);
+    }
+  }
+
+  .segmented__input:hover:not(:disabled):not(:checked) + .segmented__label {
+    color: var(--color-text);
+    background-color: var(--color-action-secondary-hover);
+  }
+
+  .segmented__input:checked + .segmented__label {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .segmented__input:focus-visible + .segmented__label {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 1px;
+  }
+
+  .segmented__input:disabled {
+    cursor: not-allowed;
+  }
+
+  .segmented__input:disabled + .segmented__label {
+    color: var(--color-disabled-text);
+    opacity: 0.6;
+  }
+</style>

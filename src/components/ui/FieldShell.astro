@@ -1,0 +1,94 @@
+---
+/**
+ * Interner Rahmen für Formularfelder: Label, Hinweis, Fehlermeldung.
+ * Die Fehlermeldung steht direkt unter dem Feld (WCAG 3.3.1) und wird per
+ * aria-describedby mit dem Feld verknüpft (Verknüpfung setzt Input/Select).
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+  required?: boolean;
+  hideLabel?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  label,
+  hint,
+  error,
+  required = false,
+  hideLabel = false,
+  class: className,
+} = Astro.props;
+---
+
+<div class:list={['field', { 'field--invalid': !!error }, className]} data-field>
+  <label class:list={['field__label', { 'visually-hidden': hideLabel }]} for={id}>
+    {label}
+    {!required && <span class="field__optional">(optional)</span>}
+  </label>
+  {hint && (
+    <p class="field__hint" id={`${id}-hint`}>
+      {hint}
+    </p>
+  )}
+  <slot />
+  <p class="field__error" id={`${id}-error`} hidden={!error} data-field-error>
+    <Icon name="alert" size={16} />
+    <span data-field-error-text>{error}</span>
+  </p>
+</div>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .field__label {
+    color: var(--color-text);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.3;
+  }
+
+  .field__optional {
+    margin-inline-start: var(--space-1);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .field__hint {
+    margin-top: calc(var(--space-1) * -1);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+    line-height: 1.4;
+    max-width: none;
+  }
+
+  .field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    color: var(--color-error);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+    max-width: none;
+  }
+
+  .field__error[hidden] {
+    display: none;
+  }
+
+  .field__error :global(.icon) {
+    margin-top: 0.1em;
+  }
+</style>

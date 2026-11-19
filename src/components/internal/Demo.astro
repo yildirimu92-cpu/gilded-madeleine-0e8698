@@ -1,0 +1,62 @@
+---
+/** Beispielrahmen mit Beschriftung. tone="inverse" zeigt die Komponente auf Forest 950. */
+interface Props {
+  label: string;
+  tone?: 'default' | 'inverse' | 'subtle';
+  stack?: boolean;
+  class?: string;
+}
+const { label, tone = 'default', stack = false, class: className } = Astro.props;
+---
+
+<figure class:list={['demo', `demo--${tone}`, className]}>
+  <figcaption class="text-caption demo__label">{label}</figcaption>
+  <div
+    class:list={[
+      'demo__stage',
+      { 'surface-inverse': tone === 'inverse', 'demo__stage--stack': stack },
+    ]}
+  >
+    <slot />
+  </div>
+</figure>
+
+<style>
+  .demo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    min-width: 0;
+  }
+
+  .demo__label {
+    max-width: none;
+  }
+
+  .demo__stage {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+  }
+
+  .demo--subtle .demo__stage {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .demo__stage.surface-inverse {
+    border-color: transparent;
+    background-color: var(--color-bg);
+  }
+
+  .demo__stage--stack {
+    flex-direction: column;
+    align-items: stretch;
+  }
+</style>

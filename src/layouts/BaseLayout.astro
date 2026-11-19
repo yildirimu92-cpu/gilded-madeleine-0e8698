@@ -21,6 +21,8 @@ const { title, description, locale = defaultLocale, noindex } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0f2e22" />
     <meta name="format-detection" content="telephone=no" />
+    <!-- Platzhalter bis zum freigegebenen IO-Monogramm (src/assets/brand/README.md): verhindert /favicon.ico-404 -->
+    <link rel="icon" href="data:," />
     <link
       rel="preload"
       href="/fonts/inter/v20/inter-latin-opsz-normal.woff2"

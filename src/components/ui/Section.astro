@@ -1,0 +1,68 @@
+---
+/**
+ * Seitensektion mit vertikalem Rhythmus und Flächenton.
+ * tone: default · subtle (Sand 100) · accent (Mint 100) · inverse (Forest 950)
+ */
+import Container from './Container.astro';
+
+interface Props {
+  id?: string;
+  tone?: 'default' | 'subtle' | 'accent' | 'inverse';
+  spacing?: 'md' | 'sm' | 'none';
+  size?: 'prose' | 'md' | 'lg' | 'xl';
+  labelledby?: string;
+  label?: string;
+  contained?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  tone = 'default',
+  spacing = 'md',
+  size = 'lg',
+  labelledby,
+  label,
+  contained = true,
+  class: className,
+} = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={[
+    'ui-section',
+    `ui-section--${tone}`,
+    `ui-section--space-${spacing}`,
+    { 'surface-inverse': tone === 'inverse' },
+    className,
+  ]}
+  aria-labelledby={labelledby}
+  aria-label={labelledby ? undefined : label}
+>
+  {contained ? (
+    <Container size={size}>
+      <slot />
+    </Container>
+  ) : (
+    <slot />
+  )}
+</section>
+
+<style>
+  .ui-section--space-md {
+    padding-block: var(--section-y);
+  }
+
+  .ui-section--space-sm {
+    padding-block: var(--section-y-sm);
+  }
+
+  .ui-section--subtle {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .ui-section--accent {
+    background-color: var(--color-surface-accent);
+  }
+</style>

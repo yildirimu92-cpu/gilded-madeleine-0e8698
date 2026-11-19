@@ -58,8 +58,9 @@ describe('netlify.toml', () => {
     expect(rule('/fonts/*')['Cache-Control']).toContain('immutable');
   });
 
-  it('hält interne Seiten immer noindex', () => {
+  it('hält interne Seiten und Styleguide immer noindex', () => {
     expect(rule('/intern/*')['X-Robots-Tag']).toBe('noindex, nofollow');
+    expect(rule('/styleguide/*')['X-Robots-Tag']).toBe('noindex, nofollow');
   });
 
   it('leitet /prototyp auf /prototyp/ weiter', () => {

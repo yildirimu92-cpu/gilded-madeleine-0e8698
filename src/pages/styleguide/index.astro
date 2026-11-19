@@ -1,0 +1,625 @@
+---
+/**
+ * Interner Styleguide (dauerhaft noindex, nicht in der Navigation).
+ * Zeigt alle UI-Komponenten mit Zuständen. Beispieltexte sind neutral –
+ * keine Preise, Leistungsversprechen oder Referenzen.
+ */
+import Demo from '../../components/internal/Demo.astro';
+import DocSection from '../../components/internal/DocSection.astro';
+import Logo from '../../components/brand/Logo.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Button from '../../components/ui/Button.astro';
+import Card from '../../components/ui/Card.astro';
+import Container from '../../components/ui/Container.astro';
+import Dialog from '../../components/ui/Dialog.astro';
+import Form from '../../components/ui/Form.astro';
+import Input from '../../components/ui/Input.astro';
+import Link from '../../components/ui/Link.astro';
+import Section from '../../components/ui/Section.astro';
+import SegmentedControl from '../../components/ui/SegmentedControl.astro';
+import Select from '../../components/ui/Select.astro';
+import Tag from '../../components/ui/Tag.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { messages } from '../../lib/validation';
+
+const sections = [
+  ['buttons', 'Buttons'],
+  ['links', 'Links'],
+  ['layout', 'Container und Section'],
+  ['karten', 'Karten'],
+  ['badges', 'Badges und Tags'],
+  ['formular', 'Formularfelder'],
+  ['segmented', 'Segmented Control'],
+  ['dialog', 'Dialog'],
+  ['architektur', 'Wiederverwendung'],
+] as const;
+
+const betriebsarten = [
+  { value: 'restaurant', label: 'Restaurant' },
+  { value: 'takeaway', label: 'Takeaway' },
+  { value: 'cafe', label: 'Café oder Bäckerei' },
+  { value: 'bar', label: 'Bar' },
+  { value: 'andere', label: 'Andere' },
+];
+---
+
+<BaseLayout
+  title="Styleguide – IzyOrder (intern)"
+  description="Interne Komponentenvorschau."
+  noindex
+>
+  <header slot="header" class="sg-top">
+    <Container class="sg-top__inner">
+      <Logo href="/" size="sm" />
+      <p class="text-caption">Styleguide · intern · nicht indexiert</p>
+    </Container>
+  </header>
+
+  <Section tone="inverse" spacing="sm" labelledby="sg-title">
+    <div class="stack sg-hero">
+      <p class="text-overline sg-hero__overline">Komponentenbibliothek 1.0</p>
+      <h1 id="sg-title" class="text-h1">
+        Styleguide
+      </h1>
+      <p class="text-lead">
+        Wiederverwendbare Bausteine für die IzyOrder-Website, ausschliesslich aus den freigegebenen
+        Design-Tokens. Alle Beispiele sind mit Tastatur bedienbar.
+      </p>
+    </div>
+  </Section>
+
+  <nav class="container sg-toc" aria-label="Inhalt des Styleguides">
+    <ol class="cluster">
+      {sections.map(([id, label], i) => (
+        <li>
+          <a href={`#${id}`}>
+            <span class="numeric">{String(i + 1).padStart(2, '0')}</span> {label}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <!-- 01 Buttons -->
+  <DocSection id="buttons" number="01" title="Buttons">
+    <p slot="intro">
+      Primary für die wichtigste Aktion je Bereich, Secondary für Alternativen, Ghost für
+      untergeordnete Aktionen. Höhen 40 / 44 / 52 px, auf Touch-Geräten mindestens 44 px.
+    </p>
+    <Demo label="Varianten">
+      <Button>Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Text-Link</Button>
+    </Demo>
+    <Demo label="Zustände: deaktiviert und lädt">
+      <Button disabled>Deaktiviert</Button>
+      <Button variant="secondary" disabled>
+        Deaktiviert
+      </Button>
+      <Button loading>Speichern</Button>
+      <Button variant="secondary" loading>
+        Speichern
+      </Button>
+    </Demo>
+    <Demo label="Grössen und Icons">
+      <Button size="sm">Klein</Button>
+      <Button iconEnd="arrow-right">Mittel</Button>
+      <Button size="lg" iconEnd="arrow-right">
+        Gross
+      </Button>
+      <Button variant="secondary" iconStart="plus">
+        Hinzufügen
+      </Button>
+    </Demo>
+    <Demo label="Als Link (href) und volle Breite" stack>
+      <Button href="#buttons" iconEnd="arrow-right">
+        Link im Button-Stil
+      </Button>
+      <Button variant="secondary" fullWidth>
+        Volle Breite
+      </Button>
+    </Demo>
+    <Demo label="Auf Forest 950" tone="inverse">
+      <Button>Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button disabled>Deaktiviert</Button>
+    </Demo>
+  </DocSection>
+
+  <!-- 02 Links -->
+  <DocSection id="links" number="02" title="Links">
+    <p slot="intro">
+      Interne Links ohne Zusatz, externe mit Pfeil ↗, neuem Tab und Hinweis für Screenreader.
+      Eigenständige Links haben ein Touch-Ziel von 44 px.
+    </p>
+    <Demo label="Im Fliesstext">
+      <p>
+        Weitere Informationen finden Sie im <Link href="#links">internen Abschnitt</Link> oder in
+        der <Link href="https://rsms.me/inter/">Dokumentation der Schrift Inter</Link>.
+      </p>
+    </Demo>
+    <Demo label="Eigenständig und Navigation">
+      <Link href="#karten" variant="standalone">
+        Mehr erfahren
+      </Link>
+      <Link href="#links" variant="nav" current>
+        Aktuelle Seite
+      </Link>
+      <Link href="#formular" variant="nav">
+        Navigationspunkt
+      </Link>
+    </Demo>
+    <Demo label="Auf Forest 950" tone="inverse">
+      <p>
+        Ein <Link href="#links">Link auf dunkler Fläche</Link> nutzt automatisch Mint 300.
+      </p>
+      <Link href="#karten" variant="standalone">
+        Mehr erfahren
+      </Link>
+    </Demo>
+  </DocSection>
+
+  <!-- 03 Layout -->
+  <DocSection id="layout" number="03" title="Container und Section">
+    <p slot="intro">
+      Section setzt Flächenton und vertikalen Rhythmus, Container die Inhaltsbreite (Prosa 672 px
+      bis xl 1280 px) mit fluidem Seitenrand.
+    </p>
+    <div class="sg-tones">
+      {(['default', 'subtle', 'accent', 'inverse'] as const).map((tone) => (
+        <Section
+          tone={tone}
+          spacing="none"
+          contained={false}
+          label={`Beispiel Section ${tone}`}
+          class="sg-tone"
+        >
+          <p class="text-label">Section · {tone}</p>
+          <p class="text-caption">
+            {tone === 'inverse'
+              ? 'Forest 950'
+              : tone === 'accent'
+                ? 'Mint 100'
+                : tone === 'subtle'
+                  ? 'Sand 100'
+                  : 'Sand 50'}
+          </p>
+        </Section>
+      ))}
+    </div>
+    <Demo label="Container-Breiten (relativ, verkleinert)" stack>
+      {(
+        [
+          ['prose', '672 px'],
+          ['md', '896 px'],
+          ['lg', '1152 px · Standard'],
+          ['xl', '1280 px'],
+        ] as const
+      ).map(([size, label]) => (
+        <div class:list={['sg-width', `sg-width--${size}`]}>
+          <span class="text-caption numeric">
+            {size} · {label}
+          </span>
+        </div>
+      ))}
+    </Demo>
+  </DocSection>
+
+  <!-- 04 Karten -->
+  <DocSection id="karten" number="04" title="Karten">
+    <p slot="intro">
+      Neutral für Inhalte, interaktiv mit ganzflächigem Link (ein Tab-Stopp), hervorgehoben für die
+      wichtigste Option einer Auswahl – später z. B. Preiskarten.
+    </p>
+    <div class="grid-auto sg-cards">
+      <Card title="Neutrale Karte">
+        <p>Strukturierte Information ohne Interaktion. Beispieltext für die Darstellung.</p>
+      </Card>
+      <Card variant="interactive" title="Interaktive Karte" href="#karten">
+        <p>Die ganze Fläche ist klickbar. Hover hebt die Karte leicht an.</p>
+        <span slot="footer" class="sg-card-cta" aria-hidden="true">
+          Öffnen →
+        </span>
+      </Card>
+      <Card variant="featured" title="Hervorgehobene Karte">
+        <Badge slot="eyebrow" tone="accent">
+          Beispiel
+        </Badge>
+        <p>Für die wichtigste Option einer Auswahl. Kräftiger Rahmen und Mint-Akzent.</p>
+        <Button slot="footer" fullWidth>
+          Aktion
+        </Button>
+      </Card>
+    </div>
+  </DocSection>
+
+  <!-- 05 Badges und Tags -->
+  <DocSection id="badges" number="05" title="Badges und Tags">
+    <p slot="intro">
+      Badges kennzeichnen Status oder Kategorie (nicht klickbar). Tags sind Schlagworte – als Link
+      oder Umschalter mit 44 px Touch-Ziel.
+    </p>
+    <Demo label="Badges">
+      <Badge>Neutral</Badge>
+      <Badge tone="accent">Akzent</Badge>
+      <Badge tone="success" dot>
+        Aktiv
+      </Badge>
+      <Badge tone="warning" dot>
+        In Prüfung
+      </Badge>
+      <Badge tone="error" dot>
+        Fehler
+      </Badge>
+      <Badge tone="inverse">Invers</Badge>
+    </Demo>
+    <Demo label="Tags">
+      <Tag>Statisch</Tag>
+      <Tag href="#badges">Als Link</Tag>
+      <Tag pressed={true}>Ausgewählt</Tag>
+      <Tag pressed={false}>Nicht ausgewählt</Tag>
+    </Demo>
+  </DocSection>
+
+  <!-- 06 Formular -->
+  <DocSection id="formular" number="06" title="Formularfelder">
+    <p slot="intro">
+      Natives HTML mit Labels, Hinweisen und Fehlermeldungen direkt am Feld. Validierung nach dem
+      Verlassen eines Feldes und beim Absenden. Demo: Es werden keine Daten gesendet.
+    </p>
+    <Demo label="Beispielformular (Demo, sendet nichts)" stack>
+      <Form demo aria-label="Beispielformular" class="sg-form">
+        <div class="sg-form__grid">
+          <Input name="name" label="Name" required autocomplete="name" />
+          <Input name="betrieb" label="Name des Betriebs" required autocomplete="organization" />
+          <Input
+            name="email"
+            type="email"
+            label="E-Mail-Adresse"
+            required
+            hint="Wir verwenden Ihre Adresse nur für die Antwort."
+          />
+          <Input
+            name="telefon"
+            type="tel"
+            label="Telefonnummer"
+            swissPhone
+            hint="Format: 041 123 45 67"
+          />
+          <Select
+            name="betriebsart"
+            label="Art des Betriebs"
+            options={betriebsarten}
+            placeholder="Bitte auswählen"
+            required
+          />
+        </div>
+        <div class="cluster">
+          <Button type="submit" iconEnd="arrow-right">
+            Absenden (Demo)
+          </Button>
+          <Button type="reset" variant="ghost">
+            Zurücksetzen
+          </Button>
+        </div>
+      </Form>
+    </Demo>
+    <Demo label="Zustände" stack>
+      <div class="sg-form__grid">
+        <Input
+          name="fehler"
+          label="Mit Fehlermeldung"
+          value="name@"
+          type="email"
+          error={messages.email}
+          required
+        />
+        <Input name="hinweis" label="Mit Hinweis" hint="Hinweise stehen zwischen Label und Feld." />
+        <Input name="deaktiviert" label="Deaktiviert" value="Nicht bearbeitbar" disabled />
+        <Input name="lesen" label="Schreibgeschützt" value="Nur lesen" readonly />
+      </div>
+    </Demo>
+  </DocSection>
+
+  <!-- 07 Segmented Control -->
+  <DocSection id="segmented" number="07" title="Segmented Control">
+    <p slot="intro">
+      Auswahl zwischen 2–4 gleichwertigen Optionen. Native Radio-Buttons: Pfeiltasten wechseln die
+      Auswahl, Tab verlässt die Gruppe.
+    </p>
+    <Demo label="Standard und volle Breite" stack>
+      <SegmentedControl
+        name="bestellart"
+        legend="Bestellart"
+        options={[
+          { value: 'abholung', label: 'Abholung' },
+          { value: 'lieferung', label: 'Lieferung' },
+        ]}
+      />
+      <SegmentedControl
+        name="ansicht"
+        legend="Ansicht"
+        fullWidth
+        value="karte"
+        options={[
+          { value: 'liste', label: 'Liste' },
+          { value: 'karte', label: 'Karte' },
+          { value: 'kalender', label: 'Kalender', disabled: true },
+        ]}
+      />
+    </Demo>
+  </DocSection>
+
+  <!-- 08 Dialog -->
+  <DocSection id="dialog" number="08" title="Dialog">
+    <p slot="intro">
+      Modaler Dialog mit Fokus im Dialog, Tab-Schleife, Escape zum Schliessen und Fokus-Rückgabe an
+      den Auslöser. JavaScript wird nur auf Seiten mit Dialog geladen.
+    </p>
+    <Demo label="Auslöser">
+      <Button data-dialog-open="sg-dialog-info" aria-haspopup="dialog">
+        Dialog öffnen
+      </Button>
+      <Button variant="secondary" data-dialog-open="sg-dialog-form" aria-haspopup="dialog">
+        Dialog mit Formular
+      </Button>
+    </Demo>
+  </DocSection>
+
+  <!-- 09 Wiederverwendung -->
+  <DocSection id="architektur" number="09" title="Wiederverwendung">
+    <p slot="intro">
+      Geplante Bausteine, die auf diesen Komponenten aufbauen (noch nicht umgesetzt).
+    </p>
+    <div class="table-wrap" role="region" tabindex="0" aria-label="Tabelle Wiederverwendung">
+      <table class="sg-table">
+        <caption class="visually-hidden">Geplante Bausteine und ihre Grundlage</caption>
+        <thead>
+          <tr>
+            <th scope="col">Baustein</th>
+            <th scope="col">Grundlage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Preiskarten</th>
+            <td>Card (featured) · Badge · .price · Button</td>
+          </tr>
+          <tr>
+            <th scope="row">Abrechnungsperiode</th>
+            <td>SegmentedControl</td>
+          </tr>
+          <tr>
+            <th scope="row">FAQ</th>
+            <td>Natives &lt;details&gt; mit Token-Stil (eigene Komponente in einem späteren PR)</td>
+          </tr>
+          <tr>
+            <th scope="row">Rechner</th>
+            <td>Input · SegmentedControl · .numeric · lib/format</td>
+          </tr>
+          <tr>
+            <th scope="row">Lead-Formulare</th>
+            <td>Form · Input · Select · lib/validation · Netlify Forms (ADR 0007)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </DocSection>
+
+  <Dialog
+    id="sg-dialog-info"
+    title="Beispieldialog"
+    description="Kurzer Dialog mit Bestätigung."
+    size="sm"
+  >
+    <p>Escape, der Schliessen-Button oder ein Klick auf den Hintergrund schliessen den Dialog.</p>
+    <Fragment slot="footer">
+      <Button variant="secondary" data-dialog-close="cancel">
+        Abbrechen
+      </Button>
+      <Button data-dialog-close="confirm">Bestätigen</Button>
+    </Fragment>
+  </Dialog>
+
+  <Dialog id="sg-dialog-form" title="Dialog mit Formular" dismissible={false}>
+    <Form demo aria-label="Formular im Dialog" id="sg-dialog-form-el">
+      <Input name="dialog-email" type="email" label="E-Mail-Adresse" required autofocus />
+      <SegmentedControl
+        name="dialog-kontakt"
+        legend="Bevorzugter Kontakt"
+        options={[
+          { value: 'email', label: 'E-Mail' },
+          { value: 'telefon', label: 'Telefon' },
+        ]}
+      />
+    </Form>
+    <Fragment slot="footer">
+      <Button variant="ghost" data-dialog-close="cancel">
+        Abbrechen
+      </Button>
+      <Button type="submit" form="sg-dialog-form-el">
+        Prüfen (Demo)
+      </Button>
+    </Fragment>
+  </Dialog>
+
+  <footer slot="footer" class="sg-footer">
+    <Container class="cluster sg-footer__inner">
+      <Logo size="sm" />
+      <p class="text-caption">Interner Styleguide · nicht indexiert · keine Produktaussagen</p>
+    </Container>
+  </footer>
+</BaseLayout>
+
+<style>
+  .sg-top {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .sg-top :global(.sg-top__inner) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-4);
+  }
+
+  .sg-hero {
+    --stack-space: var(--space-4);
+  }
+
+  .sg-hero__overline {
+    color: var(--color-text-accent);
+  }
+
+  .sg-toc {
+    padding-block: var(--space-6);
+    background: linear-gradient(var(--color-border), var(--color-border)) no-repeat center bottom /
+      calc(100% - 2 * var(--gutter)) 1px;
+  }
+
+  .sg-toc ol {
+    list-style: none;
+    padding: 0;
+    --cluster-space: 0 var(--space-5);
+  }
+
+  .sg-toc a {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-height: var(--touch-target);
+    color: var(--color-text);
+    font-size: var(--text-body-sm);
+    text-decoration: none;
+  }
+
+  .sg-toc a span {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .sg-toc a:hover {
+    color: var(--color-link);
+  }
+
+  .sg-tones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    gap: var(--space-3);
+  }
+
+  .sg-tones :global(.sg-tone) {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-1);
+    min-height: 7rem;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .sg-width {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  .sg-width span {
+    color: inherit;
+  }
+
+  .sg-width--prose {
+    width: 52.5%;
+  }
+
+  .sg-width--md {
+    width: 70%;
+  }
+
+  .sg-width--lg {
+    width: 90%;
+  }
+
+  .sg-width--xl {
+    width: 100%;
+  }
+
+  .sg-cards {
+    --grid-min: 15rem;
+  }
+
+  .sg-card-cta {
+    color: var(--color-link);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .sg-form__grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .sg-card-cta {
+      color: var(--color-link);
+      font-size: var(--text-label);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .sg-form__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+  }
+
+  .sg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body-sm);
+  }
+
+  .sg-table th,
+  .sg-table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .sg-table tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  .sg-table thead th {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .sg-table tbody th {
+    font-weight: var(--font-weight-semibold);
+    white-space: nowrap;
+  }
+
+  .sg-footer {
+    padding-block: var(--space-10);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .sg-footer :global(.sg-footer__inner) {
+    justify-content: space-between;
+  }
+</style>

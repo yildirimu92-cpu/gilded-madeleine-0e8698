@@ -1,0 +1,68 @@
+---
+/** Abschnitt einer internen Vorschauseite (Styleguide). Nicht für öffentliche Seiten. */
+interface Props {
+  id: string;
+  number: string;
+  title: string;
+}
+const { id, number, title } = Astro.props;
+---
+
+<section id={id} class="container doc-section" aria-labelledby={`h-${id}`}>
+  <header class="doc-section__head">
+    <p class="text-overline doc-section__number">{number}</p>
+    <h2 id={`h-${id}`}>{title}</h2>
+    <div class="text-body-sm text-muted doc-section__intro">
+      <slot name="intro" />
+    </div>
+  </header>
+  <div class="doc-section__body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .doc-section {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--section-y-sm);
+    background: linear-gradient(var(--color-border), var(--color-border)) no-repeat center bottom /
+      calc(100% - 2 * var(--gutter)) 1px;
+    scroll-margin-top: var(--space-4);
+  }
+
+  .doc-section__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .doc-section__number {
+    color: var(--color-text-accent);
+  }
+
+  .doc-section__intro :global(p) {
+    max-width: 40ch;
+  }
+
+  .doc-section__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    min-width: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .doc-section {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+      gap: var(--grid-gap);
+    }
+
+    .doc-section__head {
+      position: sticky;
+      top: var(--space-6);
+      align-self: start;
+      padding-inline-end: var(--space-6);
+    }
+  }
+</style>

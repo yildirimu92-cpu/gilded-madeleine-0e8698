@@ -1,0 +1,48 @@
+---
+/**
+ * Formular-Wrapper mit progressiver Validierung und Statusregion.
+ * `demo`: verhindert jeden Versand (nur Styleguide). Produktive Lead-Formulare
+ * ergänzen später Netlify Forms (ADR 0007) – Feldnamen bleiben stabil.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends Omit<HTMLAttributes<'form'>, 'class'> {
+  demo?: boolean;
+  class?: string;
+}
+
+const { demo = false, class: className, method = 'post', ...rest } = Astro.props;
+---
+
+<form
+  class:list={['form', className]}
+  method={method}
+  data-validate
+  data-demo={demo ? '' : undefined}
+  {...rest}
+>
+  <slot />
+  <p class="form__status" role="status" aria-live="polite" data-form-status></p>
+</form>
+
+<script>
+  import '../../scripts/form-validation';
+</script>
+
+<style>
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .form__status {
+    max-width: none;
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  .form__status:empty {
+    display: none;
+  }
+</style>
