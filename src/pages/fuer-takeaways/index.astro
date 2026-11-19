@@ -47,19 +47,23 @@ const steps = [
 const questions = [
   {
     question: 'Muss ich bestehende Lieferplattformen kündigen?',
-    answer: 'Nein. Ein eigener Bestellkanal kann als zusätzliche Möglichkeit für wiederkehrende Gäste aufgebaut werden. Eine automatische Verbindung zu Just Eat oder Uber Eats ist noch keine freigegebene Funktion.',
+    answer:
+      'Nein. Ein eigener Bestellkanal kann als zusätzliche Möglichkeit für wiederkehrende Gäste aufgebaut werden. Eine automatische Verbindung zu Just Eat oder Uber Eats ist noch keine freigegebene Funktion.',
   },
   {
     question: 'Fallen bei IzyOrder wirklich keine Gebühren pro Bestellung an?',
-    answer: 'Das geplante Modell sieht 0 % IzyOrder-Plattformprovision auf Direktbestellungen vor. Software-Abonnement, allfällige Einrichtungsleistungen und Gebühren externer Zahlungsanbieter sind davon unabhängig.',
+    answer:
+      'Das geplante Modell sieht 0 % IzyOrder-Plattformprovision auf Direktbestellungen vor. Software-Abonnement, allfällige Einrichtungsleistungen und Gebühren externer Zahlungsanbieter sind davon unabhängig.',
   },
   {
     question: 'Kann ich eine Mittagspause und Abendöffnungszeiten einstellen?',
-    answer: 'Geteilte Öffnungszeiten für Mittags- und Abendservice gehören zu den vorgesehenen Einstellmöglichkeiten. Die konkrete Produktverfügbarkeit wird vor dem Marktstart geprüft.',
+    answer:
+      'Geteilte Öffnungszeiten für Mittags- und Abendservice gehören zu den vorgesehenen Einstellmöglichkeiten. Die konkrete Produktverfügbarkeit wird vor dem Marktstart geprüft.',
   },
   {
     question: 'Ist das Bestellsystem schon erhältlich?',
-    answer: 'Noch nicht. IzyOrder befindet sich in Entwicklung. Ein freigegebener Demo-Zugang und die Möglichkeit zur Pilotanfrage folgen nach technischer und rechtlicher Prüfung.',
+    answer:
+      'Noch nicht. IzyOrder befindet sich in Entwicklung. Ein freigegebener Demo-Zugang und die Möglichkeit zur Pilotanfrage folgen nach technischer und rechtlicher Prüfung.',
   },
 ] as const;
 ---
@@ -78,7 +82,8 @@ const questions = [
         </h1>
         <p class="text-lead">
           Stammgäste sollen direkt bei Ihrem Betrieb bestellen können – für Abholung und Lieferung.
-          IzyOrder wird als unabhängiger Online-Bestellshop für die Schweizer Gastronomie entwickelt.
+          IzyOrder wird als unabhängiger Online-Bestellshop für die Schweizer Gastronomie
+          entwickelt.
         </p>
         <div class="takeaway-hero__actions">
           <Button href="#vorteile" size="lg" iconEnd="arrow-right">
@@ -93,14 +98,19 @@ const questions = [
         </p>
       </div>
 
-      <div class="takeaway-concept" aria-label="Schematische Darstellung eines digitalen Direktbestellablaufs">
+      <div
+        class="takeaway-concept"
+        aria-label="Schematische Darstellung eines digitalen Direktbestellablaufs"
+      >
         <div class="takeaway-concept__top">
           <span>IZYORDER / KONZEPT</span>
           <span>01 — 03</span>
         </div>
         <div class="takeaway-concept__inner">
           <div class="takeaway-concept__header">
-            <span class="takeaway-concept__glyph" aria-hidden="true">IO</span>
+            <span class="takeaway-concept__glyph" aria-hidden="true">
+              IO
+            </span>
             <div>
               <span>Ihr Takeaway</span>
               <strong>Direkt bestellen.</strong>
@@ -111,9 +121,21 @@ const questions = [
             <span>Lieferung</span>
           </div>
           <div class="takeaway-concept__flow" aria-label="Konzeptioneller Ablauf">
-            <div><span>01</span><strong>Speisekarte auswählen</strong><span aria-hidden="true">↗</span></div>
-            <div><span>02</span><strong>Bestellung aufgeben</strong><span aria-hidden="true">↗</span></div>
-            <div><span>03</span><strong>Im Betrieb bearbeiten</strong><span aria-hidden="true">✓</span></div>
+            <div>
+              <span>01</span>
+              <strong>Speisekarte auswählen</strong>
+              <span aria-hidden="true">↗</span>
+            </div>
+            <div>
+              <span>02</span>
+              <strong>Bestellung aufgeben</strong>
+              <span aria-hidden="true">↗</span>
+            </div>
+            <div>
+              <span>03</span>
+              <strong>Im Betrieb bearbeiten</strong>
+              <span aria-hidden="true">✓</span>
+            </div>
           </div>
         </div>
         <p class="takeaway-concept__caption">
@@ -139,15 +161,17 @@ const questions = [
       </div>
     </div>
     <p class="container container--xl takeaway-metrics__note">
-      *Das geplante SaaS-Abonnement und Gebühren externer Zahlungsanbieter sind separat.
-      Der Leistungsumfang ist noch nicht freigegeben.
+      *Das geplante SaaS-Abonnement und Gebühren externer Zahlungsanbieter sind separat. Der
+      Leistungsumfang ist noch nicht freigegeben.
     </p>
   </section>
 
   <Section id="vorteile" tone="subtle" size="xl" labelledby="takeaway-benefits-heading">
     <div class="takeaway-heading">
       <p class="takeaway-overline">Für den echten Takeaway-Alltag</p>
-      <h2 id="takeaway-benefits-heading">Nicht noch eine Plattform. Ein direkter Weg zu Ihren Gästen.</h2>
+      <h2 id="takeaway-benefits-heading">
+        Nicht noch eine Plattform. Ein direkter Weg zu Ihren Gästen.
+      </h2>
       <p class="text-lead">
         Ein Bestellshop ist nur dann wertvoll, wenn er zu Ihrem Betrieb passt und Gäste ihn
         tatsächlich nutzen. Diese drei Herausforderungen stehen bei der Entwicklung im Mittelpunkt.
@@ -156,7 +180,9 @@ const questions = [
     <div class="takeaway-cards">
       {challenges.map((challenge) => (
         <article class="takeaway-card">
-          <span class="takeaway-card__index" aria-hidden="true">{challenge.index}</span>
+          <span class="takeaway-card__index" aria-hidden="true">
+            {challenge.index}
+          </span>
           <h3>{challenge.title}</h3>
           <p>{challenge.copy}</p>
         </article>
@@ -170,8 +196,8 @@ const questions = [
         <p class="takeaway-overline">Einfach gedacht</p>
         <h2 id="takeaway-how-heading">Vom Menü zur Bestellung. Ohne unnötige Umwege.</h2>
         <p class="text-lead">
-          Die folgende Darstellung beschreibt den geplanten Prozess. Ein konkreter Live-Betrieb
-          wird erst nach vollständiger technischer Abnahme ermöglicht.
+          Die folgende Darstellung beschreibt den geplanten Prozess. Ein konkreter Live-Betrieb wird
+          erst nach vollständiger technischer Abnahme ermöglicht.
         </p>
         <Button href="/funktionen/" variant="secondary" iconEnd="arrow-right">
           Alle Funktionen ansehen
@@ -180,7 +206,9 @@ const questions = [
       <ol class="takeaway-steps">
         {steps.map((step) => (
           <li>
-            <span class="takeaway-steps__number" aria-hidden="true">{step.number}</span>
+            <span class="takeaway-steps__number" aria-hidden="true">
+              {step.number}
+            </span>
             <div>
               <h3>{step.title}</h3>
               <p>{step.copy}</p>
@@ -195,7 +223,9 @@ const questions = [
     <div class="takeaway-economics">
       <div class="takeaway-economics__copy">
         <p class="takeaway-overline">Das Geschäftsmodell</p>
-        <h2 id="takeaway-economic-heading">Weniger Abhängigkeit beginnt mit einem eigenen Kanal.</h2>
+        <h2 id="takeaway-economic-heading">
+          Weniger Abhängigkeit beginnt mit einem eigenen Kanal.
+        </h2>
         <p>
           IzyOrder soll feste Softwaretarife statt einer prozentualen Plattformprovision auf
           Direktbestellungen verwenden. Ein eigener Shop ersetzt aber nicht automatisch die
@@ -224,14 +254,17 @@ const questions = [
         <p class="takeaway-overline">Antworten für Inhaber</p>
         <h2 id="takeaway-faq-heading">Wichtige Fragen, bevor Sie entscheiden.</h2>
         <p>
-          Transparent zum aktuellen Entwicklungsstand – ohne erfundene Kundenstimmen
-          oder zugesicherte Resultate.
+          Transparent zum aktuellen Entwicklungsstand – ohne erfundene Kundenstimmen oder
+          zugesicherte Resultate.
         </p>
       </div>
       <div class="takeaway-faq__items">
         {questions.map((item) => (
           <details>
-            <summary>{item.question}<span aria-hidden="true">+</span></summary>
+            <summary>
+              {item.question}
+              <span aria-hidden="true">+</span>
+            </summary>
             <p>{item.answer}</p>
           </details>
         ))}
@@ -244,8 +277,8 @@ const questions = [
       <p class="takeaway-overline">IzyOrder für Schweizer Takeaways</p>
       <h2 id="takeaway-next-heading">Mehr Direktbestellungen. Auf Ihrem eigenen Weg.</h2>
       <p>
-        Die Produktentwicklung läuft. Bis Demo und Pilotanfragen freigegeben sind, können
-        Sie unser Konzept und die geplanten Funktionen kennenlernen.
+        Die Produktentwicklung läuft. Bis Demo und Pilotanfragen freigegeben sind, können Sie unser
+        Konzept und die geplanten Funktionen kennenlernen.
       </p>
       <Button href="/funktionen/" size="lg" iconEnd="arrow-right">
         Bestellkonzept ansehen
