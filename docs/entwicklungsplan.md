@@ -24,8 +24,10 @@
 | 10 | Funktionsseiten | Online-Shop, Abholung und Lieferung, Verwaltung. KI-Telefonassistenz als „geplant“ | Technisch erledigt (#10), Vermarktungsfreigabe offen |
 | 11 | Provisionsrechner | Interaktiv, transparente Annahmen, ohne Garantieversprechen, mit Unit-Tests | Technisch erledigt (#11), öffentliche Vermarktung offen |
 | 12 | B2C-Logik | Suchlogik aus dem Prototyp als getestetes TypeScript-Modul, Datenschema, Escaping | Technisch erledigt (#12), keine freigegebenen Restaurants |
-| 13 | B2C-Oberfläche | `/bestellen` mit Suche und ehrlichem Leerzustand. Ortsseiten nur für reale, freigegebene Restaurants | In Review (#13), Partnerdaten und Aktivierung offen |
-| 14 | Launch-Vorbereitung | Domain, Redirects, finale Prüfung, `SITE_INDEXING=true` | **Separate Freigabe** |
+| 13 | B2C-Oberfläche | `/bestellen/` mit Suche und ehrlichem Leerzustand. Ortsseiten nur für reale, freigegebene Restaurants | Technisch erledigt (#13), echte Partner und Aktivierung offen |
+| 14 | B2C-UX-Polish | Premium-Hero und klarer Sucheinstieg ohne Scheinkatalog | Erledigt (#14) |
+| 15 | Premium-Tarifstudie | Interne Monats-/Jahresansicht mit transparenten Grundlagen und offenen Geschäftsentscheiden | In Review (#15), nicht für Verkauf freigegeben |
+| später | Launch-Vorbereitung | Domain, Redirects, Rechts- und SEO-Abnahme, `SITE_INDEXING=true` | **Nur nach separater Freigabe** |
 
 ## Später
 
