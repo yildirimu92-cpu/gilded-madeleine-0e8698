@@ -13,7 +13,7 @@ import {
   liveGroups,
   liveItems,
   mainNavigation,
-  primaryCta,
+  marketingCta,
 } from '../config/navigation';
 import type { Locale } from '../i18n/config';
 import BaseLayout from './BaseLayout.astro';
@@ -26,10 +26,11 @@ interface Props {
 }
 
 const props = Astro.props;
+const privacyLive = legalNavigation.some((item) => item.id === 'datenschutz' && item.status === 'live');
 ---
 
 <BaseLayout {...props}>
-  <SiteHeader slot="header" items={liveItems(mainNavigation)} cta={primaryCta()} />
+  <SiteHeader slot="header" items={liveItems(mainNavigation)} cta={marketingCta(process.env, privacyLive)} />
   <slot />
   <SiteFooter
     slot="footer"
