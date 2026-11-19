@@ -31,11 +31,7 @@ test.describe('PR16 – Takeaway-Landingpage (vor Launch)', () => {
     const firstQuestion = page.getByText('Muss ich bestehende Lieferplattformen kündigen?');
     await firstQuestion.focus();
     await page.keyboard.press('Enter');
-    await expect(
-      page.getByText(
-        /nicht automatisch die Reichweite|ein eigener Bestellkanal kann als zusätzliche/i,
-      ),
-    ).toBeVisible();
+    await expect(faq.locator('p')).toContainText('Ein eigener Bestellkanal kann als zusätzliche');
     const faq = page.locator('.takeaway-faq__items details').first();
     await expect(faq).toHaveAttribute('open', '');
   });
