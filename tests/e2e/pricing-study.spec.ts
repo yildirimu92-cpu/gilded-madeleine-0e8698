@@ -58,13 +58,18 @@ test.describe('PR15 – Premium-Tarifstudie ohne Verkaufsfreigabe', () => {
     await context.close();
   });
 
-  test('bleibt dauerhaft noindex und aus der öffentlichen Navigation ausgeschlossen', async ({ page }) => {
+  test('bleibt dauerhaft noindex und aus der öffentlichen Navigation ausgeschlossen', async ({
+    page,
+  }) => {
     const requests: string[] = [];
     page.on('request', (request) => {
       if (request.method() !== 'GET') requests.push(request.url());
     });
     const response = await page.goto('/intern/preise/');
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      'content',
+      'noindex, nofollow',
+    );
     expect(response?.headers()['x-robots-tag']).toContain('noindex');
     await page.getByRole('radio', { name: 'Jährlich' }).check();
     expect(requests).toEqual([]);
