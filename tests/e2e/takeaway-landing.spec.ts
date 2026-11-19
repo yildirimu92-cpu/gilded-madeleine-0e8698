@@ -12,7 +12,9 @@ test.describe('PR16 – Takeaway-Landingpage (vor Launch)', () => {
       'Ihr Takeaway.Ihr Bestellkanal.',
     );
     await expect(page.getByText(/Noch kein buchbares Angebot/)).toBeVisible();
-    await expect(page.getByText('Schematische Konzeptillustration – keine produktive Shop-Oberfläche.')).toBeVisible();
+    await expect(
+      page.getByText('Schematische Konzeptillustration – keine produktive Shop-Oberfläche.'),
+    ).toBeVisible();
     await expect(page.getByRole('heading', { name: /Wichtige Fragen/ })).toBeVisible();
     await expect(page.getByText(/keine garantierten Einsparungen/i)).toBeVisible();
 
@@ -29,7 +31,11 @@ test.describe('PR16 – Takeaway-Landingpage (vor Launch)', () => {
     const firstQuestion = page.getByText('Muss ich bestehende Lieferplattformen kündigen?');
     await firstQuestion.focus();
     await page.keyboard.press('Enter');
-    await expect(page.getByText(/nicht automatisch die Reichweite|ein eigener Bestellkanal kann als zusätzliche/i)).toBeVisible();
+    await expect(
+      page.getByText(
+        /nicht automatisch die Reichweite|ein eigener Bestellkanal kann als zusätzliche/i,
+      ),
+    ).toBeVisible();
     const faq = page.locator('.takeaway-faq__items details').first();
     await expect(faq).toHaveAttribute('open', '');
   });
@@ -50,9 +56,7 @@ test.describe('PR16 – Takeaway-Landingpage (vor Launch)', () => {
   });
 
   for (const width of [375, 390, 768, 1440]) {
-    test(`bei ${width} px: keine Layout-, A11y- oder CSP-Probleme`, async ({
-      page,
-    }, testInfo) => {
+    test(`bei ${width} px: keine Layout-, A11y- oder CSP-Probleme`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 900 });
       const getProblems = await trackProblems(page);
       await page.goto('/fuer-takeaways/');
