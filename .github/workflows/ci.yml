@@ -73,6 +73,15 @@ jobs:
           retention-days: 14
           if-no-files-found: ignore
 
+      - name: Provisionsrechner-Screenshots hochladen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: commission-calculator-screenshots
+          path: test-results/**/commission-calculator-*.png
+          retention-days: 14
+          if-no-files-found: ignore
+
       - name: Lighthouse CI (Performance-Budgets)
         run: npm run lighthouse
 
