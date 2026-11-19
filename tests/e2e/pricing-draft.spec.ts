@@ -8,7 +8,7 @@ test.describe('Interne IzyOrder-Preisvorschau', () => {
     const response = await page.goto('/intern/preise/');
     expect(response?.status()).toBe(200);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      'Einfache Tarife. Klare Rechnung.',
+      'Einfach kalkuliert.Für Wachstum gedacht.',
     );
     for (const name of ['Starter', 'Professional', 'Business']) {
       await expect(page.getByRole('heading', { name })).toBeVisible();
@@ -18,7 +18,7 @@ test.describe('Interne IzyOrder-Preisvorschau', () => {
     }
     await expect(page.getByText(/Interner Entwurf/)).toBeVisible();
     await expect(page.getByText(/Jahresrabatt.*noch nicht freigegeben/)).toBeVisible();
-    await expect(page.getByText(/Gebühren externer Zahlungsanbieter/)).toBeVisible();
+    await expect(page.getByText(/Externe Zahlungsgebühren/)).toBeVisible();
     await expect(page.getByRole('link', { name: /Jetzt kaufen|Buchen|Bestellen/ })).toHaveCount(0);
   });
 
