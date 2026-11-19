@@ -14,9 +14,7 @@ describe('Sitemap – Veröffentlichungsfreigabe', () => {
     expect(sitemapXml({})).toBeNull();
     expect(sitemapXml({ CONTEXT: 'production' })).toBeNull();
     expect(sitemapXml({ SITE_INDEXING: 'true' })).toBeNull();
-    expect(
-      sitemapXml({ CONTEXT: 'deploy-preview', SITE_INDEXING: 'true' }),
-    ).toBeNull();
+    expect(sitemapXml({ CONTEXT: 'deploy-preview', SITE_INDEXING: 'true' })).toBeNull();
   });
 
   it('enthält nur freigegebene öffentliche Ziele', () => {
@@ -31,9 +29,7 @@ describe('Sitemap – Veröffentlichungsfreigabe', () => {
 
   it('verweist erst nach Launch in robots.txt auf die Sitemap', () => {
     expect(robotsTxt()).toBe('User-agent: *\nAllow: /\n');
-    expect(robotsTxt(LIVE_ENV)).toContain(
-      'Sitemap: https://www.example.ch/sitemap.xml',
-    );
+    expect(robotsTxt(LIVE_ENV)).toContain('Sitemap: https://www.example.ch/sitemap.xml');
     expect(robotsTxt({ CONTEXT: 'deploy-preview', SITE_INDEXING: 'true' })).not.toContain(
       'Sitemap:',
     );
