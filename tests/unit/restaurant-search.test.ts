@@ -135,6 +135,14 @@ describe('PR12 – Prototyp-Suchlogik, bereinigt und isoliert', () => {
       place: 'Kriens',
     });
     expect(pickupFallback({ ...base, mode: 'delivery', query: 'pizza' })).toEqual(base);
+    const unknown = interpretRestaurantQuery('9999', { ...base, mode: 'delivery' });
+    const fallback = pickupFallback(unknown);
+    expect(fallback.mode).toBe('pickup');
+    expect(fallback.unknownPostal).toBe(true);
+    expect(filterRestaurantListings([demoPizza], fallback)).toEqual({
+      orderable: [],
+      directory: [],
+    });
     expect(getAvailableCuisines([demoPizza, demoKebab, draft])).toEqual(['Alle', 'Pizza', 'Kebab']);
   });
 
