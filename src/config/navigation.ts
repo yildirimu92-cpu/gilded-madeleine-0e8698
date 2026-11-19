@@ -1,3 +1,6 @@
+import { isPilotCollectionEnabled } from './lead';
+import type { BuildEnv } from '../lib/site-config';
+
 /**
  * Navigation und Footer-Struktur der öffentlichen Website (PR #5).
  *
@@ -83,6 +86,21 @@ export function liveGroups(groups: NavGroup[]): NavGroup[] {
 export function primaryCta(): Cta | null {
   if (!liveDemo.url) return null;
   return { label: liveDemo.label, href: liveDemo.url, external: /^https?:\/\//.test(liveDemo.url) };
+}
+
+/**
+ * Der Pilot-CTA wird erst im freigegebenen Produktionsbuild sichtbar.
+ * Eine bloss existierende /pilot/-Seite oder das Setzen eines einzelnen Flags reicht nicht.
+ * Previews und CI bleiben ohne aktive Lead-CTA.
+ */
+export function pilotCta(env: BuildEnv, privacyPageLive: boolean): Cta | null {
+  if (!isPilotCollectionEnabled(env, privacyPageLive)) return null;
+  return { label: 'Pilotplatz unverbindlich anfragen', href: '/pilot/', external: false };
+}
+
+/** Pilot hat nach Freigabe Vorrang; ansonsten gilt ausschliesslich die freigegebene Demo. */
+export function marketingCta(env: BuildEnv, privacyPageLive: boolean): Cta | null {
+  return pilotCta(env, privacyPageLive) ?? primaryCta();
 }
 
 /** Alle öffentlich verlinkten Ziele (für Tests). */
