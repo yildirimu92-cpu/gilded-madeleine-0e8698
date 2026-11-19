@@ -55,6 +55,15 @@ jobs:
       - name: E2E- und Accessibility-Tests
         run: npm run test:e2e
 
+      - name: Homepage-Screenshots hochladen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: homepage-screenshots
+          path: test-results/**/homepage-*.png
+          retention-days: 14
+          if-no-files-found: ignore
+
       - name: Lighthouse CI (Performance-Budgets)
         run: npm run lighthouse
 
