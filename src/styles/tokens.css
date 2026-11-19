@@ -72,6 +72,10 @@
   --measure-lead: 52ch;
   --measure-heading: 20ch;
 
+  /* --- Marke: Wortmarke (freigegeben 19.11.2026) ------------------------ */
+  --brand-wordmark-weight: 680;
+  --brand-wordmark-tracking: -0.03em;
+
   /* --- Ebene 1: Abstände (4-px-Raster) ---------------------------------- */
   --space-0: 0;
   --space-1: 0.25rem; /* 4 */

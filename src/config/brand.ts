@@ -7,6 +7,7 @@
  */
 export const brand = {
   name: 'IzyOrder',
+  /** Feste Markenformel – unverändert in B2B («Sie») und B2C («Du») verwenden. */
   claim: 'Dein Restaurant. Deine Bestellungen.',
   logo: {
     status: 'pending' as 'pending' | 'final',

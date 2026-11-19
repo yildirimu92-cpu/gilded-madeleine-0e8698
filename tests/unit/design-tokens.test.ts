@@ -99,6 +99,28 @@ describe('Semantische Tokens', () => {
     expect(cssVar('color-focus', inverse)).toBe('var(--mint-300)');
   });
 
+  it('Wortmarke: Gewicht 680, Laufweite −0.03 em (freigegeben)', () => {
+    expect(cssVar('brand-wordmark-weight')).toBe('680');
+    expect(cssVar('brand-wordmark-tracking')).toBe('-0.03em');
+    const wordmark = readFileSync('src/components/brand/Wordmark.astro', 'utf8');
+    expect(wordmark).toContain('font-weight: var(--brand-wordmark-weight)');
+    expect(wordmark).toContain('letter-spacing: var(--brand-wordmark-tracking)');
+  });
+
+  it('kein automatischer Dark Mode in V1', () => {
+    const all = [
+      'tokens.css',
+      'base.css',
+      'typography.css',
+      'layout.css',
+      'global.css',
+      'fonts.css',
+    ]
+      .map((f) => readFileSync(`src/styles/${f}`, 'utf8'))
+      .join('\n');
+    expect(all).not.toMatch(/prefers-color-scheme/);
+  });
+
   it('schaltet Bewegung bei prefers-reduced-motion ab', () => {
     const reduced = tokensCss.slice(tokensCss.indexOf('prefers-reduced-motion: reduce'));
     for (const d of ['duration-instant', 'duration-fast', 'duration-base', 'duration-slow']) {
@@ -120,6 +142,20 @@ describe('Semantische Tokens', () => {
     };
     walk('src');
     expect(offenders).toEqual([]);
+  });
+});
+
+describe('Marke', () => {
+  it('Claim ist die feste Markenformel', async () => {
+    const { brand } = await import('../../src/config/brand');
+    expect(brand.name).toBe('IzyOrder');
+    expect(brand.claim).toBe('Dein Restaurant. Deine Bestellungen.');
+    expect(brand.logo.status).toBe('pending');
+  });
+
+  it('kein Logo-SVG abgelegt, solange das Monogramm aussteht', () => {
+    const files = readdirSync('src/assets/brand');
+    expect(files.filter((f) => f.endsWith('.svg'))).toEqual([]);
   });
 });
 

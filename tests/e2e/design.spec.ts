@@ -60,6 +60,25 @@ test.describe('Designvorschau', () => {
     await expect(page.getByText('Integrationspunkt Logo – ausstehend')).toBeVisible();
   });
 
+  test('Wortmarke rendert mit Gewicht 680 und −0.03 em in allen Grössen', async ({ page }) => {
+    await page.goto(PAGE);
+    const metrics = await page.locator('.wordmark').evaluateAll((els) =>
+      els.map((el) => {
+        const s = getComputedStyle(el);
+        return {
+          weight: s.fontWeight,
+          ratio: parseFloat(s.letterSpacing) / parseFloat(s.fontSize),
+          size: parseFloat(s.fontSize),
+        };
+      }),
+    );
+    expect(new Set(metrics.map((m) => Math.round(m.size))).size).toBeGreaterThanOrEqual(4);
+    for (const m of metrics) {
+      expect(m.weight).toBe('680');
+      expect(m.ratio).toBeCloseTo(-0.03, 3);
+    }
+  });
+
   test('Preise nutzen tabellarische Ziffern und Schweizer Format', async ({ page }) => {
     await page.goto(PAGE);
     const price = page.locator('.price').first();

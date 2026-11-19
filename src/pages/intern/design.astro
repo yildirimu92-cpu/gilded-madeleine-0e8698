@@ -260,8 +260,8 @@ const sections = [
       <p class="text-overline">01</p>
       <h2 id="h-marke">Marke</h2>
       <p class="text-body-sm text-muted">
-        Typografische Wortmarke in Inter. Das IO-Monogramm wird erst nach Freigabe der Vektordatei
-        eingebunden.
+        Typografische Wortmarke in Inter (680, −0.03&nbsp;em). Das IO-Monogramm in minimalistischer
+        Swiss-Tech-Richtung wird erst nach Freigabe der Vektordatei eingebunden.
       </p>
     </header>
     <div class="ds-section__body stack stack--lg">
@@ -295,8 +295,23 @@ const sections = [
         </div>
       </div>
 
+      <dl class="ds-brand-facts">
+        <div>
+          <dt class="text-caption">Claim</dt>
+          <dd>«{brand.claim}» – feste Markenformel, unverändert</dd>
+        </div>
+        <div>
+          <dt class="text-caption">Anrede</dt>
+          <dd>B2B «Sie» · B2C «Du»</dd>
+        </div>
+        <div>
+          <dt class="text-caption">Farbmodus V1</dt>
+          <dd>Hell mit dunklen Markenflächen, kein automatischer Dark Mode</dd>
+        </div>
+      </dl>
+
       <div class="ds-wordmark-sizes">
-        {(['sm', 'md', 'lg'] as const).map((s) => (
+        {(['sm', 'md', 'lg', 'xl'] as const).map((s) => (
           <div class="stack stack--sm">
             <Wordmark size={s} />
             <span class="text-caption">Wordmark {s}</span>
@@ -991,6 +1006,26 @@ const sections = [
 
   .ds-placeholder .stack {
     flex: 1 1 16rem;
+  }
+
+  .ds-brand-facts {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    font-size: var(--text-body-sm);
+  }
+
+  @media (min-width: 768px) {
+    .ds-brand-facts {
+      grid-template-columns: 2fr 1fr 1.5fr;
+    }
+  }
+
+  .ds-brand-facts dd {
+    margin: var(--space-1) 0 0;
   }
 
   .ds-wordmark-sizes {

@@ -1,6 +1,6 @@
 # Designsystem IzyOrder
 
-- **Status:** Version 1.0, zur Freigabe in PR #3
+- **Status:** Version 1.0, Designentscheide freigegeben am 19.11.2026
 - **Vorschau:** `/intern/design/` (nicht indexiert)
 - **Entscheid:** [ADR 0010](../adr/0010-designsystem-und-logo-integration.md)
 
@@ -9,9 +9,11 @@
 | Element | Festlegung |
 |---|---|
 | Name | **IzyOrder**, keine anderen Schreibweisen |
-| Claim | «Dein Restaurant. Deine Bestellungen.» (`brand.claim` in `src/config/brand.ts`) |
-| Wortmarke | Inter, Gewicht 680, Laufweite −0.045 em, Komponente `Wordmark.astro` |
-| Logo | IO-Monogramm **ausstehend**, Integrationspunkt `Logo.astro`, Ablage `src/assets/brand/` |
+| Claim | «Dein Restaurant. Deine Bestellungen.»: feste, unveränderte Markenformel (`brand.claim` in `src/config/brand.ts`) |
+| Anrede | B2B «Sie», B2C «Du» (der Claim bleibt in beiden Bereichen unverändert) |
+| Wortmarke | Inter, Gewicht 680, Laufweite −0.03 em (`--brand-wordmark-*`), Komponente `Wordmark.astro` |
+| Logo | IO-Monogramm (minimalistische Swiss-Tech-Richtung) **ausstehend**, kein unfertiges SVG. Integrationspunkt `Logo.astro`, Ablage `src/assets/brand/` |
+| Farbmodus | Hell mit dunklen Markenflächen. Kein automatischer Dark Mode in V1 |
 | Charakter | Präzise, modern, eigenständig, vertrauenswürdig, zugänglich. Kein Lieferdienst-Look |
 
 ## Dateien
@@ -42,7 +44,7 @@
 | `--sand-300` | #CFC6B6 | Betonte Rahmen, Sekundärtext auf Dunkel |
 | `--stone-600` | #5C625E | Sekundärtext |
 
-Ergänzende Systemfarben (keine Markenfarben): Weiss, Stone 500 `#7C857F` (Rahmen von Eingabefeldern), Amber 700/50 (Warnung), Red 700/50 (Fehler).
+Ergänzende Systemfarben (keine Markenfarben, freigegeben): Weiss, Stone 500 `#7C857F` (Rahmen von Eingabefeldern), Amber 700/50 (Warnung), Red 700/50 (Fehler).
 
 ### Kontrastregeln (WCAG 2.2 AA)
 

@@ -7,11 +7,15 @@
 1. Der Markenname lautet ausschliesslich **IzyOrder**: ein Wort, „I“ und „O“ gross. Varianten wie „IZY Order“, „Izy Order“, „izyorder“ oder „IZY“ werden nicht verwendet, auch nicht in Alt-Texten, Metadaten und Dateinamen sichtbarer Assets.
 2. Bis zum finalen Logo wird eine **typografische Wortmarke** in Inter verwendet. Sie ist als einzelne Komponente umgesetzt und damit zentral austauschbar.
 3. Markenrichtung: Premium Swiss SaaS, Dunkelgrün, Mint als Akzent, warme neutrale Flächen.
+4. Das IO-Monogramm (minimalistische Swiss-Tech-Logorichtung) bleibt **ausstehend**. Ein unfertiges oder angenähertes SVG wird nicht integriert (ADR 0010).
 
 ## Sprache
 
 1. Startsprache ist **Deutsch (de-CH)** mit Schweizer Rechtschreibung (ss statt ß, Apostroph als Tausendertrennzeichen: CHF 1'000).
-2. Der B2B-Bereich spricht die Leserinnen und Leser mit **„Sie“** an. Die Tonalität des B2C-Bereichs (`/bestellen`) wird mit dem Designsystem festgelegt.
+2. Anrede (freigegeben 19.11.2026):
+   - **B2B-Texte** (Website für Gastronomiebetriebe) verwenden **«Sie»**.
+   - **B2C-Texte** (Restaurantfinder `/bestellen`, Gäste) verwenden **«Du»**.
+   - Der Claim **«Dein Restaurant. Deine Bestellungen.»** ist eine **feste Markenformel**. Er wird in beiden Bereichen unverändert verwendet und nicht an die Anrede angepasst.
 3. Alle Texte werden so aufgebaut, dass später FR, IT und EN ergänzt werden können (siehe [ADR 0006](../adr/0006-mehrsprachigkeit.md)).
 
 ## Preise und Geschäftsmodell
