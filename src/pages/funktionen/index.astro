@@ -1,0 +1,330 @@
+---
+import { featurePages, featurePath, voiceFeature } from '../../config/features';
+import Button from '../../components/ui/Button.astro';
+import Card from '../../components/ui/Card.astro';
+import Section from '../../components/ui/Section.astro';
+import PublicLayout from '../../layouts/PublicLayout.astro';
+---
+
+<PublicLayout
+  title="Funktionen für Ihren Online-Bestellshop"
+  description="Entdecken Sie das geplante IzyOrder-Konzept: eigener Online-Bestellshop, Abholung und Lieferung sowie eine übersichtliche Bestellverwaltung für Restaurants."
+  noindex
+>
+  <section class="features-hero" aria-labelledby="features-heading">
+    <div class="container container--xl features-hero__grid">
+      <div class="features-hero__intro">
+        <p class="features-hero__eyebrow">Das IzyOrder-Konzept · In Entwicklung</p>
+        <h1 id="features-heading" class="text-display">Ein Bestellkanal, der zu Ihrem Betrieb passt.</h1>
+        <p class="text-lead">
+          Ihr eigener Online-Bestellshop, flexibel für Abholung und Lieferung, mit einer
+          Bestellübersicht für den Betriebsalltag. Wir entwickeln IzyOrder für Restaurants und
+          Takeaways in der Schweiz.
+        </p>
+        <Button href="#funktionsbereiche" iconEnd="arrow-right">Funktionen entdecken</Button>
+      </div>
+      <div class="features-hero__panel" aria-label="Die drei Bereiche des Produktkonzepts">
+        <div class="features-hero__panel-top">
+          <span>IZYORDER</span>
+          <span>PRODUKTKONZEPT</span>
+        </div>
+        <ol>
+          {featurePages.map((feature) => (
+            <li>
+              <span>{feature.icon}</span>
+              <strong>{feature.label}</strong>
+            </li>
+          ))}
+        </ol>
+        <p>Eine konzeptionelle Übersicht – keine Abbildung einer bereits freigegebenen Software.</p>
+      </div>
+    </div>
+  </section>
+
+  <Section id="funktionsbereiche" tone="subtle" size="xl" labelledby="areas-heading">
+    <div class="section-heading">
+      <p class="section-heading__eyebrow">Für Gäste und Gastronomiebetriebe</p>
+      <h2 id="areas-heading">Drei Bausteine. Ein durchdachter Ablauf.</h2>
+      <p class="text-lead">
+        Vom Online-Shop bis zur Bearbeitung einer Bestellung: Jeder Bereich wird mit Fokus auf
+        einfache Bedienung entwickelt.
+      </p>
+    </div>
+    <div class="feature-cards">
+      {featurePages.map((feature) => (
+        <Card
+          variant="interactive"
+          href={featurePath(feature.slug)}
+          title={feature.label}
+          titleTag="h3"
+          padding="lg"
+        >
+          <span slot="eyebrow" class="feature-cards__eyebrow">
+            {feature.icon} · IN ENTWICKLUNG
+          </span>
+          <p>{feature.intro}</p>
+          <span slot="footer" class="feature-cards__more">Produktkonzept ansehen →</span>
+        </Card>
+      ))}
+    </div>
+  </Section>
+
+  <Section size="xl" labelledby="model-heading">
+    <div class="model">
+      <div class="model__copy">
+        <p class="section-heading__eyebrow">Direktbestellungen als Prinzip</p>
+        <h2 id="model-heading">Ihr Shop steht im Mittelpunkt.</h2>
+        <p>
+          Das geplante Geschäftsmodell setzt auf ein Software-Abonnement und 0 %
+          Plattformprovision für Direktbestellungen. So können Sie einen zusätzlichen
+          Bestellkanal unter Ihrer eigenen Marke aufbauen.
+        </p>
+        <p>
+          Abonnementkosten sowie allfällige Gebühren externer Zahlungsanbieter fallen unabhängig
+          von der Plattformprovision an. Die genauen Leistungen und Vertragsbedingungen werden
+          vor der Vermarktung freigegeben.
+        </p>
+      </div>
+      <div class="model__number">
+        <span>Das geplante Provisionsmodell</span>
+        <strong>0 %</strong>
+        <p>Plattformprovision auf Direktbestellungen</p>
+        <small>Nicht gleichbedeutend mit kostenloser Software oder Zahlungsabwicklung.</small>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="inverse" spacing="sm" labelledby="planned-heading">
+    <div class="planned">
+      <div>
+        <p class="planned__eyebrow">Blick nach vorn</p>
+        <h2 id="planned-heading">{voiceFeature.title}</h2>
+        <p>{voiceFeature.text}</p>
+        <p>
+          Auch Verbindungen zu Drittplattformen und bestehenden Kassensystemen gehören nicht zu
+          den aktuell freigegebenen Leistungsversprechen.
+        </p>
+      </div>
+      <Button href="#funktionsbereiche" variant="secondary" iconEnd="arrow-right">
+        Zum Online-Bestellkonzept
+      </Button>
+    </div>
+  </Section>
+</PublicLayout>
+
+<style>
+  .features-hero {
+    padding-block: var(--section-y-sm) var(--section-y);
+    overflow: hidden;
+  }
+
+  .features-hero__grid {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .features-hero__intro {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-6);
+  }
+
+  .features-hero__intro h1 {
+    max-width: 15ch;
+    text-wrap: balance;
+  }
+
+  .features-hero__intro > p.text-lead {
+    max-width: var(--measure-lead);
+  }
+
+  .features-hero__eyebrow,
+  .section-heading__eyebrow,
+  .planned__eyebrow {
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+    text-transform: uppercase;
+  }
+
+  .features-hero__panel {
+    overflow: hidden;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--color-surface);
+  }
+
+  .features-hero__panel-top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-6);
+    background-color: var(--color-surface-accent);
+    color: var(--color-text-on-accent);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+  }
+
+  .features-hero__panel ol {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: var(--space-4) var(--space-6);
+    list-style: none;
+  }
+
+  .features-hero__panel li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    min-height: 5rem;
+    padding-block: var(--space-3);
+  }
+
+  .features-hero__panel li + li {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .features-hero__panel li span {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-accent);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .features-hero__panel li strong {
+    font-size: var(--text-h5);
+  }
+
+  .features-hero__panel > p {
+    padding: var(--space-4) var(--space-6);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .section-heading {
+    display: grid;
+    gap: var(--space-5);
+    max-width: var(--container-md);
+    margin-bottom: var(--space-12);
+  }
+
+  .section-heading h2 {
+    max-width: 20ch;
+  }
+
+  .feature-cards {
+    display: grid;
+    gap: var(--grid-gap);
+  }
+
+  .feature-cards__eyebrow {
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+  }
+
+  .feature-cards__more {
+    color: var(--color-text-accent);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .model {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .model__copy {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .model__copy h2 {
+    max-width: 18ch;
+  }
+
+  .model__copy p:not(.section-heading__eyebrow) {
+    color: var(--color-text-muted);
+  }
+
+  .model__number {
+    display: grid;
+    gap: var(--space-5);
+    padding: clamp(1.5rem, 3vw, 3rem);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .model__number span {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .model__number strong {
+    font-size: clamp(4.5rem, 9vw, 8rem);
+    line-height: 1;
+    letter-spacing: -0.07em;
+    color: var(--color-text-accent);
+  }
+
+  .model__number p {
+    font-size: var(--text-body-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .model__number small {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .planned {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .planned > div {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 42rem;
+  }
+
+  .planned p:not(.planned__eyebrow) {
+    color: var(--color-text-muted);
+  }
+
+  .planned h2 {
+    font-size: var(--text-h3);
+  }
+
+  @media (min-width: 768px) {
+    .feature-cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .features-hero__grid,
+    .model {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    }
+  }
+</style>
