@@ -12,9 +12,9 @@
 
 | Nr. | Titel | Inhalt | Status |
 |---|---|---|---|
-| 1 | Dokumentation | Audit, Zielarchitektur, ADRs, Isolations- und Inhaltsregeln | Freigegeben zur Umsetzung |
-| 2 | Grundgerüst | Astro und TypeScript, `netlify.toml` mit Security-Headern, Indexierungssteuerung, CI, Prototyp unter `/prototyp/`, Platzhalter `/`, 404 | Freigegeben zur Umsetzung |
-| 3 | Markenkit und Tokens | Farben, Typografie (Inter selbst gehostet), Abstände, Radien, Schatten, Bewegung. Globaler Basisstil, Wortmarke | Geplant, gemeinsam zu erarbeiten |
+| 1 | Dokumentation | Audit, Zielarchitektur, ADRs, Isolations- und Inhaltsregeln | Erledigt (#1) |
+| 2 | Grundgerüst | Astro und TypeScript, `netlify.toml` mit Security-Headern, Indexierungssteuerung, CI, Prototyp unter `/prototyp/`, Platzhalter `/`, 404 | Erledigt (#2) |
+| 3 | Markenkit und Tokens | Farben, Typografie (Inter selbst gehostet), Abstände, Radien, Schatten, Bewegung. Globaler Basisstil, Wortmarke, Logo-Integrationspunkt, Designvorschau `/intern/design/` | In Review (#3) |
 | 4 | Basiskomponenten | Button, Link, Container, Section, Card, Badge, Formularfeld, Segmented Control, Dialog. Interne Seite `/styleguide` (noindex). Lighthouse-Budgets in der CI | Geplant |
 | 5 | Layout und SEO-Kopf | Header mit mobilem Menü, Footer, SEO-Komponente (Open Graph, JSON-LD für die Organisation), Favicon | Geplant |
 | 6 | Rechtliches | Impressum, Datenschutzerklärung (Inhalte durch die Projektleitung bzw. Rechtsberatung), Sitemap | Geplant |

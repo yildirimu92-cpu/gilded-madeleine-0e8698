@@ -53,8 +53,13 @@ describe('netlify.toml', () => {
     expect(unsafeRules.map((h) => h.for)).toEqual(['/prototyp/*']);
   });
 
-  it('cached gehashte Build-Assets langfristig', () => {
+  it('cached gehashte Build-Assets und versionierte Schriften langfristig', () => {
     expect(rule('/_astro/*')['Cache-Control']).toContain('immutable');
+    expect(rule('/fonts/*')['Cache-Control']).toContain('immutable');
+  });
+
+  it('hält interne Seiten immer noindex', () => {
+    expect(rule('/intern/*')['X-Robots-Tag']).toBe('noindex, nofollow');
   });
 
   it('leitet /prototyp auf /prototyp/ weiter', () => {

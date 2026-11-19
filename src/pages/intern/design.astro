@@ -1,0 +1,1527 @@
+---
+/**
+ * Interne Designvorschau (nicht indexiert, nicht verlinkt).
+ * Dient der visuellen Abnahme von Farben, Typografie, Abständen und Markenelementen.
+ * Keine Produkt- oder Preisaussagen – Beträge sind Formatbeispiele.
+ */
+import Logo from '../../components/brand/Logo.astro';
+import Wordmark from '../../components/brand/Wordmark.astro';
+import { brand } from '../../config/brand';
+import { breakpoints } from '../../design/breakpoints';
+import {
+  approvedPairs,
+  brandColors,
+  forbiddenTextPairs,
+  hexOf,
+  systemColors,
+  type ColorToken,
+} from '../../design/palette';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { contrastRatio, formatRatio, rateContrast } from '../../lib/contrast';
+import { formatAmount, formatChf, formatDate } from '../../lib/format';
+
+const sand = hexOf('sand-50');
+const forest = hexOf('forest-950');
+
+function ratioLabel(ratio: number): string {
+  const rating = rateContrast(ratio);
+  return `${formatRatio(ratio)} ${rating === 'ungenügend' ? '–' : rating}`;
+}
+
+function swatchInfo(c: ColorToken) {
+  const onLight = contrastRatio(c.hex, sand);
+  const onDark = contrastRatio(c.hex, forest);
+  return {
+    ...c,
+    onLight: ratioLabel(onLight),
+    onDark: ratioLabel(onDark),
+  };
+}
+
+const brandSwatches = brandColors.map(swatchInfo);
+const systemSwatches = systemColors.map(swatchInfo);
+
+const pairs = approvedPairs.map((p) => {
+  const ratio = contrastRatio(hexOf(p.fg), hexOf(p.bg));
+  return { ...p, fgHex: hexOf(p.fg), bgHex: hexOf(p.bg), ratio, ok: ratio >= p.min };
+});
+
+const forbidden = forbiddenTextPairs.map((p) => ({
+  ...p,
+  fgHex: hexOf(p.fg),
+  bgHex: hexOf(p.bg),
+  ratio: contrastRatio(hexOf(p.fg), hexOf(p.bg)),
+}));
+
+const semantic = [
+  ['--color-bg', 'Sand 50', 'Seitenhintergrund'],
+  ['--color-bg-subtle', 'Sand 100', 'Abgesetzte Bereiche'],
+  ['--color-surface', 'Weiss', 'Karten, Eingabefelder'],
+  ['--color-surface-accent', 'Mint 100', 'Hervorhebung, Erfolg'],
+  ['--color-surface-inverse', 'Forest 950', 'Dunkle Markenflächen'],
+  ['--color-text', 'Forest 950', 'Primärtext'],
+  ['--color-text-muted', 'Stone 600', 'Sekundärtext'],
+  ['--color-link', 'Forest 600', 'Links'],
+  ['--color-link-hover', 'Forest 800', 'Links (Hover)'],
+  ['--color-border', 'Sand 200', 'Trennlinien'],
+  ['--color-border-strong', 'Sand 300', 'Betonte Rahmen'],
+  ['--color-border-control', 'Stone 500', 'Rahmen von Eingabefeldern'],
+  ['--color-accent', 'Mint 300', 'Akzent – nur Fläche auf Hell'],
+  ['--color-focus', 'Forest 600 · Mint 300 auf Dunkel', 'Fokusring'],
+  ['--color-action', 'Forest 950', 'Primäre Aktion'],
+  ['--color-action-hover', 'Forest 800', 'Primäre Aktion (Hover)'],
+  ['--color-success', 'Forest 600 auf Mint 100', 'Erfolg'],
+  ['--color-warning', 'Amber 700 auf Amber 50', 'Warnung'],
+  ['--color-error', 'Red 700 auf Red 50', 'Fehler'],
+] as const;
+
+const typeScale = [
+  { cls: 'text-display', name: 'Display', spec: '44 → 84 px · 1.04 · 660', sample: brand.claim },
+  {
+    cls: 'text-h1',
+    name: 'H1',
+    spec: '36 → 60 px · 1.04 · 660',
+    sample: 'Bestellungen, die bei Ihnen ankommen',
+  },
+  {
+    cls: 'text-h2',
+    name: 'H2',
+    spec: '30 → 44 px · 1.12 · 660',
+    sample: 'Abholung und Lieferung im Überblick',
+  },
+  {
+    cls: 'text-h3',
+    name: 'H3',
+    spec: '24 → 32 px · 1.12 · 600',
+    sample: 'Speisekarte und Öffnungszeiten',
+  },
+  {
+    cls: 'text-h4',
+    name: 'H4',
+    spec: '20 → 24 px · 1.3 · 600',
+    sample: 'Einstellungen für Ihren Betrieb',
+  },
+  {
+    cls: 'text-h5',
+    name: 'H5',
+    spec: '18 → 20 px · 1.3 · 600',
+    sample: 'Bestellbestätigung per E-Mail',
+  },
+  { cls: 'text-h6', name: 'H6', spec: '16 → 17 px · 1.3 · 600', sample: 'Zahlungsarten' },
+  {
+    cls: 'text-body-lg',
+    name: 'Body gross',
+    spec: '18 → 20 px · 1.55 · 400',
+    sample: 'Zwölf Boxkämpfer jagen Viktor quer über den grossen Sylter Deich.',
+  },
+  {
+    cls: 'text-body',
+    name: 'Body',
+    spec: '16 → 17 px · 1.6 · 400',
+    sample: 'Zwölf Boxkämpfer jagen Viktor quer über den grossen Sylter Deich.',
+  },
+  {
+    cls: 'text-body-sm',
+    name: 'Body klein',
+    spec: '14 → 15 px · 1.45 · 400',
+    sample: 'Zwölf Boxkämpfer jagen Viktor quer über den grossen Sylter Deich.',
+  },
+  { cls: 'text-label', name: 'Label', spec: '14 px · 1.3 · 520', sample: 'E-Mail-Adresse' },
+  {
+    cls: 'text-caption',
+    name: 'Caption',
+    spec: '13 px · 1.4 · 400',
+    sample: 'Alle Beträge in CHF, exkl. MWST',
+  },
+  {
+    cls: 'text-overline',
+    name: 'Overline',
+    spec: '12 px · 1.3 · 600 · +0.09 em',
+    sample: 'Für Gastronomiebetriebe',
+  },
+];
+
+const spacing = [
+  ['--space-1', 4],
+  ['--space-2', 8],
+  ['--space-3', 12],
+  ['--space-4', 16],
+  ['--space-5', 20],
+  ['--space-6', 24],
+  ['--space-8', 32],
+  ['--space-10', 40],
+  ['--space-12', 48],
+  ['--space-16', 64],
+  ['--space-20', 80],
+  ['--space-24', 96],
+  ['--space-32', 128],
+] as const;
+
+const fluid = [
+  ['--gutter', '16 → 40 px', 'Seitenrand'],
+  ['--section-y', '64 → 128 px', 'Abstand zwischen Sektionen'],
+  ['--section-y-sm', '40 → 80 px', 'Kompakte Sektionen'],
+  ['--grid-gap', '16 → 28 px', 'Rasterabstand'],
+] as const;
+
+const containers = [
+  ['--container-prose', '672 px', 'Lesetext'],
+  ['--container-md', '896 px', 'Formulare, schmale Inhalte'],
+  ['--container-lg', '1152 px', 'Standard'],
+  ['--container-xl', '1280 px', 'Breite Layouts'],
+] as const;
+
+const radii = ['xs', 'sm', 'md', 'lg', 'xl', 'pill'] as const;
+const radiusPx: Record<(typeof radii)[number], string> = {
+  xs: '4 px',
+  sm: '6 px',
+  md: '10 px',
+  lg: '16 px',
+  xl: '24 px',
+  pill: 'voll',
+};
+const shadows = ['xs', 'sm', 'md', 'lg'] as const;
+
+const motion = [
+  ['--duration-instant', '80 ms', 'Farbwechsel kleiner Elemente'],
+  ['--duration-fast', '140 ms', 'Hover, Fokus'],
+  ['--duration-base', '220 ms', 'Einblenden, Anheben'],
+  ['--duration-slow', '360 ms', 'Grössere Flächen, Dialoge'],
+  ['--ease-standard', 'cubic-bezier(0.2, 0, 0, 1)', 'Standard'],
+  ['--ease-out', 'cubic-bezier(0.16, 1, 0.3, 1)', 'Eintreten'],
+  ['--ease-in', 'cubic-bezier(0.4, 0, 1, 1)', 'Austreten'],
+] as const;
+
+const prices = [12, 64, 380, 1249.5, 18.9, 7.5];
+const sections = [
+  ['marke', 'Marke'],
+  ['farben', 'Farben'],
+  ['semantik', 'Semantische Tokens'],
+  ['kontrast', 'Kontraste'],
+  ['typografie', 'Typografie'],
+  ['schweiz', 'Schweizer Typografie'],
+  ['abstaende', 'Abstände'],
+  ['layout', 'Layout'],
+  ['form', 'Radien und Schatten'],
+  ['zustaende', 'Zustände'],
+  ['bewegung', 'Bewegung'],
+] as const;
+---
+
+<BaseLayout
+  title="Designvorschau – IzyOrder (intern)"
+  description="Interne Vorschau des IzyOrder-Designsystems."
+  noindex
+>
+  <header slot="header" class="ds-top">
+    <div class="container ds-top__inner">
+      <Logo href="/" size="sm" />
+      <p class="text-caption ds-top__meta">
+        Designvorschau · intern · nicht indexiert · Stand {formatDate(new Date())}
+      </p>
+    </div>
+  </header>
+
+  <section class="surface-inverse ds-hero" aria-labelledby="ds-title">
+    <div class="container ds-hero__inner">
+      <p class="text-overline ds-hero__overline">Markenidentität · Designsystem 1.0</p>
+      <h1 id="ds-title" class="visually-hidden">
+        IzyOrder Designvorschau
+      </h1>
+      <Wordmark size="xl" />
+      <p class="ds-hero__claim">
+        {brand.claim.split(/(?<=\.)\s+/).map((part) => (
+          <span>{part}</span>
+        ))}
+      </p>
+      <div class="ds-hero__rule" aria-hidden="true"></div>
+      <p class="text-body-sm ds-hero__note">
+        Präzise, ruhig, zugänglich. Forest 950 als Primärfarbe, warme Sand-Flächen, Mint als
+        sparsamer Akzent.
+      </p>
+    </div>
+  </section>
+
+  <nav class="container ds-toc" aria-label="Inhalt der Designvorschau">
+    <ol class="cluster">
+      {sections.map(([id, label], i) => (
+        <li>
+          <a href={`#${id}`}>
+            <span class="numeric">{String(i + 1).padStart(2, '0')}</span> {label}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <!-- 01 Marke -->
+  <section id="marke" class="container ds-section" aria-labelledby="h-marke">
+    <header class="ds-section__head">
+      <p class="text-overline">01</p>
+      <h2 id="h-marke">Marke</h2>
+      <p class="text-body-sm text-muted">
+        Typografische Wortmarke in Inter (680, −0.03&nbsp;em). Das IO-Monogramm in minimalistischer
+        Swiss-Tech-Richtung wird erst nach Freigabe der Vektordatei eingebunden.
+      </p>
+    </header>
+    <div class="ds-section__body stack stack--lg">
+      <div class="ds-brand-panels">
+        <div class="ds-panel ds-panel--light">
+          <Logo size="lg" />
+          <p class="text-caption">Auf Sand 50</p>
+        </div>
+        <div class="ds-panel surface-inverse">
+          <Logo size="lg" tone="inverse" />
+          <p class="text-caption">Auf Forest 950</p>
+        </div>
+      </div>
+
+      <div class="ds-placeholder" role="note" aria-labelledby="logo-pending">
+        <div class="ds-placeholder__frame" aria-hidden="true">
+          IO
+        </div>
+        <div class="stack stack--sm">
+          <h3 id="logo-pending" class="text-h6">
+            Integrationspunkt Logo – ausstehend
+          </h3>
+          <p class="text-body-sm text-muted">
+            Platzhalter, kein Markenasset. Das finale IO-Monogramm (Forest 950 und Mint 300) wird
+            als freigegebene SVG-Datei unter <code>src/assets/brand/</code> abgelegt und über{' '}
+            <code>Logo.astro</code> an allen Stellen gleichzeitig aktiviert.
+          </p>
+          <p class="text-caption">
+            Status: <strong>{brand.logo.status}</strong>
+          </p>
+        </div>
+      </div>
+
+      <dl class="ds-brand-facts">
+        <div>
+          <dt class="text-caption">Claim</dt>
+          <dd>«{brand.claim}» – feste Markenformel, unverändert</dd>
+        </div>
+        <div>
+          <dt class="text-caption">Anrede</dt>
+          <dd>B2B «Sie» · B2C «Du»</dd>
+        </div>
+        <div>
+          <dt class="text-caption">Farbmodus V1</dt>
+          <dd>Hell mit dunklen Markenflächen, kein automatischer Dark Mode</dd>
+        </div>
+      </dl>
+
+      <div class="ds-wordmark-sizes">
+        {(['sm', 'md', 'lg', 'xl'] as const).map((s) => (
+          <div class="stack stack--sm">
+            <Wordmark size={s} />
+            <span class="text-caption">Wordmark {s}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Farben -->
+  <section id="farben" class="container ds-section" aria-labelledby="h-farben">
+    <header class="ds-section__head">
+      <p class="text-overline">02</p>
+      <h2 id="h-farben">Farben</h2>
+      <p class="text-body-sm text-muted">
+        Verbindliche Markenfarben. Kontrast jeweils als Textfarbe auf Sand 50 (Hell) bzw. Forest 950
+        (Dunkel); «–» bedeutet: nicht als Text geeignet.
+      </p>
+    </header>
+    <div class="ds-section__body stack stack--lg">
+      <ul class="ds-swatches" aria-label="Markenfarben">
+        {brandSwatches.map((c) => (
+          <li class="ds-swatch">
+            <svg
+              class="ds-swatch__chip"
+              viewBox="0 0 100 60"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <rect width="100" height="60" fill={c.hex} />
+            </svg>
+            <div class="ds-swatch__meta">
+              <p class="text-label">{c.name}</p>
+              <p class="text-caption numeric">
+                {c.hex} · <code>--{c.token}</code>
+              </p>
+              <p class="text-caption">{c.usage}</p>
+              <dl class="ds-swatch__ratios text-caption numeric">
+                <dt>auf Hell</dt>
+                <dd>{c.onLight}</dd>
+                <dt>auf Dunkel</dt>
+                <dd>{c.onDark}</dd>
+              </dl>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div class="stack stack--sm">
+        <h3 class="text-h5">Ergänzende Systemfarben</h3>
+        <p class="text-body-sm text-muted">
+          Für Rahmen von Eingabefeldern sowie Warn- und Fehlerzustände. Keine Markenfarben.
+        </p>
+      </div>
+      <ul class="ds-swatches ds-swatches--compact" aria-label="Systemfarben">
+        {systemSwatches.map((c) => (
+          <li class="ds-swatch">
+            <svg
+              class="ds-swatch__chip"
+              viewBox="0 0 100 60"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <rect width="100" height="60" fill={c.hex} />
+            </svg>
+            <div class="ds-swatch__meta">
+              <p class="text-label">{c.name}</p>
+              <p class="text-caption numeric">{c.hex}</p>
+              <p class="text-caption">{c.usage}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 03 Semantische Tokens -->
+  <section id="semantik" class="container ds-section" aria-labelledby="h-semantik">
+    <header class="ds-section__head">
+      <p class="text-overline">03</p>
+      <h2 id="h-semantik">Semantische Tokens</h2>
+      <p class="text-body-sm text-muted">
+        Komponenten verwenden nur diese Ebene. Auf <code>.surface-inverse</code> werden sie
+        automatisch für dunkle Flächen umgestellt.
+      </p>
+    </header>
+    <div
+      class="ds-section__body ds-table-wrap"
+      role="region"
+      tabindex="0"
+      aria-label="Tabelle semantische Tokens"
+    >
+      <table class="ds-table">
+        <caption class="visually-hidden">Semantische Farb-Tokens</caption>
+        <thead>
+          <tr>
+            <th scope="col">Token</th>
+            <th scope="col">Wert</th>
+            <th scope="col">Verwendung</th>
+          </tr>
+        </thead>
+        <tbody>
+          {semantic.map(([token, value, use]) => (
+            <tr>
+              <th scope="row">
+                <code>{token}</code>
+              </th>
+              <td>{value}</td>
+              <td class="text-muted">{use}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 Kontraste -->
+  <section id="kontrast" class="container ds-section" aria-labelledby="h-kontrast">
+    <header class="ds-section__head">
+      <p class="text-overline">04</p>
+      <h2 id="h-kontrast">Kontraste</h2>
+      <p class="text-body-sm text-muted">
+        Freigegebene Kombinationen nach WCAG 2.2 AA: 4.5:1 für Text, 3:1 für grosse Schrift,
+        Fokusringe und Rahmen von Bedienelementen. Automatisch im Test geprüft.
+      </p>
+    </header>
+    <div class="ds-section__body stack stack--lg">
+      <ul class="ds-pairs" aria-label="Freigegebene Farbkombinationen">
+        {pairs.map((p) => (
+          <li class="ds-pair">
+            <svg class="ds-pair__sample" viewBox="0 0 88 56" aria-hidden="true">
+              <rect width="88" height="56" rx="8" fill={p.bgHex} />
+              <rect x="0.5" y="0.5" width="87" height="55" rx="7.5" fill="none" stroke="#E4DDD0" />
+              <text
+                x="44"
+                y="36"
+                text-anchor="middle"
+                font-size="22"
+                font-weight="600"
+                fill={p.fgHex}
+                font-family="Inter, sans-serif"
+              >
+                Aa
+              </text>
+            </svg>
+            <div>
+              <p class="text-label">{p.use}</p>
+              <p class="text-caption numeric">
+                {p.fg} auf {p.bg} · {formatRatio(p.ratio)} (min. {p.min}:1){' '}
+                <span class:list={['ds-verdict', { 'ds-verdict--fail': !p.ok }]}>
+                  {p.ok ? 'bestanden' : 'nicht bestanden'}
+                </span>
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div class="ds-callout ds-callout--warning" role="note">
+        <h3 class="text-h6">Unzulässig als Textfarbe</h3>
+        <ul class="ds-list">
+          {forbidden.map((p) => (
+            <li class="text-body-sm">
+              <span class="numeric">
+                {p.fg} auf {p.bg} ({formatRatio(p.ratio)})
+              </span>{' '}
+              – {p.reason}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Typografie -->
+  <section id="typografie" class="container ds-section" aria-labelledby="h-typografie">
+    <header class="ds-section__head">
+      <p class="text-overline">05</p>
+      <h2 id="h-typografie">Typografie</h2>
+      <p class="text-body-sm text-muted">
+        Inter Variable (opsz 14–32, wght 100–900), selbst gehostet. Grössen fluid zwischen 375 und
+        1440 px. <a href="/fonts/inter/v20/OFL.txt">Lizenz (SIL OFL 1.1)</a>
+      </p>
+    </header>
+    <div class="ds-section__body">
+      <ul class="ds-type" aria-label="Schriftgrade">
+        {typeScale.map((s) => (
+          <li class="ds-type__row">
+            <div class="ds-type__meta">
+              <p class="text-label">{s.name}</p>
+              <p class="text-caption numeric">{s.spec}</p>
+              <p class="text-caption">
+                <code>.{s.cls}</code>
+              </p>
+            </div>
+            <p class:list={[s.cls, 'ds-type__sample']}>{s.sample}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 06 Schweizer Typografie -->
+  <section id="schweiz" class="container ds-section" aria-labelledby="h-schweiz">
+    <header class="ds-section__head">
+      <p class="text-overline">06</p>
+      <h2 id="h-schweiz">Schweizer Typografie</h2>
+      <p class="text-body-sm text-muted">
+        de-CH: ss statt ß, Guillemets, Apostroph als Tausendertrennzeichen, Silbentrennung im
+        Fliesstext. Beträge sind Formatbeispiele.
+      </p>
+    </header>
+    <div class="ds-section__body ds-swiss">
+      <div class="ds-card stack">
+        <h3 class="text-h6">Tabellarische Ziffern</h3>
+        <table class="ds-numbers">
+          <caption class="visually-hidden">Beispielbeträge mit tabellarischen Ziffern</caption>
+          <thead>
+            <tr>
+              <th scope="col">Format</th>
+              <th scope="col" class="num">
+                Betrag
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {prices.map((v) => (
+              <tr>
+                <td class="text-muted">{Number.isInteger(v) ? 'Ganzer Betrag' : 'Mit Rappen'}</td>
+                <td class="num price">{formatChf(v)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="text-caption">Ziffern gleich breit: Beträge stehen exakt untereinander.</p>
+      </div>
+      <div class="ds-card stack">
+        <h3 class="text-h6">Schreibweisen</h3>
+        <dl class="ds-dl">
+          <dt>Anführungszeichen</dt>
+          <dd>
+            <q>Bestellung erhalten</q> ·{' '}
+            <q>
+              Sie sagte <q>danke</q>
+            </q>
+          </dd>
+          <dt>Tausendertrennung</dt>
+          <dd class="numeric">{formatAmount(1249.5)}</dd>
+          <dt>Datum</dt>
+          <dd class="numeric">{formatDate(new Date(Date.UTC(2026, 10, 19)))}</dd>
+          <dt>Uhrzeit</dt>
+          <dd class="numeric">18.30 Uhr · 18:30</dd>
+          <dt>Gedankenstrich</dt>
+          <dd>Abholung – oder Lieferung</dd>
+          <dt>Eszett</dt>
+          <dd>grosse Auswahl, Strasse, schliessen</dd>
+        </dl>
+      </div>
+      <div class="ds-card stack">
+        <h3 class="text-h6">Silbentrennung (schmale Spalte)</h3>
+        <p class="ds-narrow text-body-sm">
+          Gastronomiebetriebe erhalten jede Bestellbestätigung unmittelbar. Restaurantinhaberinnen
+          und Takeawaybetreiber verwalten Öffnungszeiten, Lieferzonen und Speisekarten zentral.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 Abstände -->
+  <section id="abstaende" class="container ds-section" aria-labelledby="h-abstaende">
+    <header class="ds-section__head">
+      <p class="text-overline">07</p>
+      <h2 id="h-abstaende">Abstände</h2>
+      <p class="text-body-sm text-muted">
+        4-px-Raster. Fluide Tokens für Seitenränder und Sektionen.
+      </p>
+    </header>
+    <div class="ds-section__body stack stack--lg">
+      <ul class="ds-spacing" aria-label="Abstandsskala">
+        {spacing.map(([token, px]) => (
+          <li>
+            <code class="text-caption">{token}</code>
+            <svg
+              class="ds-spacing__bar"
+              viewBox={`0 0 ${px} 12`}
+              width={px}
+              height="12"
+              aria-hidden="true"
+            >
+              <rect width={px} height="12" rx="2" fill="#1E6B4F" />
+            </svg>
+            <span class="text-caption numeric">{px} px</span>
+          </li>
+        ))}
+      </ul>
+      <div class="ds-table-wrap" role="region" tabindex="0" aria-label="Tabelle fluide Abstände">
+        <table class="ds-table">
+          <caption class="visually-hidden">Fluide Abstände</caption>
+          <thead>
+            <tr>
+              <th scope="col">Token</th>
+              <th scope="col">375 → 1440 px</th>
+              <th scope="col">Verwendung</th>
+            </tr>
+          </thead>
+          <tbody>
+            {fluid.map(([t, r, u]) => (
+              <tr>
+                <th scope="row">
+                  <code>{t}</code>
+                </th>
+                <td class="numeric">{r}</td>
+                <td class="text-muted">{u}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 Layout -->
+  <section id="layout" class="container ds-section" aria-labelledby="h-layout">
+    <header class="ds-section__head">
+      <p class="text-overline">08</p>
+      <h2 id="h-layout">Layout</h2>
+      <p class="text-body-sm text-muted">
+        Mobile first. Raster mit 4 Spalten mobil, 8 ab 768 px und 12 ab 1024 px.
+      </p>
+    </header>
+    <div class="ds-section__body stack stack--lg">
+      <div class="grid ds-grid-demo" aria-label="Rasterdemonstration" role="img">
+        {Array.from({ length: 12 }, (_, i) => (
+          <span class="numeric">{i + 1}</span>
+        ))}
+      </div>
+      <div class="ds-layout-tables">
+        <div class="ds-table-wrap" role="region" tabindex="0" aria-label="Tabelle Breakpoints">
+          <table class="ds-table">
+            <caption class="text-label ds-table__caption">Breakpoints (min-width)</caption>
+            <tbody>
+              {Object.entries(breakpoints).map(([k, v]) => (
+                <tr>
+                  <th scope="row">
+                    <code>{k}</code>
+                  </th>
+                  <td class="numeric">{v} px</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div class="ds-table-wrap" role="region" tabindex="0" aria-label="Tabelle Container">
+          <table class="ds-table">
+            <caption class="text-label ds-table__caption">Container</caption>
+            <tbody>
+              {containers.map(([t, w, u]) => (
+                <tr>
+                  <th scope="row">
+                    <code>{t}</code>
+                  </th>
+                  <td class="numeric">{w}</td>
+                  <td class="text-muted">{u}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 Radien und Schatten -->
+  <section id="form" class="container ds-section" aria-labelledby="h-form">
+    <header class="ds-section__head">
+      <p class="text-overline">09</p>
+      <h2 id="h-form">Radien und Schatten</h2>
+      <p class="text-body-sm text-muted">
+        Zurückhaltend: Schatten sind Forest-getönt und dienen der Ebenenbildung, nicht der
+        Dekoration.
+      </p>
+    </header>
+    <div class="ds-section__body stack stack--lg">
+      <ul class="ds-shapes" aria-label="Radien">
+        {radii.map((r) => (
+          <li>
+            <span class:list={['ds-shape', `ds-radius-${r}`]} aria-hidden="true" />
+            <code class="text-caption">--radius-{r}</code>
+            <span class="text-caption numeric">{radiusPx[r]}</span>
+          </li>
+        ))}
+      </ul>
+      <ul class="ds-shadows" aria-label="Schatten">
+        {shadows.map((s) => (
+          <li class:list={['ds-shadow', `ds-shadow-${s}`]}>
+            <code class="text-caption">--shadow-{s}</code>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10 Zustände -->
+  <section id="zustaende" class="container ds-section" aria-labelledby="h-zustaende">
+    <header class="ds-section__head">
+      <p class="text-overline">10</p>
+      <h2 id="h-zustaende">Zustände</h2>
+      <p class="text-body-sm text-muted">
+        Token-Vorschau für Hover, Active, Fokus und deaktiviert. Die eigentlichen Komponenten folgen
+        in PR&nbsp;#4. Mit Tab-Taste den Fokusring prüfen.
+      </p>
+    </header>
+    <div class="ds-section__body ds-states">
+      {(['light', 'inverse'] as const).map((surface) => (
+        <div
+          class:list={[
+            'ds-panel',
+            'stack',
+            surface === 'inverse' ? 'surface-inverse' : 'ds-panel--light',
+          ]}
+        >
+          <p class="text-caption">{surface === 'inverse' ? 'Auf Forest 950' : 'Auf Sand 50'}</p>
+          <div class="ds-state-grid">
+            <span class="ds-action">Standard</span>
+            <span class="ds-action is-hover">Hover</span>
+            <span class="ds-action is-active">Active</span>
+            <span class="ds-action is-focus">Fokus</span>
+            <span class="ds-action is-disabled">Deaktiviert</span>
+            <span class="ds-action ds-action--secondary">Sekundär</span>
+          </div>
+          <div class="cluster">
+            <button type="button" class="ds-action">
+              Interaktiv testen
+            </button>
+            <a href="#zustaende">Textlink</a>
+          </div>
+        </div>
+      ))}
+      <div class="ds-status stack stack--sm">
+        <p class="ds-msg ds-msg--success text-body-sm">
+          <strong>Erfolg:</strong> Änderungen gespeichert.
+        </p>
+        <p class="ds-msg ds-msg--warning text-body-sm">
+          <strong>Hinweis:</strong> Öffnungszeiten unvollständig.
+        </p>
+        <p class="ds-msg ds-msg--error text-body-sm">
+          <strong>Fehler:</strong> Bitte gültige E-Mail-Adresse eingeben.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 Bewegung -->
+  <section id="bewegung" class="container ds-section" aria-labelledby="h-bewegung">
+    <header class="ds-section__head">
+      <p class="text-overline">11</p>
+      <h2 id="h-bewegung">Bewegung</h2>
+      <p class="text-body-sm text-muted">
+        Kurz und funktional. Bei <code>prefers-reduced-motion: reduce</code> werden alle Übergänge
+        abgeschaltet.
+      </p>
+    </header>
+    <div class="ds-section__body stack stack--lg">
+      <div class="ds-table-wrap" role="region" tabindex="0" aria-label="Tabelle Bewegungs-Tokens">
+        <table class="ds-table">
+          <caption class="visually-hidden">Bewegungs-Tokens</caption>
+          <tbody>
+            {motion.map(([t, v, u]) => (
+              <tr>
+                <th scope="row">
+                  <code>{t}</code>
+                </th>
+                <td class="numeric">{v}</td>
+                <td class="text-muted">{u}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="cluster">
+        <div class="ds-lift" tabindex="0">
+          <p class="text-label">Anheben bei Hover/Fokus</p>
+          <p class="text-caption">--duration-base · --ease-out</p>
+        </div>
+        <p class="text-caption ds-motion-status" data-testid="motion-status">
+          <span class="ds-motion-status__on">Reduzierte Bewegung: aktiv</span>
+          <span class="ds-motion-status__off">Reduzierte Bewegung: nicht aktiv</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer slot="footer" class="ds-footer">
+    <div class="container cluster">
+      <Logo size="sm" />
+      <p class="text-caption">Interne Designvorschau · nicht indexiert · keine Produktaussagen</p>
+    </div>
+  </footer>
+</BaseLayout>
+
+<style>
+  /* --- Kopf ---------------------------------------------------------------- */
+  .ds-top {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .ds-top__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-4);
+  }
+
+  .ds-top__meta {
+    max-width: none;
+  }
+
+  /* --- Hero ------------------------------------------------------------------ */
+  .ds-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-block: var(--section-y);
+  }
+
+  .ds-hero__overline {
+    color: var(--mint-300);
+  }
+
+  .ds-hero__claim span {
+    display: block;
+  }
+
+  .ds-hero__claim {
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-h2);
+    font-weight: var(--font-weight-medium);
+    color: var(--sand-50);
+    hyphens: manual;
+  }
+
+  .ds-hero__rule {
+    width: var(--space-16);
+    height: 3px;
+    border-radius: var(--radius-pill);
+    background: var(--mint-300);
+  }
+
+  .ds-hero__note {
+    color: var(--color-text-muted);
+    max-width: 48ch;
+  }
+
+  /* --- Inhaltsverzeichnis ---------------------------------------------------- */
+  /* Trennlinie bündig mit dem Inhalt (nicht mit dem Seitenrand). */
+  .ds-toc,
+  .ds-section {
+    background: linear-gradient(var(--color-border), var(--color-border)) no-repeat center bottom /
+      calc(100% - 2 * var(--gutter)) 1px;
+  }
+
+  .ds-toc {
+    padding-block: var(--space-8);
+  }
+
+  .ds-toc ol {
+    list-style: none;
+    padding: 0;
+    --cluster-space: var(--space-2) var(--space-5);
+  }
+
+  .ds-toc a {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: baseline;
+    min-height: 1.5rem;
+    color: var(--color-text);
+    font-size: var(--text-body-sm);
+    text-decoration: none;
+  }
+
+  .ds-toc a span {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .ds-toc a:hover {
+    color: var(--color-link);
+  }
+
+  /* --- Sektionen ------------------------------------------------------------- */
+  .ds-section {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--section-y-sm);
+    scroll-margin-top: var(--space-4);
+  }
+
+  .ds-section__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .ds-section__head .text-overline {
+    color: var(--forest-600);
+  }
+
+  .ds-section__body {
+    min-width: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .ds-section {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+      gap: var(--grid-gap);
+    }
+
+    .ds-section__head {
+      position: sticky;
+      top: var(--space-6);
+      align-self: start;
+      padding-inline-end: var(--space-6);
+    }
+  }
+
+  code {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.86em;
+    letter-spacing: 0;
+    hyphens: none;
+    overflow-wrap: anywhere;
+  }
+
+  /* --- Marke ----------------------------------------------------------------- */
+  .ds-brand-panels,
+  .ds-states {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .ds-brand-panels,
+    .ds-states {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ds-status {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .ds-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-8);
+    min-height: 11rem;
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+  }
+
+  .ds-panel--light {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .ds-placeholder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    align-items: flex-start;
+    padding: var(--space-5);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+  }
+
+  .ds-placeholder__frame {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border: 1px dashed var(--color-border-control);
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+    letter-spacing: 0.2em;
+  }
+
+  .ds-placeholder .stack {
+    flex: 1 1 16rem;
+  }
+
+  .ds-brand-facts {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    font-size: var(--text-body-sm);
+  }
+
+  @media (min-width: 768px) {
+    .ds-brand-facts {
+      grid-template-columns: 2fr 1fr 1.5fr;
+    }
+  }
+
+  .ds-brand-facts dd {
+    margin: var(--space-1) 0 0;
+  }
+
+  .ds-wordmark-sizes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-10);
+  }
+
+  /* --- Farben ---------------------------------------------------------------- */
+  .ds-swatches {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 11.5rem), 1fr));
+    gap: var(--space-4);
+  }
+
+  .ds-swatch {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .ds-swatch__chip {
+    width: 100%;
+    height: 5.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .ds-swatches--compact .ds-swatch__chip {
+    height: 3.5rem;
+  }
+
+  .ds-swatch__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+
+  .ds-swatch__ratios {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 var(--space-2);
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ds-swatch__ratios dd {
+    margin: 0;
+    color: var(--color-text);
+    hyphens: none;
+    white-space: nowrap;
+  }
+
+  /* --- Tabellen -------------------------------------------------------------- */
+  .ds-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .ds-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body-sm);
+  }
+
+  .ds-table th,
+  .ds-table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .ds-table tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  .ds-table thead th {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    background: var(--color-bg-subtle);
+  }
+
+  .ds-table tbody th {
+    font-weight: var(--font-weight-regular);
+  }
+
+  .ds-table__caption {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* --- Kontraste ------------------------------------------------------------- */
+  .ds-pairs {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: var(--space-3);
+  }
+
+  .ds-pair {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .ds-pair__sample {
+    flex: none;
+    width: 4.25rem;
+    height: auto;
+  }
+
+  .ds-verdict {
+    color: var(--color-success);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .ds-verdict--fail {
+    color: var(--color-error);
+  }
+
+  .ds-callout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border: 1px solid;
+  }
+
+  .ds-callout--warning {
+    background: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+  }
+
+  .ds-callout--warning h3 {
+    color: var(--color-warning);
+  }
+
+  .ds-list {
+    padding-left: var(--space-5);
+  }
+
+  /* --- Typografie ------------------------------------------------------------ */
+  .ds-type {
+    list-style: none;
+    padding: 0;
+  }
+
+  .ds-type__row {
+    display: grid;
+    gap: var(--space-3);
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .ds-type__row:first-child {
+    padding-top: 0;
+  }
+
+  @media (min-width: 768px) {
+    .ds-type__row {
+      grid-template-columns: 11rem minmax(0, 1fr);
+      gap: var(--space-8);
+      align-items: baseline;
+    }
+  }
+
+  .ds-type__sample {
+    max-width: none;
+    hyphens: manual;
+  }
+
+  .ds-type__meta p {
+    max-width: none;
+  }
+
+  /* --- Schweiz --------------------------------------------------------------- */
+  .ds-swiss {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  }
+
+  .ds-card {
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .ds-numbers {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body-sm);
+  }
+
+  .ds-numbers th,
+  .ds-numbers td {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  .ds-numbers thead th {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .ds-numbers .num {
+    text-align: right;
+  }
+
+  .ds-dl {
+    display: grid;
+    gap: var(--space-1) var(--space-4);
+    font-size: var(--text-body-sm);
+  }
+
+  .ds-dl dt {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .ds-dl dd {
+    margin: 0 0 var(--space-2);
+  }
+
+  .ds-narrow {
+    max-width: 14rem;
+  }
+
+  /* --- Abstände -------------------------------------------------------------- */
+  .ds-spacing {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .ds-spacing li {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr) 3.5rem;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .ds-spacing__bar {
+    max-width: 100%;
+  }
+
+  .ds-spacing li > :last-child {
+    text-align: right;
+  }
+
+  /* --- Layout ---------------------------------------------------------------- */
+  .ds-grid-demo span {
+    display: grid;
+    place-items: center;
+    min-height: 4rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-accent);
+    color: var(--color-text-on-accent);
+    font-size: var(--text-caption);
+  }
+
+  .ds-layout-tables {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .ds-layout-tables {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      align-items: start;
+    }
+  }
+
+  /* --- Radien und Schatten --------------------------------------------------- */
+  .ds-shapes,
+  .ds-shadows {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .ds-shapes {
+    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  }
+
+  .ds-shapes li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .ds-shape {
+    height: 4.5rem;
+    margin-bottom: var(--space-2);
+    background: var(--color-surface);
+    border: 1.5px solid var(--forest-950);
+  }
+
+  .ds-radius-xs {
+    border-radius: var(--radius-xs);
+  }
+
+  .ds-radius-sm {
+    border-radius: var(--radius-sm);
+  }
+
+  .ds-radius-md {
+    border-radius: var(--radius-md);
+  }
+
+  .ds-radius-lg {
+    border-radius: var(--radius-lg);
+  }
+
+  .ds-radius-xl {
+    border-radius: var(--radius-xl);
+  }
+
+  .ds-radius-pill {
+    border-radius: var(--radius-pill);
+  }
+
+  .ds-shadows {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-subtle);
+  }
+
+  .ds-shadow {
+    display: flex;
+    align-items: flex-end;
+    min-height: 7rem;
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .ds-shadow-xs {
+    box-shadow: var(--shadow-xs);
+  }
+
+  .ds-shadow-sm {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ds-shadow-md {
+    box-shadow: var(--shadow-md);
+  }
+
+  .ds-shadow-lg {
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* --- Zustände (Token-Vorschau, keine Komponente) --------------------------- */
+  .ds-state-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .ds-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding-inline: var(--space-5);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: var(--color-action);
+    color: var(--color-action-text);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      transform var(--duration-instant) var(--ease-standard);
+  }
+
+  .ds-action:hover,
+  .ds-action.is-hover {
+    background: var(--color-action-hover);
+  }
+
+  .ds-action:active,
+  .ds-action.is-active {
+    background: var(--color-action-active);
+    transform: translateY(1px);
+  }
+
+  .ds-action.is-focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .ds-action.is-disabled {
+    background: var(--color-disabled-bg);
+    color: var(--color-disabled-text);
+  }
+
+  .surface-inverse .ds-action.is-disabled {
+    background: rgb(247 244 238 / 0.12);
+    color: var(--sand-300);
+  }
+
+  .ds-action--secondary {
+    background: transparent;
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  .ds-msg {
+    max-width: none;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid;
+    border-radius: var(--radius-sm);
+  }
+
+  .ds-msg--success {
+    color: var(--color-success);
+    background: var(--color-success-bg);
+    border-color: var(--color-success-border);
+  }
+
+  .ds-msg--warning {
+    color: var(--color-warning);
+    background: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+  }
+
+  .ds-msg--error {
+    color: var(--color-error);
+    background: var(--color-error-bg);
+    border-color: var(--color-error-border);
+  }
+
+  /* --- Bewegung -------------------------------------------------------------- */
+  .ds-lift {
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+    transition:
+      transform var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  .ds-lift:hover,
+  .ds-lift:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .ds-motion-status__on {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-motion-status__on {
+      display: inline;
+    }
+
+    .ds-motion-status__off {
+      display: none;
+    }
+  }
+
+  /* --- Fuss ------------------------------------------------------------------ */
+  .ds-footer {
+    padding-block: var(--space-10);
+    background: var(--color-bg-subtle);
+  }
+
+  .ds-footer .cluster {
+    justify-content: space-between;
+  }
+</style>

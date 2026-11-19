@@ -1,0 +1,80 @@
+/* Layout-Grundlagen: Container, Sektionen, Stapel, Cluster, Raster. */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container-lg) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--prose {
+  max-width: calc(var(--container-prose) + 2 * var(--gutter));
+}
+
+.container--md {
+  max-width: calc(var(--container-md) + 2 * var(--gutter));
+}
+
+.container--xl {
+  max-width: calc(var(--container-xl) + 2 * var(--gutter));
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section--sm {
+  padding-block: var(--section-y-sm);
+}
+
+/* Vertikaler Rhythmus: Abstand über --stack-space steuerbar. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-space, var(--space-4));
+}
+
+.stack--sm {
+  --stack-space: var(--space-2);
+}
+
+.stack--lg {
+  --stack-space: var(--space-8);
+}
+
+.stack--xl {
+  --stack-space: var(--space-16);
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cluster-space, var(--space-3));
+}
+
+/* 4 Spalten mobil, 8 ab md, 12 ab lg. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+/* Automatisches Kartenraster ohne Breakpoints. */
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid-min, 16rem)), 1fr));
+  gap: var(--grid-gap);
+}

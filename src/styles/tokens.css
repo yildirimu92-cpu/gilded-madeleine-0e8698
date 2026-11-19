@@ -1,0 +1,227 @@
+/*
+ * IzyOrder Design-Tokens
+ * ----------------------------------------------------------------------------
+ * Ebene 1 – Primitive: verbindliche Markenfarben und Skalen. Nicht direkt in
+ *           Komponenten verwenden.
+ * Ebene 2 – Semantik: Bedeutung (Text, Fläche, Rahmen, Status …). Komponenten
+ *           verwenden ausschliesslich diese Ebene.
+ * Quelle der Farbwerte: src/design/palette.ts (Test prüft Übereinstimmung).
+ * Breakpoints (literal in Media Queries): sm 480 · md 768 · lg 1024 · xl 1280 · 2xl 1440
+ */
+
+:root {
+  /* --- Ebene 1: Markenfarben (verbindlich) ------------------------------ */
+  --forest-950: #0f2e22;
+  --forest-800: #1a4d3a;
+  --forest-600: #1e6b4f;
+  --mint-300: #9fe3c6;
+  --mint-100: #e3f6ee;
+  --sand-50: #f7f4ee;
+  --sand-100: #efeae1;
+  --sand-200: #e4ddd0;
+  --sand-300: #cfc6b6;
+  --stone-600: #5c625e;
+
+  /* --- Ebene 1: Systemfarben (ergänzend) -------------------------------- */
+  --white: #ffffff;
+  --stone-500: #7c857f;
+  --amber-700: #8a4b00;
+  --amber-50: #fdf3e1;
+  --red-700: #b42318;
+  --red-50: #fdedeb;
+
+  /* --- Ebene 1: Typografie ------------------------------------------------ */
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 520;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 660;
+
+  /* Fluid: Minimum bei 375 px, Maximum bei 1440 px (rem-Anteil skaliert mit Zoom). */
+  --text-display: clamp(2.75rem, 1.8697rem + 3.7559vw, 5.25rem);
+  --text-h1: clamp(2.25rem, 1.7218rem + 2.2535vw, 3.75rem);
+  --text-h2: clamp(1.875rem, 1.5669rem + 1.3146vw, 2.75rem);
+  --text-h3: clamp(1.5rem, 1.3239rem + 0.7512vw, 2rem);
+  --text-h4: clamp(1.25rem, 1.162rem + 0.3756vw, 1.5rem);
+  --text-h5: clamp(1.125rem, 1.081rem + 0.1878vw, 1.25rem);
+  --text-h6: clamp(1rem, 0.978rem + 0.0939vw, 1.0625rem);
+  --text-body-lg: clamp(1.125rem, 1.081rem + 0.1878vw, 1.25rem);
+  --text-body: clamp(1rem, 0.978rem + 0.0939vw, 1.0625rem);
+  --text-body-sm: clamp(0.875rem, 0.853rem + 0.0939vw, 0.9375rem);
+  --text-label: 0.875rem;
+  --text-caption: 0.8125rem;
+  --text-overline: 0.75rem;
+
+  --leading-tight: 1.04;
+  --leading-heading: 1.12;
+  --leading-snug: 1.3;
+  --leading-body: 1.6;
+  --leading-compact: 1.45;
+
+  --tracking-display: -0.038em;
+  --tracking-h1: -0.032em;
+  --tracking-h2: -0.026em;
+  --tracking-h3: -0.02em;
+  --tracking-h4: -0.014em;
+  --tracking-body: -0.003em;
+  --tracking-overline: 0.09em;
+
+  --measure-prose: 66ch;
+  --measure-lead: 52ch;
+  --measure-heading: 20ch;
+
+  /* --- Marke: Wortmarke (freigegeben 19.11.2026) ------------------------ */
+  --brand-wordmark-weight: 680;
+  --brand-wordmark-tracking: -0.03em;
+
+  /* --- Ebene 1: Abstände (4-px-Raster) ---------------------------------- */
+  --space-0: 0;
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.25rem; /* 20 */
+  --space-6: 1.5rem; /* 24 */
+  --space-8: 2rem; /* 32 */
+  --space-10: 2.5rem; /* 40 */
+  --space-12: 3rem; /* 48 */
+  --space-16: 4rem; /* 64 */
+  --space-20: 5rem; /* 80 */
+  --space-24: 6rem; /* 96 */
+  --space-32: 8rem; /* 128 */
+
+  /* Fluid-Layout */
+  --gutter: clamp(1rem, 0.4718rem + 2.2535vw, 2.5rem);
+  --section-y: clamp(4rem, 2.5915rem + 6.0094vw, 8rem);
+  --section-y-sm: clamp(2.5rem, 1.6197rem + 3.7559vw, 5rem);
+  --grid-gap: clamp(1rem, 0.7359rem + 1.1268vw, 1.75rem);
+
+  /* Container (max. Inhaltsbreite ohne Gutter) */
+  --container-prose: 42rem; /* 672 */
+  --container-md: 56rem; /* 896 */
+  --container-lg: 72rem; /* 1152 */
+  --container-xl: 80rem; /* 1280 */
+
+  /* --- Ebene 1: Radien --------------------------------------------------- */
+  --radius-xs: 0.25rem; /* 4 */
+  --radius-sm: 0.375rem; /* 6 */
+  --radius-md: 0.625rem; /* 10 */
+  --radius-lg: 1rem; /* 16 */
+  --radius-xl: 1.5rem; /* 24 */
+  --radius-pill: 999px;
+
+  /* --- Ebene 1: Schatten (Forest-getönt, zurückhaltend) ------------------ */
+  --shadow-xs: 0 1px 2px rgb(15 46 34 / 0.06);
+  --shadow-sm: 0 1px 2px rgb(15 46 34 / 0.05), 0 2px 8px rgb(15 46 34 / 0.05);
+  --shadow-md: 0 2px 4px rgb(15 46 34 / 0.04), 0 10px 28px -6px rgb(15 46 34 / 0.12);
+  --shadow-lg: 0 4px 8px rgb(15 46 34 / 0.04), 0 28px 56px -16px rgb(15 46 34 / 0.22);
+
+  /* --- Ebene 1: Bewegung ------------------------------------------------- */
+  --duration-instant: 80ms;
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 360ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  /* --- Ebene 1: Ebenen (z-index) ----------------------------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 100;
+  --z-overlay: 900;
+  --z-modal: 1000;
+  --z-skip-link: 1100;
+
+  /* --- Ebene 2: Semantik (helle Standardfläche) -------------------------- */
+  --color-bg: var(--sand-50);
+  --color-bg-subtle: var(--sand-100);
+  --color-surface: var(--white);
+  --color-surface-muted: var(--sand-100);
+  --color-surface-accent: var(--mint-100);
+  --color-surface-inverse: var(--forest-950);
+
+  --color-text: var(--forest-950);
+  --color-text-muted: var(--stone-600);
+  --color-text-inverse: var(--sand-50);
+  --color-text-on-accent: var(--forest-950);
+  --color-heading: var(--forest-950);
+
+  --color-link: var(--forest-600);
+  --color-link-hover: var(--forest-800);
+
+  --color-border: var(--sand-200);
+  --color-border-strong: var(--sand-300);
+  --color-border-control: var(--stone-500);
+
+  --color-accent: var(--mint-300); /* nur Fläche/Dekor auf Hell – nie Text */
+  --color-accent-subtle: var(--mint-100);
+
+  --color-focus: var(--forest-600);
+  --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-focus);
+
+  --color-action: var(--forest-950);
+  --color-action-hover: var(--forest-800);
+  --color-action-active: var(--forest-950);
+  --color-action-text: var(--sand-50);
+  --color-action-secondary-hover: var(--sand-100);
+  --color-action-secondary-active: var(--sand-200);
+  --color-disabled-bg: var(--sand-200);
+  --color-disabled-text: var(--stone-600);
+
+  --color-success: var(--forest-600);
+  --color-success-bg: var(--mint-100);
+  --color-success-border: var(--mint-300);
+  --color-warning: var(--amber-700);
+  --color-warning-bg: var(--amber-50);
+  --color-warning-border: #e9c98a;
+  --color-error: var(--red-700);
+  --color-error-bg: var(--red-50);
+  --color-error-border: #f1b5ac;
+
+  --color-selection-bg: var(--mint-300);
+  --color-selection-text: var(--forest-950);
+
+  color-scheme: light;
+}
+
+/*
+ * Inverse Markenfläche (Forest 950). Komponenten innerhalb übernehmen die
+ * semantischen Tokens automatisch – keine eigenen Dunkelvarianten nötig.
+ */
+.surface-inverse,
+[data-surface='inverse'] {
+  --color-bg: var(--forest-950);
+  --color-bg-subtle: var(--forest-800);
+  --color-surface: var(--forest-800);
+  --color-surface-muted: var(--forest-800);
+  --color-text: var(--sand-50);
+  --color-text-muted: var(--sand-300);
+  --color-heading: var(--sand-50);
+  --color-link: var(--mint-300);
+  --color-link-hover: var(--mint-100);
+  --color-border: rgb(247 244 238 / 0.14);
+  --color-border-strong: rgb(247 244 238 / 0.28);
+  --color-focus: var(--mint-300);
+  --color-action: var(--mint-300);
+  --color-action-hover: var(--mint-100);
+  --color-action-active: var(--mint-300);
+  --color-action-text: var(--forest-950);
+  --color-action-secondary-hover: rgb(247 244 238 / 0.08);
+  --color-action-secondary-active: rgb(247 244 238 / 0.14);
+
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+}

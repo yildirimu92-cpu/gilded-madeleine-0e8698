@@ -41,8 +41,21 @@
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# --- Interne Seiten (Designvorschau) ----------------------------------------
+# Immer noindex – auch nach Freigabe der Indexierung.
+[[headers]]
+  for = "/intern/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 # --- Caching ----------------------------------------------------------------
 [[headers]]
   for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Schriften liegen in versionierten Pfaden (/fonts/inter/v20/) und ändern sich nie.
+[[headers]]
+  for = "/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"

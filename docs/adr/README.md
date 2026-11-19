@@ -13,5 +13,6 @@ Jeder Entscheid ist ein eigenes Dokument mit Kontext, Entscheid und Konsequenzen
 | [0007](0007-lead-erfassung.md) | Lead-Erfassung über Netlify Forms | Angenommen |
 | [0008](0008-marke-wortmarke-und-schrift.md) | Wortmarke IzyOrder und Schrift Inter | Angenommen |
 | [0009](0009-qualitaetssicherung.md) | Qualitätssicherung und CI | Angenommen |
+| [0010](0010-designsystem-und-logo-integration.md) | Designsystem, Design-Tokens und Logo-Integrationspunkt | Angenommen |
 
 Vorlage: Titel, Status, Datum, Kontext, Entscheid, Konsequenzen, verworfene Alternativen.

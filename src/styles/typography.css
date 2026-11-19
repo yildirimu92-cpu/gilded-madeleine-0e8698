@@ -1,0 +1,176 @@
+/*
+ * Typografie-Hierarchie. Elemente (h1–h6, p) erhalten Standardstile; Klassen
+ * (.text-*) trennen visuelle Grösse von semantischer Ebene.
+ * de-CH: Silbentrennung im Fliesstext, ausgeglichene Umbrüche in Überschriften.
+ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.text-display,
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h4,
+.text-h5,
+.text-h6 {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-bold);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  hyphens: manual;
+}
+
+.text-display {
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--font-weight-bold);
+}
+
+h1,
+.text-h1 {
+  font-size: var(--text-h1);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-h1);
+}
+
+h2,
+.text-h2 {
+  font-size: var(--text-h2);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-h2);
+}
+
+h3,
+.text-h3 {
+  font-size: var(--text-h3);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-h3);
+  font-weight: var(--font-weight-semibold);
+}
+
+h4,
+.text-h4 {
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-h4);
+  font-weight: var(--font-weight-semibold);
+}
+
+h5,
+.text-h5 {
+  font-size: var(--text-h5);
+  line-height: var(--leading-snug);
+  font-weight: var(--font-weight-semibold);
+}
+
+h6,
+.text-h6 {
+  font-size: var(--text-h6);
+  line-height: var(--leading-snug);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Fliesstext erbt Grösse und Zeilenhöhe vom body; Silbentrennung nur bei langen Wörtern. */
+p,
+li,
+dd {
+  hyphens: auto;
+  hyphenate-limit-chars: 10 4 4;
+  overflow-wrap: break-word;
+}
+
+.text-body {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+p,
+.prose {
+  max-width: var(--measure-prose);
+}
+
+.text-lead {
+  font-size: var(--text-body-lg);
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  max-width: var(--measure-lead);
+}
+
+.text-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: 1.55;
+}
+
+.text-body-sm {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-compact);
+}
+
+.text-label {
+  font-size: var(--text-label);
+  line-height: 1.3;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0;
+}
+
+.text-caption {
+  font-size: var(--text-caption);
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  letter-spacing: 0.002em;
+}
+
+.text-overline {
+  font-size: var(--text-overline);
+  line-height: 1.3;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Kurze UI-Texte nie trennen. */
+.text-label,
+.text-caption,
+.text-overline {
+  hyphens: manual;
+}
+
+/* Zahlen: tabellarische Ziffern für Preise, Tabellen und Kennzahlen. */
+.numeric,
+.price,
+table {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings:
+    'tnum' 1,
+    'lnum' 1;
+}
+
+.price {
+  white-space: nowrap;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-semibold);
+}
+
+small {
+  font-size: var(--text-caption);
+}
+
+/* Schweizer Anführungszeichen « » für <q>. */
+:lang(de-CH) q {
+  quotes: '«' '»' '‹' '›';
+}
