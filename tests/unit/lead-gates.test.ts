@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { approvedDemoUrl, businessTypeOptions, isPilotCollectionEnabled, leadForm } from '../../src/config/lead';
+import {
+  approvedDemoUrl,
+  businessTypeOptions,
+  isPilotCollectionEnabled,
+  leadForm,
+} from '../../src/config/lead';
 
 const APPROVED = {
   CONTEXT: 'production',
