@@ -1,0 +1,60 @@
+---
+import PilotLeadForm from '../../components/marketing/PilotLeadForm.astro';
+import { legalNavigation } from '../../config/navigation';
+import { isPilotCollectionEnabled } from '../../config/lead';
+import PublicLayout from '../../layouts/PublicLayout.astro';
+
+const privacyPageLive = legalNavigation.some(
+  (item) => item.id === 'datenschutz' && item.status === 'live',
+);
+const canCollect = isPilotCollectionEnabled(process.env, privacyPageLive);
+---
+
+<PublicLayout
+  title="Pilotplatz anfragen – IzyOrder"
+  description="Pilotanfragen für IzyOrder werden nach rechtlicher und technischer Freigabe geöffnet."
+  noindex
+>
+  <section class="container container--md pilot-page" aria-labelledby="pilot-title">
+    <p class="text-overline">IzyOrder für die Gastronomie</p>
+    <h1 id="pilot-title">Gestalten Sie den nächsten Schritt mit.</h1>
+    <p class="text-lead">
+      IzyOrder entwickelt einen provisionsfreien Direktbestellkanal für die Schweizer Gastronomie.
+      Pilotanfragen sind erst nach Freigabe der Datenschutzinformationen möglich.
+    </p>
+    {canCollect ? (
+      <PilotLeadForm mode="live" />
+    ) : (
+      <div class="pilot-page__paused" role="status">
+        <h2 class="text-h4">Pilotanfragen sind noch nicht geöffnet.</h2>
+        <p>
+          Die Kontaktaufnahme wird erst freigeschaltet, wenn die rechtlichen Angaben, die
+          Datenbearbeitung und die Formulare bestätigt sind.
+        </p>
+        <p>Zurzeit werden hier keine Kontaktdaten erhoben.</p>
+      </div>
+    )}
+    <a href="/">Zur Startseite</a>
+  </section>
+</PublicLayout>
+
+<style>
+  .pilot-page {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--section-y);
+  }
+
+  .pilot-page__paused {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+  }
+
+  .pilot-page__paused p {
+    color: var(--color-text-muted);
+  }
+</style>
