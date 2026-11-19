@@ -6,14 +6,21 @@ Diese Liste ist eine Arbeitsgrundlage und ersetzt keine rechtliche Prüfung. Fü
 
 ## 1. Betreiberangaben – vom Projektinhaber zu bestätigen
 
-- [ ] Offizieller Name des Betreibers und Rechtsform (Einzelunternehmen / GmbH / AG / andere)
+**Geschäftsentscheidung vom 19.11.2026:** IzyOrder soll zu Beginn als **Einzelunternehmen (Einzelfirma)** betrieben werden. Dies ist die geplante Rechtsform, keine Bestätigung einer bereits erfolgten Gründung oder Handelsregistereintragung. Die Marke bleibt **IzyOrder**; die rechtlich korrekte Firmenbezeichnung inklusive Familienname und der tatsächliche Inhaber sind vor Veröffentlichung zu verifizieren.
+
+
+- [x] Rechtsform für die Startphase entschieden: **Einzelunternehmen (geplant)**
+- [ ] Tatsächlicher Inhaber und vollständige rechtliche Firmenbezeichnung (Familienname erforderlich) bestätigt
+- [ ] Gründungsstatus und allfälliger Handelsregistereintrag geklärt
 - [ ] Geschäfts- bzw. Zustelladresse
 - [ ] Funktionierende geschäftliche E-Mail-Adresse und Kontaktweg
-- [ ] UID, Handelsregistereintrag und weitere Identifikationsdaten, soweit vorhanden oder rechtlich erforderlich
+- [ ] UID, Handelsregister- und MWST-Status sowie weitere Identifikationsdaten, soweit vorhanden oder rechtlich erforderlich
 - [ ] Zuständige Kontaktstelle für Datenschutzanfragen
 - [ ] Veröffentlichungsberechtigung und Prüfung des Impressums durch verantwortliche Person
 
-**Wichtig:** Hier keine nicht öffentlichen persönlichen Adressen oder Zugangsdaten ergänzen. Vertrauliche Angaben vor Veröffentlichung separat abstimmen.
+**Wichtig:** Hier keine nicht öffentlichen persönlichen Adressen oder Zugangsdaten ergänzen. Vertrauliche Angaben vor Veröffentlichung separat abstimmen. Beim Einzelunternehmen haftet die Inhaberin bzw. der Inhaber grundsätzlich persönlich; die gewählte Rechtsform sollte vor Aufnahme des produktiven Geschäftsbetriebs auch im Hinblick auf Zahlungsabwicklung, Datenschutz und Haftungsrisiken beurteilt werden.
+
+Hinweise zur Rechtsform: [KMU-Portal – Einzelunternehmen](https://www.kmu.admin.ch/de/rechtsform-einzelunternehmen), [SECO – Onlinehandel](https://www.seco.admin.ch/de/onlinehandel), [ESTV – MWST](https://www.estv.admin.ch/de/mehrwertsteuer).
 
 ## 2. Tatsächliche Datenflüsse – getrennt je Produktbereich erfassen
 
