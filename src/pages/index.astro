@@ -1,35 +1,685 @@
 ---
+import OrderPreview from '../components/marketing/OrderPreview.astro';
+import Button from '../components/ui/Button.astro';
+import Section from '../components/ui/Section.astro';
 import PublicLayout from '../layouts/PublicLayout.astro';
 import { t } from '../i18n/ui';
 ---
 
 <PublicLayout title={t('home.title')} description={t('home.description')}>
-  <section class="container intro" aria-labelledby="intro-title">
-    <div class="stack">
-      <p class="eyebrow text-label">{t('home.eyebrow')}</p>
-      <h1 id="intro-title" class="text-display">
-        {t('home.heading')}
-      </h1>
-      <p class="text-lead">{t('home.lead')}</p>
+  <!-- Bewusst keine unfreigegebene Demo, kein Formular und keine falschen Kundensignale. -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="container container--xl hero__grid">
+      <div class="hero__copy">
+        <p class="hero__eyebrow">
+          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+          Für Restaurants und Takeaways in der Schweiz
+        </p>
+        <h1 id="hero-heading" class="text-display">
+          Ihr Bestellshop.
+          <span>Ohne Plattform&shy;provision.</span>
+        </h1>
+        <p class="text-lead hero__lead">
+          Nehmen Sie Bestellungen für Abholung und Lieferung künftig direkt über Ihren eigenen
+          Online-Shop entgegen. IzyOrder wird für die Schweizer Gastronomie entwickelt.
+        </p>
+        <div class="hero__actions">
+          <Button href="#ablauf" size="lg" iconEnd="arrow-right">So funktioniert’s</Button>
+          <Button href="#funktionen" size="lg" variant="secondary">Funktionen entdecken</Button>
+        </div>
+        <p class="hero__notice">
+          <span class="hero__notice-dot" aria-hidden="true"></span>
+          In Entwicklung · Demo und Pilotanfragen folgen nach Freigabe
+        </p>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__visual-accent" aria-hidden="true"></div>
+        <OrderPreview />
+      </div>
+    </div>
+  </section>
+
+  <section class="proof-strip" aria-label="Das IzyOrder-Konzept auf einen Blick">
+    <div class="container container--xl proof-strip__grid">
+      <div class="proof-strip__item">
+        <strong>0 %</strong>
+        <span>Plattformprovision*</span>
+      </div>
+      <div class="proof-strip__item">
+        <strong>2</strong>
+        <span>Bestellarten: Abholung & Lieferung</span>
+      </div>
+      <div class="proof-strip__item">
+        <strong>1</strong>
+        <span>Eigener Online-Bestellshop</span>
+      </div>
+    </div>
+    <p class="container container--xl proof-strip__disclaimer">
+      * Gebühren externer Zahlungsanbieter können zusätzlich anfallen. Die genannten Funktionen
+      beschreiben das geplante Produkt.
+    </p>
+  </section>
+
+  <Section id="funktionen" tone="subtle" size="xl" labelledby="features-heading">
+    <div class="section-heading">
+      <p class="section-heading__eyebrow">Weniger Plattform. Mehr Ihr Restaurant.</p>
+      <h2 id="features-heading">Online bestellen, ohne Umwege.</h2>
+      <p class="text-lead">
+        Eine Lösung für Betriebe, die ihren eigenen Bestellkanal aufbauen wollen – mit einem klaren
+        Ablauf für Gäste, Küche und Inhaber.
+      </p>
+    </div>
+    <div class="features-grid">
+      <article class="feature-card">
+        <span class="feature-card__number" aria-hidden="true">01</span>
+        <div class="feature-card__symbol" aria-hidden="true">↗</div>
+        <h3>Ihr eigener Bestellshop</h3>
+        <p>
+          Gäste bestellen über Ihren direkten Online-Kanal. Ihre Marke und Ihr Angebot stehen im
+          Mittelpunkt.
+        </p>
+        <span class="feature-card__label">Direktbestellung</span>
+      </article>
+      <article class="feature-card">
+        <span class="feature-card__number" aria-hidden="true">02</span>
+        <div class="feature-card__symbol" aria-hidden="true">⌂</div>
+        <h3>Abholen oder liefern lassen</h3>
+        <p>
+          Speisekarte, Öffnungszeiten und Bestellarten werden für den Betrieb konfigurierbar
+          gestaltet.
+        </p>
+        <span class="feature-card__label">Flexibel für Ihren Alltag</span>
+      </article>
+      <article class="feature-card">
+        <span class="feature-card__number" aria-hidden="true">03</span>
+        <div class="feature-card__symbol" aria-hidden="true">✓</div>
+        <h3>Bestellungen im Überblick</h3>
+        <p>
+          Das geplante Küchen- und Verwaltungsinterface soll eingehende Bestellungen klar und
+          übersichtlich darstellen.
+        </p>
+        <span class="feature-card__label">Für Küche und Betrieb</span>
+      </article>
+    </div>
+  </Section>
+
+  <Section tone="inverse" size="xl" labelledby="value-heading">
+    <div class="value-grid">
+      <div class="value-grid__copy">
+        <p class="section-heading__eyebrow">Das Geschäftsmodell</p>
+        <h2 id="value-heading">Ihre Bestellungen. Ihre Kundenbeziehung.</h2>
+        <p>
+          Bestellplattformen können für Reichweite sorgen – bei Direktbestellungen möchten viele
+          Gastronomiebetriebe jedoch unabhängiger sein. Genau dafür entwickeln wir IzyOrder.
+        </p>
+        <p>
+          Das Konzept setzt auf feste Softwaretarife statt einer Plattformprovision pro
+          Bestellung. Gebühren für die Zahlungsabwicklung sind davon unabhängig.
+        </p>
+      </div>
+      <div class="value-card" aria-label="Geplantes Provisionsmodell">
+        <span class="value-card__overline">Geplantes IzyOrder-Modell</span>
+        <strong>0<span>%</span></strong>
+        <p>Plattformprovision auf Direktbestellungen</p>
+        <div class="value-card__rule"></div>
+        <small>Abonnement und allfällige Gebühren von Zahlungsanbietern separat.</small>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="ablauf" size="xl" labelledby="steps-heading">
+    <div class="section-heading">
+      <p class="section-heading__eyebrow">So ist IzyOrder gedacht</p>
+      <h2 id="steps-heading">Drei Schritte. Ein direkter Bestellkanal.</h2>
+      <p class="text-lead">
+        Von der Speisekarte bis zur Bestellübersicht: Das System soll sich in den Gastronomiealltag
+        einfügen und einfach bedienen lassen.
+      </p>
+    </div>
+    <ol class="steps">
+      <li>
+        <span class="steps__number" aria-hidden="true">01</span>
+        <div>
+          <h3>Shop einrichten</h3>
+          <p>Speisekarte, Abholung, Liefergebiet und Öffnungszeiten konfigurieren.</p>
+        </div>
+      </li>
+      <li>
+        <span class="steps__number" aria-hidden="true">02</span>
+        <div>
+          <h3>Direktbestellungen erhalten</h3>
+          <p>Gäste wählen Gerichte und geben ihre Bestellung über den eigenen Shop auf.</p>
+        </div>
+      </li>
+      <li>
+        <span class="steps__number" aria-hidden="true">03</span>
+        <div>
+          <h3>Bestellungen verwalten</h3>
+          <p>Den Status in Küche und Verwaltung nachvollziehbar bearbeiten.</p>
+        </div>
+      </li>
+    </ol>
+    <p class="steps__note">Ablaufdarstellung des geplanten Produkts; die Live-Funktionen sind noch nicht freigegeben.</p>
+  </Section>
+
+  <Section id="fragen" tone="subtle" size="lg" labelledby="faq-heading">
+    <div class="faq-grid">
+      <div class="faq-grid__intro">
+        <p class="section-heading__eyebrow">Gut zu wissen</p>
+        <h2 id="faq-heading">Häufige Fragen.</h2>
+        <p class="text-lead">Die wichtigsten Antworten zum geplanten Bestellsystem – transparent und ohne Kleingedrucktes.</p>
+      </div>
+      <div class="faq" aria-label="Häufige Fragen zu IzyOrder">
+        <details>
+          <summary>
+            Was bedeutet 0 % Plattformprovision?
+            <span class="faq__plus" aria-hidden="true">+</span>
+          </summary>
+          <p>
+            IzyOrder soll keine prozentuale Plattformprovision auf Direktbestellungen erheben.
+            Es sind Software-Abonnements vorgesehen. Gebühren externer Zahlungsanbieter können
+            zusätzlich anfallen.
+          </p>
+        </details>
+        <details>
+          <summary>
+            Kann mein Restaurant Abholung und Lieferung anbieten?
+            <span class="faq__plus" aria-hidden="true">+</span>
+          </summary>
+          <p>
+            Ja, beide Bestellarten gehören zum geplanten IzyOrder-Funktionsumfang. Die konkreten
+            Einstellungsmöglichkeiten werden vor der Produkteinführung geprüft.
+          </p>
+        </details>
+        <details>
+          <summary>
+            Brauche ich die optionale KI-Telefonassistenz?
+            <span class="faq__plus" aria-hidden="true">+</span>
+          </summary>
+          <p>
+            Nein. Der Online-Bestellshop wird als eigenständiges Produkt entwickelt. Eine
+            KI-Telefonassistenz ist eine separate, spätere Option.
+          </p>
+        </details>
+        <details>
+          <summary>
+            Kann ich IzyOrder bereits testen?
+            <span class="faq__plus" aria-hidden="true">+</span>
+          </summary>
+          <p>
+            IzyOrder befindet sich noch in Entwicklung. Eine öffentliche Live-Demo und die
+            Pilotanfrage werden erst freigeschaltet, wenn sie geprüft und freigegeben sind.
+          </p>
+        </details>
+      </div>
+    </div>
+  </Section>
+
+  <section class="closing" aria-labelledby="closing-heading">
+    <div class="container closing__inner">
+      <p class="section-heading__eyebrow">Dein Restaurant. Deine Bestellungen.</p>
+      <h2 id="closing-heading">Der direkte Weg zur Online-Bestellung.</h2>
+      <p class="text-lead">
+        Wir entwickeln IzyOrder für Gastronomiebetriebe, die ihren eigenen Bestellkanal aufbauen
+        möchten. Entdecken Sie schon heute das Konzept.
+      </p>
+      <Button href="#funktionen" variant="primary" size="lg" iconEnd="arrow-right">
+        Konzept kennenlernen
+      </Button>
+      <small>Eine Live-Demo und Kontaktmöglichkeit ergänzen wir nach ihrer Freigabe.</small>
     </div>
   </section>
 </PublicLayout>
 
 <style>
-  .intro {
-    padding-block: var(--section-y);
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 6vw, 6.5rem);
   }
 
-  .intro h1 {
-    max-width: 16ch;
-    margin-block: var(--space-2) var(--space-2);
+  .hero__grid {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
   }
 
-  .eyebrow {
-    align-self: flex-start;
-    padding: var(--space-1) var(--space-3);
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+
+  .hero__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border-strong);
     border-radius: var(--radius-pill);
-    background: var(--color-surface-accent);
+    color: var(--color-text);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.35;
+  }
+
+  .hero__eyebrow-dot,
+  .hero__notice-dot {
+    flex: none;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-text-accent);
+  }
+
+  .hero h1 {
+    max-width: 12ch;
+    font-weight: var(--font-weight-bold);
+    text-wrap: balance;
+  }
+
+  .hero h1 span {
+    display: block;
+    color: var(--color-text-accent);
+  }
+
+  .hero__lead {
+    max-width: 49ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .hero__notice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    max-width: 40ch;
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .hero__notice-dot {
+    margin-top: 0.45em;
+  }
+
+  .hero__visual {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+  }
+
+  .hero__visual-accent {
+    position: absolute;
+    z-index: -1;
+    inset: 7% -3% -6% 9%;
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface-accent);
+    transform: rotate(-4deg);
+  }
+
+  .proof-strip {
+    padding-block: var(--space-8);
+    border-block: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+  }
+
+  .proof-strip__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  .proof-strip__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+    padding-inline: var(--space-4);
+    border-left: 2px solid var(--color-border-strong);
+  }
+
+  .proof-strip__item strong {
+    color: var(--color-text);
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+  }
+
+  .proof-strip__item span {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  .proof-strip__disclaimer {
+    margin-top: var(--space-6);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+    margin-bottom: var(--space-12);
+  }
+
+  .section-heading h2 {
+    max-width: 19ch;
+  }
+
+  .section-heading__eyebrow {
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+    text-transform: uppercase;
+  }
+
+  .features-grid {
+    display: grid;
+    gap: var(--grid-gap);
+  }
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 22rem;
+    padding: clamp(1.5rem, 2.8vw, 2.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .feature-card__number {
+    margin-bottom: var(--space-8);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .feature-card__symbol {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--space-5);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-accent);
     color: var(--color-text-on-accent);
+    font-size: var(--text-h4);
+  }
+
+  .feature-card h3 {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-h4);
+  }
+
+  .feature-card p {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+  }
+
+  .feature-card__label {
+    margin-top: auto;
+    padding-top: var(--space-8);
+    color: var(--color-text-accent);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .value-grid {
+    display: grid;
+    gap: var(--space-10);
+    align-items: center;
+  }
+
+  .value-grid__copy {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .value-grid__copy h2 {
+    max-width: 18ch;
+  }
+
+  .value-grid__copy p:not(.section-heading__eyebrow) {
+    color: var(--color-text-muted);
+  }
+
+  .value-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .value-card__overline {
+    color: var(--color-text-muted);
+    font-size: var(--text-overline);
+    letter-spacing: var(--tracking-overline);
+    text-transform: uppercase;
+  }
+
+  .value-card > strong {
+    font-size: clamp(5rem, 10vw, 8rem);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.07em;
+    line-height: 1;
+    color: var(--color-text-accent);
+  }
+
+  .value-card > strong span {
+    font-size: 0.35em;
+    letter-spacing: var(--tracking-h4);
+  }
+
+  .value-card > p {
+    max-width: 21ch;
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-snug);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .value-card__rule {
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-border);
+  }
+
+  .value-card small {
+    color: var(--color-text-muted);
+  }
+
+  .steps {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  .steps li {
+    display: flex;
+    gap: var(--space-6);
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .steps__number {
+    flex: none;
+    width: 3.5rem;
+    color: var(--color-text-accent);
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .steps h3 {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-h4);
+  }
+
+  .steps p,
+  .steps__note {
+    color: var(--color-text-muted);
+  }
+
+  .steps__note {
+    margin-top: var(--space-8);
+    font-size: var(--text-caption);
+  }
+
+  .faq-grid {
+    display: grid;
+    gap: var(--space-10);
+  }
+
+  .faq-grid__intro {
+    display: grid;
+    align-content: start;
+    gap: var(--space-5);
+  }
+
+  .faq-grid__intro h2 {
+    max-width: 18ch;
+  }
+
+  .faq {
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .faq details {
+    border-bottom: 1px solid var(--color-border-strong);
+  }
+
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: 4.25rem;
+    padding-block: var(--space-5);
+    color: var(--color-text);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq summary:hover {
+    color: var(--color-link);
+  }
+
+  .faq__plus {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-accent);
+    font-size: var(--text-body-lg);
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .faq details[open] .faq__plus {
+    transform: rotate(45deg);
+  }
+
+  .faq details p {
+    padding-bottom: var(--space-6);
+    color: var(--color-text-muted);
+  }
+
+  .closing {
+    padding-block: var(--section-y);
+    background-color: var(--color-surface-accent);
+  }
+
+  .closing__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .closing__inner h2 {
+    max-width: 20ch;
+  }
+
+  .closing__inner small {
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .features-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--grid-gap);
+    }
+
+    .steps li {
+      flex-direction: column;
+    }
+
+    .faq-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-16);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 1.07fr) minmax(0, 0.93fr);
+    }
+
+    .value-grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: var(--space-16);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero__actions {
+      width: 100%;
+    }
+
+    .hero__actions :global(.btn) {
+      width: 100%;
+    }
+
+    .proof-strip__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    .proof-strip__item {
+      padding-inline: var(--space-3);
+    }
+
+    .hero__visual-accent {
+      inset: 8% 0 -3% 8%;
+    }
   }
 </style>
