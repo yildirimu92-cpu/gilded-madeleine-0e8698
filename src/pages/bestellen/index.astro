@@ -1,0 +1,147 @@
+---
+/**
+ * B2C-Restaurantsuche; nur von der Projektleitung geprüfte Daten.
+ * Der unveränderte /prototyp/ ist ausdrücklich KEINE Datenquelle.
+ */
+import { restaurants } from '../../data/restaurants';
+import { parseRestaurantListing } from '../../data/restaurant-schema';
+import {
+  filterRestaurantListings,
+  supportedPlaces,
+  type CuisineFilter,
+  type SearchSelection,
+} from '../../lib/restaurant-search';
+import SegmentedControl from '../../components/ui/SegmentedControl.astro';
+import PublicLayout from '../../layouts/PublicLayout.astro';
+import '../../styles/restaurant-finder.css';
+
+const approved = restaurants.map(parseRestaurantListing).filter((r) => r.listingStatus === 'approved');
+const initial: SearchSelection = {
+  place: 'Luzern', mode: 'pickup', cuisine: 'Alle', query: '', unknownPostal: false,
+};
+const results = filterRestaurantListings(approved, initial);
+const count = results.orderable.length + results.directory.length;
+const cuisines: readonly CuisineFilter[] = ['Alle', 'Pizza', 'Kebab', 'Burger', 'Andere'];
+---
+
+<PublicLayout
+  title="Restaurant finden – IzyOrder"
+  description="IzyOrder entwickelt eine Restaurantsuche für Abholung und Lieferung. Der Start erfolgt erst mit geprüften Gastronomiepartnern."
+  noindex
+>
+  <section class="b2c-hero" aria-labelledby="b2c-heading">
+    <div class="container container--xl b2c-hero__grid">
+      <div class="b2c-hero__copy">
+        <p class="b2c-overline b2c-overline--light">IzyOrder für Gäste · Im Aufbau</p>
+        <h1 id="b2c-heading" class="text-display">Dein Restaurant.<span> Deine Bestellung.</span></h1>
+        <p class="text-lead">Entdecke Restaurants für Abholung und Lieferung. Wir bauen die IzyOrder-Suche mit echten Betrieben auf – statt mit erfundenen Partnerangeboten.</p>
+        <p class="b2c-hero__status">◎ Der öffentliche Bestellbetrieb ist noch nicht gestartet.</p>
+      </div>
+      <div class="b2c-hero__illustration" aria-hidden="true">
+        <div class="b2c-hero__paper">
+          <div class="b2c-hero__top"><strong>Bestellübersicht</strong><span>KONZEPT</span></div>
+          <div class="b2c-hero__middle">
+            <span>Dein nächstes Lieblingsessen</span>
+            <div class="b2c-hero__line b2c-hero__line--wide"></div>
+            <div class="b2c-hero__line"></div>
+            <div class="b2c-hero__tiles"><i></i><i></i><i></i></div>
+          </div>
+          <div class="b2c-hero__foot">Schematische Darstellung · keine echten Restaurants</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="b2c-search" data-restaurant-finder aria-labelledby="b2c-search-heading">
+    <div class="container container--xl">
+      <div class="b2c-search__panel">
+        <div class="b2c-search__top">
+          <div>
+            <p class="b2c-overline">Entdecke deine Umgebung</p>
+            <h2 id="b2c-search-heading">Wonach suchst du?</h2>
+          </div>
+          <span class="b2c-search__preview">Vorschau · ohne Bestellfunktion</span>
+        </div>
+        <div class="b2c-search__controls">
+          <div class="b2c-search__mode">
+            <SegmentedControl
+              name="restaurant-mode"
+              legend="Wie möchtest du bestellen?"
+              options={[{ value: 'pickup', label: 'Abholen' }, { value: 'delivery', label: 'Liefern lassen' }]}
+              value="pickup"
+              fullWidth
+            />
+          </div>
+          <div class="b2c-search__field">
+            <label for="b2c-place">Ort auswählen</label>
+            <select id="b2c-place" data-finder-place>
+              {supportedPlaces.map((place) => <option value={place} selected={place === 'Luzern'}>{place}</option>)}
+            </select>
+          </div>
+          <div class="b2c-search__field">
+            <label for="b2c-query">Restaurant, Küche, Ort oder PLZ</label>
+            <div class="b2c-search__query">
+              <input id="b2c-query" data-finder-query type="search" maxlength="200" autocomplete="off" placeholder="z. B. Pizza, Luzern oder 6003" />
+              <button data-finder-search type="button">Suchen</button>
+            </div>
+          </div>
+        </div>
+        <div class="b2c-search__filters">
+          <p id="b2c-cuisine-label">Küche auswählen</p>
+          <div class="b2c-search__chips" role="group" aria-labelledby="b2c-cuisine-label">
+            {cuisines.map((cuisine) => <button type="button" data-finder-cuisine={cuisine} aria-pressed={cuisine === 'Alle' ? 'true' : 'false'}>{cuisine}</button>)}
+          </div>
+        </div>
+        <noscript><p class="b2c-search__noscript">Zum Suchen und Filtern benötigst du JavaScript. Die anfängliche Ergebnisliste bleibt ohne JavaScript lesbar.</p></noscript>
+      </div>
+
+      <div class="b2c-search__results" id="ergebnisse" tabindex="-1" aria-labelledby="b2c-results-heading">
+        <div class="b2c-search__results-header">
+          <div>
+            <p class="b2c-overline">Deine Suchergebnisse</p>
+            <h2 id="b2c-results-heading" data-finder-heading>Restaurants zum Abholen in Luzern</h2>
+          </div>
+          <p class="b2c-search__count" data-finder-count aria-live="polite" aria-atomic="true">
+            {count === 1 ? '1 Restaurant' : count + ' Restaurants'}
+          </p>
+        </div>
+        <ul class="b2c-search__list" data-finder-results>
+          {results.orderable.map((r) => (
+            <li class="b2c-search__restaurant">
+              <div><h3>{r.name}</h3><p>{r.cuisine} · {r.place}</p></div>
+              <a href={r.orderUrl!} target="_blank" rel="noopener noreferrer">Bestellshop öffnen</a>
+            </li>
+          ))}
+          {results.directory.map((r) => (
+            <li class="b2c-search__restaurant">
+              <div><h3>{r.name}</h3><p>{r.cuisine} · {r.place}</p></div>
+              <span class="b2c-search__unavailable">Noch nicht bestellbar</span>
+            </li>
+          ))}
+        </ul>
+        <div class="b2c-search__empty" data-finder-empty hidden={count > 0}>
+          <div class="b2c-search__empty-icon" aria-hidden="true">⌕</div>
+          <h3 data-finder-empty-title>Noch keine Restaurants verfügbar.</h3>
+          <p data-finder-empty-copy>Wir nehmen derzeit noch keine Bestellungen in Luzern entgegen. Sobald geprüfte Restaurants hinzukommen, findest du sie hier.</p>
+          <button type="button" class="b2c-search__fallback" data-finder-pickup hidden>Stattdessen Abholung ansehen</button>
+          <p class="b2c-search__disclaimer">Keine Demo-Restaurants, keine simulierten Angebote und keine ungeprüften Partner.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="b2c-next" aria-labelledby="b2c-next-heading">
+    <div class="container container--xl b2c-next__grid">
+      <div>
+        <p class="b2c-overline">Du betreibst ein Restaurant?</p>
+        <h2 id="b2c-next-heading">Deine Bestellungen. Dein eigener Shop.</h2>
+        <p>IzyOrder entwickelt einen direkten Online-Bestellkanal für die Schweizer Gastronomie. Entdecke das Konzept für deinen Betrieb.</p>
+      </div>
+      <a href="/">Mehr über IzyOrder erfahren <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</PublicLayout>
+
+<script>
+  import '../../scripts/restaurant-finder';
+</script>
