@@ -1,194 +1,471 @@
 ---
 /**
- * Interne, öffentlich erreichbare, dauerhaft nicht indexierte Preisstudie.
- * Kein Vertrieb, keine Kaufmöglichkeit und keine verbindliche Preisaussage.
+ * Interne Tarif- und Positionierungsstudie. Öffentlich über die URL erreichbar,
+ * aber dauerhaft noindex und nie Bestandteil der öffentlichen Navigation.
+ * Keine Kaufmöglichkeit und keine verbindliche Leistungs- oder Preiszusage.
  */
 import Badge from '../../components/ui/Badge.astro';
-import Card from '../../components/ui/Card.astro';
-import { pricingDraft, draftPlanPrice } from '../../config/pricing';
+import SegmentedControl from '../../components/ui/SegmentedControl.astro';
+import { draftPlanPrice, pricingDraft } from '../../config/pricing';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatChf } from '../../lib/format';
+
+const plans = pricingDraft.plans.map((plan) => ({
+  ...plan,
+  calculation: draftPlanPrice(plan.id),
+}));
+const principles = [
+  { number: '01', title: 'Keine Plattformprovision', copy: '0 % auf Direktbestellungen. Externe Zahlungsgebühren sind davon unabhängig.' },
+  { number: '02', title: 'Unbegrenzte Bestellungen', copy: 'Im vorgesehenen Abo-Modell ist keine mengenbasierte Bestellprovision geplant.' },
+  { number: '03', title: 'Abholung und Lieferung', copy: 'Beide Bestellarten und die Onlinezahlung sind Bestandteil der geplanten Online-Lösung.' },
+] as const;
 ---
 
 <BaseLayout
-  title="Tarifentwurf – IzyOrder (intern)"
-  description="Interne und unverbindliche Tarifvorschau zur Abstimmung."
+  title="Tarifstudie – IzyOrder (intern)"
+  description="Interne, unverbindliche Tarifstudie. Preise, Funktionen und Verträge sind noch nicht freigegeben."
   noindex
 >
-  <section class="container pricing" aria-labelledby="pricing-title">
-    <div class="pricing__heading">
-      <Badge tone="warning">Interner Entwurf – nicht freigegeben</Badge>
-      <h1 id="pricing-title" class="text-h1">
-        Einfache Tarife. Klare Rechnung.
-      </h1>
-      <p class="text-lead">
-        Diese Vorschau ist ausschliesslich für die interne Planung vorgesehen. Keine Angebote,
-        Bestellungen oder Vertragsabschlüsse sind hier möglich.
-      </p>
-      <p class="pricing__disclaimer">
-        Alle Preisangaben in CHF, <strong>exkl. MWST</strong>. Die konkreten Leistungen je Tarif,
-        Setup-Gebühren und der vorgeschlagene Jahresrabatt sind noch nicht freigegeben.
-      </p>
-    </div>
+  <div class="pricing-study" data-pricing-study>
+    <div class="container container--xl">
+      <header class="pricing-study__hero">
+        <div class="pricing-study__hero-copy">
+          <p class="pricing-study__eyebrow">IzyOrder / Tarifstrategie</p>
+          <h1 class="text-display">Einfach kalkuliert.<span>Für Wachstum gedacht.</span></h1>
+          <p class="text-lead">
+            Drei mögliche Online-Tarife, ein provisionsfreies Grundmodell. Hier vergleichen wir
+            die Preisstruktur, bevor Leistungen und Vertragsbedingungen freigegeben werden.
+          </p>
+        </div>
+        <aside class="pricing-study__approval" aria-label="Status der Tarifstudie">
+          <Badge tone="warning">Interner Entwurf</Badge>
+          <strong>Keine öffentliche Offerte</strong>
+          <p>
+            Preisstufen, Jahresrabatt und konkrete Tarifunterschiede sind noch nicht für Verkauf
+            oder Buchung freigegeben.
+          </p>
+        </aside>
+      </header>
 
-    <div class="pricing__cards">
-      {pricingDraft.plans.map((plan) => {
-        const calculated = draftPlanPrice(plan.id);
-        return (
-          <Card
-            title={plan.name}
-            titleTag="h2"
-            variant={plan.id === 'professional' ? 'featured' : 'neutral'}
-            padding="lg"
-          >
-            <p class="pricing__plan-label">Vorgesehener Monatstarif</p>
-            <p class="pricing__number">
-              <strong>{formatChf(calculated.monthlyCHF)}</strong>
-              <span>/Monat</span>
-            </p>
-            <p class="pricing__tax">exkl. MWST</p>
-            <div class="pricing__annual">
-              <span>Rechenbeispiel bei 15 % Jahresrabatt</span>
-              <strong>{formatChf(calculated.annualTotalCHF)}</strong>
-              <small>
-                Pro Jahr · entspricht {formatChf(calculated.annualMonthlyEquivalentCHF)} pro Monat
-              </small>
+      <section class="pricing-study__overview" aria-labelledby="pricing-overview-heading">
+        <div class="pricing-study__toolbar">
+          <div>
+            <p class="pricing-study__eyebrow">Modellrechnung</p>
+            <h2 id="pricing-overview-heading">Tarife im Vergleich.</h2>
+            <p>Alle Preise in CHF, exklusive Mehrwertsteuer.</p>
+          </div>
+          <div class="pricing-study__billing" data-pricing-billing>
+            <div class="pricing-study__billing-control">
+              <SegmentedControl
+                name="billing-view"
+                legend="Abrechnungsart vergleichen"
+                value="monthly"
+                options={[
+                  { value: 'monthly', label: 'Monatlich' },
+                  { value: 'annual', label: 'Jährlich' },
+                ]}
+                fullWidth
+              />
             </div>
-            <p class="pricing__pending">Leistungsumfang und Vertragsdetails ausstehend</p>
-            <span slot="footer" class="pricing__no-sale">
-              Noch nicht buchbar
-            </span>
-          </Card>
-        );
-      })}
-    </div>
+            <span>15 % Jahresrabatt – noch nicht freigegeben</span>
+          </div>
+        </div>
 
-    <div class="pricing__notes">
-      <h2 class="text-h4">Wichtige Abgrenzungen</h2>
-      <p>
-        Das geplante Modell sieht 0 % Plattformprovision auf Direktbestellungen vor. Gebühren
-        externer Zahlungsanbieter können zusätzlich anfallen. Der Jahresrabatt von 15 % ist eine
-        interne Planung, keine verbindliche Aktion.
-      </p>
-      <p>
-        Der Online-Bestellshop ist ein eigenständiges Angebot. Die spätere KI-Telefonassistenz
-        gehört nicht automatisch zu diesen Tarifen.
-      </p>
-      <p>
-        Diese Seite bleibt dauerhaft <strong>noindex</strong> und ist nicht aus der öffentlichen
-        Navigation verlinkt. Sie ist über die URL dennoch öffentlich erreichbar und kein geschützter
-        Mitgliederbereich.
-      </p>
+        <div class="pricing-study__plans">
+          {plans.map((plan) => (
+            <article
+              class:list={[
+                'pricing-study__plan',
+                { 'pricing-study__plan--focus': plan.id === 'professional' },
+              ]}
+              data-pricing-plan={plan.id}
+              data-monthly-price={formatChf(plan.monthlyCHF)}
+              data-annual-monthly={formatChf(plan.calculation.annualMonthlyEquivalentCHF)}
+            >
+              <div class="pricing-study__plan-heading">
+                <div>
+                  <p class="pricing-study__plan-kicker">IzyOrder Online</p>
+                  <h3>{plan.name}</h3>
+                </div>
+                <span class="pricing-study__plan-index">
+                  {String(pricingDraft.plans.findIndex((item) => item.id === plan.id) + 1).padStart(2, '0')}
+                </span>
+              </div>
+
+              <div class="pricing-study__price">
+                <strong data-pricing-amount>{formatChf(plan.monthlyCHF)}</strong>
+                <span>/ Monat</span>
+              </div>
+              <p class="pricing-study__period" data-pricing-period>
+                Bei monatlicher Zahlung · exkl. MWST
+              </p>
+
+              <div class="pricing-study__annual">
+                <p>Jahresmodell – unverbindliche Rechnung</p>
+                <strong>{formatChf(plan.calculation.annualTotalCHF)}</strong>
+                <span>pro Jahr bei angenommenen 15 % Rabatt</span>
+                <span class="pricing-study__savings">
+                  Ersparnis: {formatChf(plan.calculation.annualSavingsCHF)} pro Jahr
+                </span>
+              </div>
+              <p class="pricing-study__plan-limit">
+                Tarifabhängige Funktionen und allfällige Einrichtungsgebühren sind noch offen.
+              </p>
+              <div class="pricing-study__plan-footer">Noch nicht buchbar</div>
+            </article>
+          ))}
+        </div>
+        <noscript>
+          <p class="pricing-study__noscript">
+            Ohne JavaScript zeigt die Übersicht die monatlichen Preise und die unverbindlichen
+            Jahresbeispiele. Die Abrechnungsart kann dann nicht umgeschaltet werden.
+          </p>
+        </noscript>
+      </section>
+
+      <section class="pricing-study__shared" aria-labelledby="pricing-principles-heading">
+        <div class="pricing-study__shared-intro">
+          <p class="pricing-study__eyebrow">Gemeinsame Grundlage</p>
+          <h2 id="pricing-principles-heading">Ein Modell. Keine versteckten Plattformprozente.</h2>
+          <p>
+            Diese Grundsätze sind vorgesehen, aber noch kein verbindlicher Leistungsumfang
+            eines bestimmten Tarifs.
+          </p>
+        </div>
+        <div class="pricing-study__principles">
+          {principles.map((principle) => (
+            <article>
+              <span aria-hidden="true">{principle.number}</span>
+              <h3>{principle.title}</h3>
+              <p>{principle.copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="pricing-study__decisions" aria-labelledby="pricing-decisions-heading">
+        <div>
+          <p class="pricing-study__eyebrow">Vor der Markteinführung</p>
+          <h2 id="pricing-decisions-heading">Was wir noch entscheiden müssen.</h2>
+        </div>
+        <ul>
+          <li>Welcher Funktionsumfang unterscheidet Starter, Professional und Business tatsächlich?</li>
+          <li>Welche optionalen Einrichtungsleistungen und Gebühren sind vorgesehen?</li>
+          <li>Wie werden Abonnement, Zahlungsausfall, Kündigung und Live-Aktivierung verbindlich geregelt?</li>
+          <li>Welche Beträge und Rabatte werden nach kaufmännischer und rechtlicher Prüfung freigegeben?</li>
+        </ul>
+        <p>
+          IzyOrder Online ist unabhängig von der geplanten KI-Telefonassistenz.
+          Die Voice- und Complete-Tarife sind nicht Teil dieser Preisstudie.
+          Diese Seite bleibt <strong>noindex</strong>, ist aber über die Direktadresse erreichbar.
+        </p>
+      </section>
     </div>
-  </section>
+  </div>
 </BaseLayout>
 
+<script>
+  const study = document.querySelector<HTMLElement>('[data-pricing-study]');
+  if (study) {
+    const billing = study.querySelector<HTMLElement>('[data-pricing-billing]');
+    const controls = study.querySelectorAll<HTMLInputElement>('input[name="billing-view"]');
+    const plans = study.querySelectorAll<HTMLElement>('[data-pricing-plan]');
+    if (controls.length && billing) {
+      billing.dataset.enhanced = 'true';
+      const update = (cycle: string) => {
+        const annual = cycle === 'annual';
+        plans.forEach((card) => {
+          const amount = card.querySelector<HTMLElement>('[data-pricing-amount]');
+          const period = card.querySelector<HTMLElement>('[data-pricing-period]');
+          if (amount) {
+            amount.textContent = annual ? card.dataset.annualMonthly || '' : card.dataset.monthlyPrice || '';
+          }
+          if (period) {
+            period.textContent = annual
+              ? 'Monatsdurchschnitt bei jährlicher Zahlung · exkl. MWST'
+              : 'Bei monatlicher Zahlung · exkl. MWST';
+          }
+        });
+      };
+      controls.forEach((control) => {
+        control.addEventListener('change', () => {
+          if (control.checked) update(control.value);
+        });
+      });
+      update(Array.from(controls).find((control) => control.checked)?.value || 'monthly');
+    }
+  }
+</script>
+
 <style>
-  .pricing {
-    padding-block: var(--section-y-sm) var(--section-y);
+  .pricing-study {
+    padding-block: clamp(2.5rem, 5vw, 5rem) var(--section-y);
   }
-
-  .pricing__heading {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  .pricing-study__hero {
+    display: grid;
+    gap: var(--space-10);
+    padding-bottom: var(--space-16);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .pricing-study__hero-copy {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: var(--space-6);
+  }
+  .pricing-study__eyebrow {
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+    text-transform: uppercase;
+  }
+  .pricing-study__hero h1 {
+    max-width: 15ch;
+    text-wrap: balance;
+  }
+  .pricing-study__hero h1 span {
+    display: block;
+    color: var(--color-text-accent);
+  }
+  .pricing-study__hero .text-lead {
+    max-width: 54ch;
+    color: var(--color-text-muted);
+  }
+  .pricing-study__approval {
+    display: grid;
+    align-content: start;
+    justify-items: start;
     gap: var(--space-5);
-    max-width: var(--container-md);
-    margin-bottom: var(--space-12);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
   }
-
-  .pricing__disclaimer {
-    padding: var(--space-4) var(--space-5);
-    border: 1px solid var(--color-warning-border);
-    border-radius: var(--radius-lg);
-    background-color: var(--color-warning-bg);
-    color: var(--color-warning);
+  .pricing-study__approval strong {
+    font-size: var(--text-h4);
+  }
+  .pricing-study__approval p {
+    max-width: 35ch;
+    color: var(--color-text-muted);
     font-size: var(--text-body-sm);
   }
-
-  .pricing__cards {
+  .pricing-study__overview {
+    padding-block: var(--space-16);
+  }
+  .pricing-study__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--space-8);
+    margin-bottom: var(--space-10);
+  }
+  .pricing-study__toolbar > div:first-child {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .pricing-study__toolbar h2,
+  .pricing-study__shared h2,
+  .pricing-study__decisions h2 {
+    font-size: var(--text-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+  .pricing-study__toolbar p:not(.pricing-study__eyebrow) {
+    color: var(--color-text-muted);
+  }
+  .pricing-study__billing {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .pricing-study__billing-control {
+    display: none;
+  }
+  .pricing-study__billing[data-enhanced='true'] .pricing-study__billing-control {
+    display: block;
+  }
+  .pricing-study__billing > span {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+  .pricing-study__plans {
     display: grid;
     gap: var(--grid-gap);
   }
-
-  .pricing__plan-label {
-    font-size: var(--text-caption);
-  }
-
-  .pricing__number {
+  .pricing-study__plan {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-2);
-    margin-top: var(--space-3);
+    flex-direction: column;
+    gap: var(--space-5);
+    min-width: 0;
+    padding: clamp(1.5rem, 2.4vw, 2.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xs);
   }
-
-  .pricing__number strong {
-    color: var(--color-text);
-    font-size: var(--text-h2);
-    line-height: var(--leading-heading);
-    white-space: nowrap;
-    letter-spacing: var(--tracking-h2);
+  .pricing-study__plan--focus {
+    border-color: var(--color-success-border);
+    box-shadow: var(--shadow-md);
   }
-
-  .pricing__number span {
-    color: var(--color-text-muted);
+  .pricing-study__plan-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    align-items: start;
   }
-
-  .pricing__tax {
-    font-size: var(--text-caption);
+  .pricing-study__plan-kicker {
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
     font-weight: var(--font-weight-semibold);
   }
-
-  .pricing__annual {
-    display: grid;
+  .pricing-study__plan h3 {
+    margin-top: var(--space-2);
+    font-size: var(--text-h4);
+  }
+  .pricing-study__plan-index {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+    font-variant-numeric: tabular-nums;
+  }
+  .pricing-study__price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
     gap: var(--space-2);
     margin-top: var(--space-6);
+  }
+  .pricing-study__price strong {
+    color: var(--color-text);
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-h2);
+    white-space: nowrap;
+  }
+  .pricing-study__price span,
+  .pricing-study__period {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+  .pricing-study__period {
+    min-height: 2.5em;
+    margin-top: calc(-1 * var(--space-3));
+  }
+  .pricing-study__annual {
+    display: grid;
+    gap: var(--space-2);
     padding-block: var(--space-5);
     border-block: 1px solid var(--color-border);
   }
-
-  .pricing__annual span,
-  .pricing__annual small {
+  .pricing-study__annual p,
+  .pricing-study__annual span {
     color: var(--color-text-muted);
     font-size: var(--text-caption);
   }
-
-  .pricing__annual strong {
+  .pricing-study__annual strong {
     color: var(--color-text);
     font-size: var(--text-h5);
   }
-
-  .pricing__pending {
-    margin-top: var(--space-5);
-    color: var(--color-text-muted);
-    font-size: var(--text-body-sm);
-  }
-
-  .pricing__no-sale {
-    font-size: var(--text-label);
+  .pricing-study__annual .pricing-study__savings {
     color: var(--color-text-accent);
     font-weight: var(--font-weight-semibold);
   }
-
-  .pricing__notes {
-    display: grid;
-    gap: var(--space-4);
-    max-width: var(--container-md);
-    margin-top: var(--space-12);
-    padding: var(--space-6);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background-color: var(--color-bg-subtle);
-  }
-
-  .pricing__notes p {
+  .pricing-study__plan-limit {
     color: var(--color-text-muted);
     font-size: var(--text-body-sm);
   }
-
+  .pricing-study__plan-footer {
+    margin-top: auto;
+    padding-top: var(--space-3);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+  }
+  .pricing-study__noscript {
+    margin-top: var(--space-5);
+    color: var(--color-warning);
+    font-size: var(--text-body-sm);
+  }
+  .pricing-study__shared {
+    display: grid;
+    gap: var(--space-10);
+    padding-block: var(--space-16);
+    border-top: 1px solid var(--color-border);
+  }
+  .pricing-study__shared-intro {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 47rem;
+  }
+  .pricing-study__shared-intro p:not(.pricing-study__eyebrow) {
+    color: var(--color-text-muted);
+  }
+  .pricing-study__principles {
+    display: grid;
+    gap: var(--grid-gap);
+  }
+  .pricing-study__principles article {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-subtle);
+  }
+  .pricing-study__principles article > span {
+    color: var(--color-text-accent);
+    font-size: var(--text-caption);
+    font-variant-numeric: tabular-nums;
+  }
+  .pricing-study__principles h3 {
+    font-size: var(--text-h5);
+  }
+  .pricing-study__principles article > p {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+  .pricing-study__decisions {
+    display: grid;
+    gap: var(--space-6);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-inverse);
+    color: var(--color-text-inverse);
+  }
+  .pricing-study__decisions .pricing-study__eyebrow {
+    color: var(--mint-300);
+  }
+  .pricing-study__decisions h2 {
+    margin-top: var(--space-3);
+    max-width: 25ch;
+    color: var(--color-text-inverse);
+  }
+  .pricing-study__decisions ul {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding-left: var(--space-6);
+  }
+  .pricing-study__decisions li {
+    padding-left: var(--space-2);
+  }
+  .pricing-study__decisions > p {
+    max-width: 73ch;
+    color: var(--sand-300);
+    font-size: var(--text-body-sm);
+  }
   @media (min-width: 768px) {
-    .pricing__cards {
+    .pricing-study__hero {
+      grid-template-columns: 1.4fr 0.6fr;
+      align-items: center;
+    }
+    .pricing-study__principles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    .pricing-study__plans {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
