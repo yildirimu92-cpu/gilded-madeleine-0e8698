@@ -13,7 +13,7 @@
   display: grid;
   justify-items: start;
   gap: var(--space-6);
-  color: var(--color-text-inverse);
+  color: var(--color-text);
 }
 .b2c-overline {
   color: var(--color-text-accent);
@@ -23,25 +23,25 @@
   text-transform: uppercase;
 }
 .b2c-overline--light {
-  color: var(--mint-300);
+  color: var(--color-text-accent);
 }
 .b2c-hero h1 {
   max-width: 14ch;
-  color: var(--sand-50);
+  color: var(--color-text);
   text-wrap: balance;
 }
 .b2c-hero h1 span {
-  color: var(--mint-300);
+  color: var(--color-text-accent);
 }
 .b2c-hero .text-lead {
   max-width: var(--measure-lead);
-  color: var(--sand-200);
+  color: var(--color-text-muted);
 }
 .b2c-hero__status {
   padding: var(--space-3) var(--space-4);
   border: 1px solid rgb(247 244 238 / 0.3);
   border-radius: var(--radius-pill);
-  color: var(--mint-100);
+  color: var(--color-text-accent);
   font-size: var(--text-caption);
 }
 .b2c-hero__illustration {
