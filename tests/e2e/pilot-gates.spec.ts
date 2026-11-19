@@ -75,6 +75,17 @@ test.describe('PR9: Demo- und Pilotseiten bleiben bis zur Freigabe inaktiv', () 
     await expect(page.locator('a[href="/pilot/"], a[href="/demo/"]')).toHaveCount(0);
   });
 
+  test('Landingpages zeigen vor Rechtsfreigabe auch nach dem Conversion-PR keine Lead-Links', async ({
+    page,
+  }) => {
+    for (const path of ['/', '/fuer-takeaways/']) {
+      await page.goto(path);
+      await expect(page.locator('header a[href="/pilot/"]')).toHaveCount(0);
+      await expect(page.locator('main a[href="/pilot/"]')).toHaveCount(0);
+      await expect(page.locator('form, [data-netlify]')).toHaveCount(0);
+    }
+  });
+
   for (const path of ['/intern/pilot/', '/pilot/', '/demo/', '/pilot/danke/']) {
     test(`${path}: zugänglich und ohne horizontales Scrollen`, async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 820 });

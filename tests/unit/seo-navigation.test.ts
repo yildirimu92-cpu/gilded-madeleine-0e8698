@@ -9,6 +9,8 @@ import {
   liveGroups,
   liveItems,
   mainNavigation,
+  marketingCta,
+  pilotCta,
   primaryCta,
 } from '../../src/config/navigation';
 import { enabledLocales, localizedPath, locales } from '../../src/i18n/config';
@@ -47,6 +49,36 @@ describe('Navigation', () => {
   it('CTA «Live-Demo ansehen» ausgeblendet, solange keine Demo freigegeben ist', () => {
     expect(liveDemo.url).toBeNull();
     expect(primaryCta()).toBeNull();
+  });
+
+  it('gibt den Pilot-CTA erst mit allen Freigaben in der Produktion aus', () => {
+    const approved = {
+      CONTEXT: 'production',
+      PILOT_LEADS_ENABLED: 'true',
+      PILOT_PRIVACY_APPROVED: 'true',
+      PILOT_PROCESSORS_APPROVED: 'true',
+      PILOT_CONTACT_APPROVED: 'true',
+    };
+    const action = {
+      label: 'Pilotplatz unverbindlich anfragen',
+      href: '/pilot/',
+      external: false,
+    };
+    expect(pilotCta(approved, true)).toEqual(action);
+    expect(marketingCta(approved, true)).toEqual(action);
+    expect(pilotCta(approved, false)).toBeNull();
+    expect(marketingCta(approved, false)).toBeNull();
+    for (const env of [
+      { ...approved, CONTEXT: 'deploy-preview' },
+      { ...approved, CONTEXT: 'ci' },
+      { ...approved, PILOT_LEADS_ENABLED: 'false' },
+      { ...approved, PILOT_CONTACT_APPROVED: 'false' },
+      { ...approved, PILOT_PRIVACY_APPROVED: 'false' },
+      { ...approved, PILOT_PROCESSORS_APPROVED: 'false' },
+    ]) {
+      expect(pilotCta(env, true)).toBeNull();
+      expect(marketingCta(env, true)).toBeNull();
+    }
   });
 
   it('jedes live-Ziel hat eine Seite in src/pages', () => {
