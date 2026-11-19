@@ -26,11 +26,17 @@ interface Props {
 }
 
 const props = Astro.props;
-const privacyLive = legalNavigation.some((item) => item.id === 'datenschutz' && item.status === 'live');
+const privacyLive = legalNavigation.some(
+  (item) => item.id === 'datenschutz' && item.status === 'live',
+);
 ---
 
 <BaseLayout {...props}>
-  <SiteHeader slot="header" items={liveItems(mainNavigation)} cta={marketingCta(process.env, privacyLive)} />
+  <SiteHeader
+    slot="header"
+    items={liveItems(mainNavigation)}
+    cta={marketingCta(process.env, privacyLive)}
+  />
   <slot />
   <SiteFooter
     slot="footer"
