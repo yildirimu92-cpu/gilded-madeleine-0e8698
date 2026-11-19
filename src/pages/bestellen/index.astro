@@ -38,39 +38,30 @@ const cuisines: readonly CuisineFilter[] = ['Alle', 'Pizza', 'Kebab', 'Burger', 
   <section class="b2c-hero surface-inverse" aria-labelledby="b2c-heading">
     <div class="container container--xl b2c-hero__grid">
       <div class="b2c-hero__copy">
-        <p class="b2c-overline b2c-overline--light">IzyOrder für Gäste · Im Aufbau</p>
+        <p class="b2c-overline b2c-overline--light">IzyOrder für Gäste</p>
         <h1 id="b2c-heading" class="text-display">
           Dein Restaurant.<span> Deine Bestellungen.</span>
         </h1>
         <p class="text-lead">
-          Entdecke Restaurants für Abholung und Lieferung. Wir bauen die IzyOrder-Suche mit echten
-          Betrieben auf – statt mit erfundenen Partnerangeboten.
+          Hier entdeckst du bald Restaurants in deiner Nähe, wählst zwischen Abholung und
+          Lieferung und bestellst direkt beim Betrieb.
         </p>
-        <p class="b2c-hero__status">◎ Der öffentliche Bestellbetrieb ist noch nicht gestartet.</p>
+        <p class="b2c-hero__status" role="status">Die Restaurantsuche ist im Aufbau. Bestellungen sind noch nicht möglich.</p>
+        <a class="b2c-hero__cta" href="#suche">Zur Suche <span aria-hidden="true">↓</span></a>
       </div>
       <div class="b2c-hero__illustration" aria-hidden="true">
-        <div class="b2c-hero__paper">
-          <div class="b2c-hero__top">
-            <strong>Bestellübersicht</strong>
-            <span>KONZEPT</span>
-          </div>
-          <div class="b2c-hero__middle">
-            <span>Dein nächstes Lieblingsessen</span>
-            <div class="b2c-hero__line b2c-hero__line--wide"></div>
-            <div class="b2c-hero__line"></div>
-            <div class="b2c-hero__tiles">
-              <i></i>
-              <i></i>
-              <i></i>
-            </div>
-          </div>
-          <div class="b2c-hero__foot">Schematische Darstellung · keine echten Restaurants</div>
+        <div class="b2c-hero__orbit">
+          <div class="b2c-hero__orbit-ring b2c-hero__orbit-ring--outer"></div>
+          <div class="b2c-hero__orbit-ring b2c-hero__orbit-ring--inner"></div>
+          <div class="b2c-hero__orbit-core">IzyOrder</div>
+          <span class="b2c-hero__orbit-pill b2c-hero__orbit-pill--pickup">Abholen</span>
+          <span class="b2c-hero__orbit-pill b2c-hero__orbit-pill--delivery">Liefern lassen</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="b2c-search" data-restaurant-finder aria-labelledby="b2c-search-heading">
+  <section id="suche" class="b2c-search" data-restaurant-finder aria-labelledby="b2c-search-heading">
     <div class="container container--xl">
       <div class="b2c-search__panel">
         <div class="b2c-search__top">
@@ -78,7 +69,6 @@ const cuisines: readonly CuisineFilter[] = ['Alle', 'Pizza', 'Kebab', 'Burger', 
             <p class="b2c-overline">Entdecke deine Umgebung</p>
             <h2 id="b2c-search-heading">Wonach suchst du?</h2>
           </div>
-          <span class="b2c-search__preview">Vorschau · ohne Bestellfunktion</span>
         </div>
         <div class="b2c-search__controls">
           <div class="b2c-search__mode">
@@ -197,9 +187,6 @@ const cuisines: readonly CuisineFilter[] = ['Alle', 'Pizza', 'Kebab', 'Burger', 
           <button type="button" class="b2c-search__fallback" data-finder-pickup hidden>
             Stattdessen Abholung ansehen
           </button>
-          <p class="b2c-search__disclaimer">
-            Keine Demo-Restaurants, keine simulierten Angebote und keine ungeprüften Partner.
-          </p>
         </div>
       </div>
     </div>
