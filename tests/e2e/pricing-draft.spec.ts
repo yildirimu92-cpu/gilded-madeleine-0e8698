@@ -8,7 +8,7 @@ test.describe('Interne IzyOrder-Preisvorschau', () => {
     const response = await page.goto('/intern/preise/');
     expect(response?.status()).toBe(200);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      'Einfach kalkuliert.Für Wachstum gedacht.',
+      'Einfach kalkuliert. Für Wachstum gedacht.',
     );
     for (const name of ['Starter', 'Professional', 'Business']) {
       await expect(page.getByRole('heading', { name })).toBeVisible();
