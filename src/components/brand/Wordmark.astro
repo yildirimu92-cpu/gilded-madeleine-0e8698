@@ -1,0 +1,47 @@
+---
+/**
+ * Typografische Wortmarke «IzyOrder» (Übergangslösung, ADR 0008/0010).
+ * Farbe folgt der Fläche (currentColor bzw. semantische Tokens) – auf
+ * .surface-inverse automatisch hell.
+ */
+import { brand } from '../../config/brand';
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+const { size = 'md' } = Astro.props;
+---
+
+<span class:list={['wordmark', `wordmark--${size}`]}>{brand.name}</span>
+
+<style>
+  .wordmark {
+    display: inline-block;
+    color: var(--color-heading);
+    font-family: var(--font-sans);
+    font-weight: 680;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    white-space: nowrap;
+    font-optical-sizing: auto;
+    /* optischer Ausgleich der Unterlänge von «y» */
+    padding-block-end: 0.06em;
+  }
+
+  .wordmark--sm {
+    font-size: 1.125rem;
+  }
+
+  .wordmark--md {
+    font-size: 1.5rem;
+  }
+
+  .wordmark--lg {
+    font-size: 2.25rem;
+  }
+
+  .wordmark--xl {
+    font-size: clamp(2.75rem, 1.8697rem + 3.7559vw, 5.25rem);
+  }
+</style>

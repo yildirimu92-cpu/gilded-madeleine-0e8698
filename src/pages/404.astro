@@ -1,47 +1,46 @@
 ---
-import Wordmark from '../components/Wordmark.astro';
+import Logo from '../components/brand/Logo.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { t } from '../i18n/ui';
 ---
 
 <BaseLayout title={`${t('notFound.title')} – IzyOrder`} description={t('notFound.text')} noindex>
-  <section class="not-found" aria-labelledby="nf-title">
-    <Wordmark href="/" />
-    <h1 id="nf-title">{t('notFound.title')}</h1>
-    <p>{t('notFound.text')}</p>
-    <a class="back" href="/">
-      {t('notFound.back')}
-    </a>
+  <section class="container container--prose section" aria-labelledby="nf-title">
+    <div class="stack stack--lg">
+      <Logo href="/" />
+      <div class="stack">
+        <h1 id="nf-title">{t('notFound.title')}</h1>
+        <p class="text-lead">{t('notFound.text')}</p>
+      </div>
+      <a class="back" href="/">
+        {t('notFound.back')}
+      </a>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .not-found {
-    width: min(40rem, 100% - 2rem);
-    margin-inline: auto;
-    padding-block: clamp(3rem, 12vw, 8rem);
-  }
-
-  h1 {
-    margin: 2.5rem 0 0.75rem;
-    font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-  }
-
-  p {
-    color: var(--color-ink-muted);
-  }
-
   .back {
+    align-self: flex-start;
     display: inline-flex;
     align-items: center;
     min-height: 2.75rem;
-    padding: 0 1.25rem;
-    border-radius: 0.5rem;
-    background: var(--color-ink);
-    color: var(--color-surface);
-    font-weight: 600;
+    padding-inline: var(--space-5);
+    border-radius: var(--radius-sm);
+    background: var(--color-action);
+    color: var(--color-action-text);
+    font-weight: var(--font-weight-semibold);
     text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .back:hover {
+    background: var(--color-action-hover);
+    color: var(--color-action-text);
+  }
+
+  .back:active {
+    background: var(--color-action-active);
+    transform: translateY(1px);
   }
 </style>

@@ -5,7 +5,8 @@
 | Audit | [Prototyp-Audit (November 2026)](audit/2026-11-prototyp-audit.md) |
 | Architektur | [Zielarchitektur](architektur/zielarchitektur.md) |
 | Richtlinien (verbindlich) | [Isolationsregeln](richtlinien/isolationsregeln.md) · [Inhaltsregeln](richtlinien/inhaltsregeln.md) |
-| Planung | [Entwicklungsplan](entwicklungsplan.md) |
+| Design | [Designsystem](design/designsystem.md) · Vorschau `/intern/design/` |
+| Planung | [Entwicklungsplan](entwicklungsplan.md) · [Lokale Entwicklung](entwicklung.md) |
 | Entscheide | [Architecture Decision Records](adr/README.md) |
 
 ## Status der Dokumente

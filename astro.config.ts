@@ -13,6 +13,8 @@ export default defineConfig({
     // Keine Inline-Styles: hält die CSP schlank und Assets cachebar.
     inlineStylesheets: 'never',
   },
+  // Kein Shiki: dessen Inline-Styles wären mit der CSP nicht vereinbar.
+  markdown: { syntaxHighlight: false },
   i18n: {
     locales: ['de'],
     defaultLocale: 'de',

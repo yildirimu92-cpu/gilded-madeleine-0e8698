@@ -34,6 +34,9 @@ Vor dem ersten E2E-Lauf: `npx playwright install chromium`.
 
 - `public/prototyp/index.html`: gesicherter Prototyp, **nicht bearbeiten** (der Unit-Test prüft den Hash)
 - `src/lib/site-config.ts`: Indexierung, robots.txt, generierte `_headers`
-- `src/components/Wordmark.astro`: einzige Stelle der Markendarstellung
+- `src/components/brand/Logo.astro`: Integrationspunkt Logo (nutzt `Wordmark.astro`, bis das finale SVG freigegeben ist)
+- `src/styles/`: Design-Tokens, Schriften, Basis, Typografie, Layout (siehe `docs/design/designsystem.md`)
+- `src/design/palette.ts`: Farbwerte und Kontrastregeln (Single Source of Truth)
+- `/intern/design/`: interne Designvorschau (immer noindex)
 - `src/i18n/`: Sprachkonfiguration und UI-Texte
 - `scripts/serve-dist.mjs`: lokaler Server mit den Netlify-Headern und -Redirects

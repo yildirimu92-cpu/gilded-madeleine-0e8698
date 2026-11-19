@@ -1,0 +1,99 @@
+---
+/**
+ * Integrationspunkt für das Markenlogo (ADR 0010).
+ *
+ * Solange `brand.logo.status === 'pending'`:
+ *  - `lockup` und `wordmark` rendern die typografische Wortmarke,
+ *  - `monogram` rendert nichts (kein approximiertes Monogramm als Markenasset).
+ *
+ * Nach Freigabe: SVG-Dateien gemäss src/assets/brand/README.md ablegen und
+ * `brand.logo.status` auf 'final' setzen. Alle Verwendungsstellen bleiben gleich.
+ */
+import { brand, type LogoTone, type LogoVariant } from '../../config/brand';
+import Wordmark from './Wordmark.astro';
+
+interface Props {
+  variant?: LogoVariant;
+  tone?: LogoTone;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** Verlinkt das Logo (z. B. auf die Startseite). */
+  href?: string;
+}
+
+const { variant = 'lockup', tone = 'default', size = 'md', href } = Astro.props;
+
+const svgFiles = import.meta.glob<string>('../../assets/brand/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+function finalSvg(): string | undefined {
+  if (brand.logo.status !== 'final' || variant === 'wordmark') return undefined;
+  const key =
+    variant === 'monogram'
+      ? tone === 'inverse'
+        ? brand.logo.files.monogramInverse
+        : brand.logo.files.monogram
+      : tone === 'inverse'
+        ? brand.logo.files.lockupInverse
+        : brand.logo.files.lockup;
+  const svg = svgFiles[`../../assets/brand/${key}`];
+  if (!svg) throw new Error(`Freigegebene Logodatei fehlt: ${brand.logo.assetDir}/${key}`);
+  return svg;
+}
+
+const svg = finalSvg();
+const renderNothing = !svg && variant === 'monogram';
+const Tag = href ? 'a' : 'span';
+---
+
+{!renderNothing && (
+  <Tag
+    class:list={['logo', `logo--${size}`, { 'logo--inverse': tone === 'inverse' }]}
+    href={href}
+    aria-label={href ? `${brand.name} – Startseite` : undefined}
+    data-logo-status={brand.logo.status}
+  >
+    {svg ? (
+      <span class="logo__svg" role="img" aria-label={brand.name} set:html={svg} />
+    ) : (
+      <Wordmark size={size} />
+    )}
+  </Tag>
+)}
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-heading);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+  }
+
+  .logo--inverse {
+    color: var(--sand-50);
+  }
+
+  .logo--inverse :global(.wordmark) {
+    color: var(--sand-50);
+  }
+
+  .logo__svg :global(svg) {
+    height: 1.75rem;
+    width: auto;
+  }
+
+  .logo--sm .logo__svg :global(svg) {
+    height: 1.25rem;
+  }
+
+  .logo--lg .logo__svg :global(svg) {
+    height: 2.5rem;
+  }
+
+  .logo--xl .logo__svg :global(svg) {
+    height: 4rem;
+  }
+</style>
