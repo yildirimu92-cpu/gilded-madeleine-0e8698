@@ -1,0 +1,48 @@
+# Netlify-Konfiguration der IzyOrder-Website (ADR 0002, ADR 0005).
+# Gilt nur für dieses Netlify-Projekt – keine Wirkung auf Plattform-Subdomains.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # SITE_INDEXING wird bewusst NICHT hier gesetzt, sondern nur nach Freigabe
+  # in den Netlify-Umgebungsvariablen (Kontext: production).
+
+# /prototyp ohne Schrägstrich auf das Verzeichnis leiten.
+[[redirects]]
+  from = "/prototyp"
+  to = "/prototyp/"
+  status = 301
+
+# --- Security-Header für alle Pfade -----------------------------------------
+# Die vollständige CSP der Astro-Seiten wird pro Seite als <meta> mit Hashes
+# ausgeliefert. Hier stehen nur Direktiven, die im <meta> nicht wirken
+# (frame-ancestors) bzw. für jede Seite – inkl. Prototyp – gelten.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Content-Security-Policy = "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'"
+
+# --- Gesicherter Prototyp ---------------------------------------------------
+# Unverändertes Original mit Inline-Script/-Style und Base64-Assets (ADR 0004).
+# Zweite, nur für diesen Pfad gelockerte Policy; immer noindex.
+[[headers]]
+  for = "/prototyp/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src data:; connect-src 'none'"
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# --- Caching ----------------------------------------------------------------
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -1,0 +1,27 @@
+---
+import { locales, type Locale } from '../i18n/config';
+import { isIndexable, ROBOTS_NOINDEX } from '../lib/site-config';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  /** Erzwingt noindex unabhängig von der Umgebung (z. B. 404, interne Seiten). */
+  noindex?: boolean;
+}
+
+const { title, description, locale, noindex = false } = Astro.props;
+const indexable = isIndexable(process.env) && !noindex;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{!noindex && <link rel="canonical" href={canonical.href} />}
+<meta name="robots" content={indexable ? 'index, follow' : ROBOTS_NOINDEX} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="IzyOrder" />
+<meta property="og:locale" content={locales[locale].ogLocale} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{!noindex && <meta property="og:url" content={canonical.href} />}

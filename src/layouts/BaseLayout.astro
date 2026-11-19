@@ -1,0 +1,36 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import { defaultLocale, locales, type Locale } from '../i18n/config';
+import { t } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: Locale;
+  noindex?: boolean;
+}
+
+const { title, description, locale = defaultLocale, noindex } = Astro.props;
+---
+
+<!doctype html>
+<html lang={locales[locale].lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f2e22" />
+    <meta name="format-detection" content="telephone=no" />
+    <Seo title={title} description={description} locale={locale} noindex={noindex} />
+  </head>
+  <body>
+    <a class="skip-link" href="#inhalt">
+      {t('nav.skip', locale)}
+    </a>
+    <slot name="header" />
+    <main id="inhalt" tabindex="-1">
+      <slot />
+    </main>
+    <slot name="footer" />
+  </body>
+</html>
