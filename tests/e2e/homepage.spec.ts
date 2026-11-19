@@ -7,7 +7,9 @@ test.describe('IzyOrder B2B-Homepage – ehrliche Produktkommunikation', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Ihr Bestellshop.');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Ohne Plattform');
     await expect(page.getByText('0 %', { exact: true }).first()).toBeVisible();
-    await expect(page.getByText(/Gebühren externer Zahlungsanbieter können zusätzlich anfallen/)).toBeVisible();
+    await expect(
+      page.getByText(/Gebühren externer Zahlungsanbieter können zusätzlich anfallen/),
+    ).toBeVisible();
     await expect(page.getByText(/In Entwicklung · Demo und Pilotanfragen folgen/)).toBeVisible();
     await expect(page.getByText(/Schematische Produktidee/)).toBeVisible();
   });
@@ -19,7 +21,9 @@ test.describe('IzyOrder B2B-Homepage – ehrliche Produktkommunikation', () => {
     }
     await page.getByRole('link', { name: /So funktioniert/ }).click();
     await expect(page).toHaveURL(/#ablauf$/);
-    await expect(page.getByRole('heading', { name: 'Drei Schritte. Ein direkter Bestellkanal.' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Drei Schritte. Ein direkter Bestellkanal.' }),
+    ).toBeVisible();
     await expect(page.locator('a[href="/demo/"], a[href="/pilotplatz/"]')).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Pilotplatz anfragen' })).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Live-Demo ansehen' })).toHaveCount(0);
