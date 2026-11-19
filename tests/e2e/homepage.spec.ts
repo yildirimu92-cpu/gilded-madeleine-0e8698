@@ -7,9 +7,9 @@ test.describe('IzyOrder B2B-Homepage – ehrliche Produktkommunikation', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Ihr Bestellshop.');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Ohne Plattform');
     await expect(page.getByText('0 %', { exact: true }).first()).toBeVisible();
-    await expect(
-      page.getByText(/Gebühren externer Zahlungsanbieter können zusätzlich anfallen/),
-    ).toBeVisible();
+    await expect(page.locator('.proof-strip__disclaimer')).toContainText(
+      'Gebühren externer Zahlungsanbieter können zusätzlich anfallen',
+    );
     await expect(page.getByText(/In Entwicklung · Demo und Pilotanfragen folgen/)).toBeVisible();
     await expect(page.getByText(/Schematische Produktidee/)).toBeVisible();
   });
