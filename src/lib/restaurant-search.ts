@@ -5,7 +5,13 @@
 import type { RestaurantListing } from '../data/restaurant-schema';
 
 export const supportedPlaces = [
-  'Luzern', 'Kriens', 'Emmen', 'Emmenbrücke', 'Horw', 'Ebikon', 'Meggen',
+  'Luzern',
+  'Kriens',
+  'Emmen',
+  'Emmenbrücke',
+  'Horw',
+  'Ebikon',
+  'Meggen',
 ] as const;
 export type SupportedPlace = (typeof supportedPlaces)[number];
 
@@ -112,7 +118,10 @@ export function filterRestaurantListings(
   const matching = listings.filter((restaurant) => {
     if (restaurant.listingStatus !== 'approved') return false;
     if (selection.cuisine !== 'Alle' && restaurant.cuisine !== selection.cuisine) return false;
-    if (query && !normalizeRestaurantText(restaurant.name + ' ' + restaurant.cuisine).includes(query)) {
+    if (
+      query &&
+      !normalizeRestaurantText(restaurant.name + ' ' + restaurant.cuisine).includes(query)
+    ) {
       return false;
     }
     // Ein Suchtext darf nie den ausgewählten Ort oder das Liefergebiet umgehen.

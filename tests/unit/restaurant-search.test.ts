@@ -135,11 +135,7 @@ describe('PR12 – Prototyp-Suchlogik, bereinigt und isoliert', () => {
       place: 'Kriens',
     });
     expect(pickupFallback({ ...base, mode: 'delivery', query: 'pizza' })).toEqual(base);
-    expect(getAvailableCuisines([demoPizza, demoKebab, draft])).toEqual([
-      'Alle',
-      'Pizza',
-      'Kebab',
-    ]);
+    expect(getAvailableCuisines([demoPizza, demoKebab, draft])).toEqual(['Alle', 'Pizza', 'Kebab']);
   });
 
   it('veröffentlicht im tatsächlichen Katalog keine fiktiven Prototyp-Restaurants', () => {
