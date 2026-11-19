@@ -1,11 +1,15 @@
 ---
 /**
  * Interaktiver Kostenvergleich. Standardwerte sind reine Rechenbeispiele.
- * Keine Datenübermittlung und keine externen Services. 
+ * Keine Datenübermittlung und keine externen Services.
  * Ohne JS bleibt die Beispielrechnung lesbar.
  */
 import { pricingDraft } from '../../config/pricing';
-import { calculateCommissionScenario, sampleScenario, scenarioLimits } from '../../lib/commission-calculator';
+import {
+  calculateCommissionScenario,
+  sampleScenario,
+  scenarioLimits,
+} from '../../lib/commission-calculator';
 import { formatChf } from '../../lib/format';
 
 const initial = calculateCommissionScenario(sampleScenario);
@@ -17,9 +21,9 @@ const monthlyIsPositive = initial.monthlyDifferenceCHF > 0;
     <p class="commission-calc__eyebrow">Kostenvergleich · Rechenbeispiel</p>
     <h2 id="calc-heading">Was könnte ein eigener Bestellkanal verändern?</h2>
     <p class="text-lead">
-      Ersetzen Sie die Beispielwerte durch Ihre eigenen Annahmen. Der Rechner berücksichtigt
-      nur den Anteil der heutigen Plattformbestellungen, der künftig direkt eingehen würde.
-      Es ist keine Prognose.
+      Ersetzen Sie die Beispielwerte durch Ihre eigenen Annahmen. Der Rechner berücksichtigt nur den
+      Anteil der heutigen Plattformbestellungen, der künftig direkt eingehen würde. Es ist keine
+      Prognose.
     </p>
   </div>
   <div class="commission-calc__grid">
@@ -29,7 +33,9 @@ const monthlyIsPositive = initial.monthlyDifferenceCHF > 0;
           <p class="commission-calc__overline">01 / Ihre Annahmen</p>
           <h3>Berechnung anpassen</h3>
         </div>
-        <button type="button" class="commission-calc__reset" data-calc-reset>Zurücksetzen</button>
+        <button type="button" class="commission-calc__reset" data-calc-reset>
+          Zurücksetzen
+        </button>
       </div>
 
       <div class="commission-calc__fields">
@@ -177,9 +183,14 @@ const monthlyIsPositive = initial.monthlyDifferenceCHF > 0;
         <p class="commission-calc__overline">02 / Ihr Szenario</p>
         <span class="commission-calc__result-pill">Unverbindliche Beispielrechnung</span>
       </div>
-      <div class="commission-calc__hero-result" data-calc-mood={monthlyIsPositive ? 'positive' : 'negative'}>
+      <div
+        class="commission-calc__hero-result"
+        data-calc-mood={monthlyIsPositive ? 'positive' : 'negative'}
+      >
         <span data-calc-result-label>
-          {monthlyIsPositive ? 'Rechnerischer Kostenvorteil pro Monat' : 'Rechnerische Mehrkosten pro Monat'}
+          {monthlyIsPositive
+            ? 'Rechnerischer Kostenvorteil pro Monat'
+            : 'Rechnerische Mehrkosten pro Monat'}
         </span>
         <strong data-calc-monthly>{formatChf(Math.abs(initial.monthlyDifferenceCHF))}</strong>
         <p>
@@ -222,7 +233,13 @@ const monthlyIsPositive = initial.monthlyDifferenceCHF > 0;
             : `Ab ${initial.breakEvenRedirectedOrders} umgeleiteten Bestellungen pro Monat (rund ${initial.breakEvenRedirectedPercent} % der heutigen Plattformbestellungen).`}
         </p>
       </div>
-      <p class="commission-calc__live" role="status" aria-live="polite" aria-atomic="true" data-calc-live></p>
+      <p
+        class="commission-calc__live"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        data-calc-live
+      ></p>
     </div>
   </div>
 
@@ -237,23 +254,29 @@ const monthlyIsPositive = initial.monthlyDifferenceCHF > 0;
     <p>
       <strong>Nicht berücksichtigt:</strong> zusätzliche Lieferkosten, Marketing und
       Kundengewinnung, Personalkosten, Einrichtungsgebühren, Steuern, Retouren, weitere Gebühren,
-      Änderungen der Bestellmenge sowie allfällige Vertragsbedingungen bestehender Plattformen.
-      Die voreingestellten Gebühren sind frei gewählte Beispiele, <strong>keine verifizierten
-      Anbieterpreise</strong>. Der Vergleich erlaubt keine Aussage über tatsächliche
-      Kundenabwanderung, Umsatzwachstum oder erzielbaren Gewinn.
+      Änderungen der Bestellmenge sowie allfällige Vertragsbedingungen bestehender Plattformen. Die
+      voreingestellten Gebühren sind frei gewählte Beispiele,{' '}
+      <strong>keine verifizierten Anbieterpreise</strong>. Der Vergleich erlaubt keine Aussage über
+      tatsächliche Kundenabwanderung, Umsatzwachstum oder erzielbaren Gewinn.
     </p>
   </div>
 </section>
 
 <script>
-  import { calculateCommissionScenario, sampleScenario, type CommissionScenario } from '../../lib/commission-calculator';
+  import {
+    calculateCommissionScenario,
+    sampleScenario,
+    type CommissionScenario,
+  } from '../../lib/commission-calculator';
   import { formatChf } from '../../lib/format';
 
   function initCalculator(): void {
     document.querySelectorAll<HTMLElement>('[data-commission-calculator]').forEach((root) => {
       if (root.dataset.calculatorReady === 'true') return;
       root.dataset.calculatorReady = 'true';
-      const fields = [...root.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-field]')];
+      const fields = [
+        ...root.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-field]'),
+      ];
       const error = root.querySelector<HTMLElement>('[data-calc-error]');
       const live = root.querySelector<HTMLElement>('[data-calc-live]');
       const monthly = root.querySelector<HTMLElement>('[data-calc-monthly]');
@@ -267,7 +290,8 @@ const monthlyIsPositive = initial.monthlyDifferenceCHF > 0;
         if (invalid) {
           if (error) {
             error.hidden = false;
-            error.textContent = 'Bitte verwenden Sie für alle Felder gültige Werte innerhalb der angegebenen Grenzen.';
+            error.textContent =
+              'Bitte verwenden Sie für alle Felder gültige Werte innerhalb der angegebenen Grenzen.';
           }
           if (live) live.textContent = 'Die Berechnung wurde wegen ungültiger Eingaben angehalten.';
           return;
@@ -293,23 +317,32 @@ const monthlyIsPositive = initial.monthlyDifferenceCHF > 0;
 
           const isPositive = result.monthlyDifferenceCHF > 0;
           const isNeutral = result.monthlyDifferenceCHF === 0;
-          if (mood) mood.dataset.calcMood = isNeutral ? 'neutral' : isPositive ? 'positive' : 'negative';
-          if (label) label.textContent = isNeutral
-            ? 'Rechnerisch ausgeglichene Kosten pro Monat'
-            : isPositive ? 'Rechnerischer Kostenvorteil pro Monat' : 'Rechnerische Mehrkosten pro Monat';
+          if (mood)
+            mood.dataset.calcMood = isNeutral ? 'neutral' : isPositive ? 'positive' : 'negative';
+          if (label)
+            label.textContent = isNeutral
+              ? 'Rechnerisch ausgeglichene Kosten pro Monat'
+              : isPositive
+                ? 'Rechnerischer Kostenvorteil pro Monat'
+                : 'Rechnerische Mehrkosten pro Monat';
           if (monthly) monthly.textContent = formatChf(Math.abs(result.monthlyDifferenceCHF));
           if (annual) annual.textContent = formatChf(result.annualDifferenceCHF);
           if (el('orders')) el('orders')!.textContent = String(result.redirectedOrders);
           if (el('volume')) el('volume')!.textContent = formatChf(result.redirectedOrderVolumeCHF);
-          if (el('avoided')) el('avoided')!.textContent = formatChf(result.avoidedMarketplaceCommissionCHF);
-          if (el('payment')) el('payment')!.textContent = `− ${formatChf(result.assumedDirectPaymentFeesCHF)}`;
-          if (el('subscription')) el('subscription')!.textContent = `− ${formatChf(result.subscriptionCHF)}`;
+          if (el('avoided'))
+            el('avoided')!.textContent = formatChf(result.avoidedMarketplaceCommissionCHF);
+          if (el('payment'))
+            el('payment')!.textContent = `− ${formatChf(result.assumedDirectPaymentFeesCHF)}`;
+          if (el('subscription'))
+            el('subscription')!.textContent = `− ${formatChf(result.subscriptionCHF)}`;
           if (el('break-even')) {
-            el('break-even')!.textContent = result.breakEvenRedirectedOrders === null
-              ? 'Unter diesen Annahmen mit den vorhandenen Bestellungen nicht erreichbar.'
-              : `Ab ${result.breakEvenRedirectedOrders} umgeleiteten Bestellungen pro Monat (rund ${result.breakEvenRedirectedPercent} % der heutigen Plattformbestellungen).`;
+            el('break-even')!.textContent =
+              result.breakEvenRedirectedOrders === null
+                ? 'Unter diesen Annahmen mit den vorhandenen Bestellungen nicht erreichbar.'
+                : `Ab ${result.breakEvenRedirectedOrders} umgeleiteten Bestellungen pro Monat (rund ${result.breakEvenRedirectedPercent} % der heutigen Plattformbestellungen).`;
           }
-          if (live) live.textContent = `Neu berechnet: ${result.redirectedOrders} Direktbestellungen; ${isPositive ? 'Kostenvorteil' : isNeutral ? 'ausgeglichene Kosten' : 'Mehrkosten'} von ${formatChf(Math.abs(result.monthlyDifferenceCHF))} monatlich.`;
+          if (live)
+            live.textContent = `Neu berechnet: ${result.redirectedOrders} Direktbestellungen; ${isPositive ? 'Kostenvorteil' : isNeutral ? 'ausgeglichene Kosten' : 'Mehrkosten'} von ${formatChf(Math.abs(result.monthlyDifferenceCHF))} monatlich.`;
         } catch {
           if (error) {
             error.hidden = false;

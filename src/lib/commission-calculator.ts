@@ -62,13 +62,14 @@ export const scenarioLimits = {
   paymentFixedCHF: { min: 0, max: 20 },
 } as const;
 
-function checkNumber(
-  name: keyof typeof scenarioLimits,
-  value: number,
-  integer = false,
-): void {
+function checkNumber(name: keyof typeof scenarioLimits, value: number, integer = false): void {
   const { min, max } = scenarioLimits[name];
-  if (!Number.isFinite(value) || value < min || value > max || (integer && !Number.isInteger(value))) {
+  if (
+    !Number.isFinite(value) ||
+    value < min ||
+    value > max ||
+    (integer && !Number.isInteger(value))
+  ) {
     throw new RangeError(`Ungültiger Wert für ${name}.`);
   }
 }
