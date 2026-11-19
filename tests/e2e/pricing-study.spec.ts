@@ -54,7 +54,7 @@ test.describe('PR15 – Premium-Tarifstudie ohne Verkaufsfreigabe', () => {
       'CHF 249.–',
     ]);
     await expect(page.getByText(/Ohne JavaScript zeigt die Übersicht/)).toBeVisible();
-    await expect(page.locator('[data-pricing-billing] input')).toBeHidden();
+    await expect(page.locator('[data-pricing-billing] fieldset')).toBeHidden();
     await context.close();
   });
 
