@@ -46,21 +46,24 @@ test.describe('IzyOrder B2B-Homepage – ehrliche Produktkommunikation', () => {
   });
 
   for (const width of [375, 768, 1440]) {
-    test(`bei ${width} px: keine Überläufe, CSP- oder Accessibility-Probleme`, async ({ page }, testInfo) => {
-      await page.setViewportSize({ width, height: 900 });
-      const problems = await trackProblems(page);
-      await page.goto('/');
-      await expectNoHorizontalScroll(page);
-      await expectNoA11yViolations(page);
-      expect(await problems()).toEqual([]);
-      if (testInfo.project.name === 'desktop') {
-        await page.screenshot({
-          path: testInfo.outputPath(`homepage-${width}px.png`),
-          fullPage: true,
-          animations: 'disabled',
-        });
-      }
-    });
+    test(
+      `bei ${width} px: keine Überläufe, CSP- oder Accessibility-Probleme`,
+      async ({ page }, testInfo) => {
+        await page.setViewportSize({ width, height: 900 });
+        const problems = await trackProblems(page);
+        await page.goto('/');
+        await expectNoHorizontalScroll(page);
+        await expectNoA11yViolations(page);
+        expect(await problems()).toEqual([]);
+        if (testInfo.project.name === 'desktop') {
+          await page.screenshot({
+            path: testInfo.outputPath(`homepage-${width}px.png`),
+            fullPage: true,
+            animations: 'disabled',
+          });
+        }
+      },
+    );
   }
 
   test('keine Drittanbieter-Ressourcen oder JavaScript auf der Homepage', async ({ page }) => {
