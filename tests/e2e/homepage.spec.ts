@@ -26,7 +26,10 @@ test.describe('IzyOrder B2B-Homepage – ehrliche Produktkommunikation', () => {
   });
 
   test('FAQ ist mit Tastatur und ohne JavaScript bedienbar', async ({ browser }) => {
-    const context = await browser.newContext({ javaScriptEnabled: false });
+    const context = await browser.newContext({
+      javaScriptEnabled: false,
+      baseURL: 'http://localhost:4173',
+    });
     const page = await context.newPage();
     await page.goto('/');
     const item = page.locator('#fragen details').first();
