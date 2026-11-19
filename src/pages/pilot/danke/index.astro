@@ -1,0 +1,45 @@
+---
+import { legalNavigation } from '../../../config/navigation';
+import { isPilotCollectionEnabled } from '../../../config/lead';
+import PublicLayout from '../../../layouts/PublicLayout.astro';
+
+const privacyPageLive = legalNavigation.some(
+  (item) => item.id === 'datenschutz' && item.status === 'live',
+);
+const canCollect = isPilotCollectionEnabled(process.env, privacyPageLive);
+---
+
+<PublicLayout
+  title="Pilotanfrage – IzyOrder"
+  description="Bestätigungsseite für Pilotanfragen bei IzyOrder."
+  noindex
+>
+  <section class="container container--prose thanks" aria-labelledby="thanks-title">
+    {canCollect ? (
+      <>
+        <h1 id="thanks-title">Vielen Dank für Ihr Interesse.</h1>
+        <p>
+          Falls Sie das Formular erfolgreich abgesendet haben, prüfen wir Ihre Anfrage und melden
+          uns bei Ihnen. Der direkte Aufruf dieser Seite bestätigt keine Übermittlung.
+        </p>
+      </>
+    ) : (
+      <>
+        <h1 id="thanks-title">Pilotanfragen sind noch nicht geöffnet.</h1>
+        <p>
+          Über die IzyOrder-Website ist die Kontaktaufnahme noch nicht aktiviert. Es wurde keine
+          Anfrage über dieses Formular übermittelt.
+        </p>
+      </>
+    )}
+    <a href="/">Zur Startseite</a>
+  </section>
+</PublicLayout>
+
+<style>
+  .thanks {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--section-y);
+  }
+</style>

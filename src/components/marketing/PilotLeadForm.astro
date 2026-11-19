@@ -1,0 +1,231 @@
+---
+/**
+ * Wiederverwendbare Pilotanfrage – PR #9.
+ * preview: Eingaben bleiben ausschliesslich im Browser (kein submit, kein JS).
+ * live: rein natives Netlify Forms mit Honigfalle und Pflichtbestätigung.
+ * Der Live-Modus wird NUR über serverseitiges Freigabe-Gating verwendet.
+ */
+import { businessTypeOptions, leadForm } from '../../config/lead';
+import Input from '../ui/Input.astro';
+import Select from '../ui/Select.astro';
+
+interface Props {
+  mode: 'preview' | 'live';
+}
+
+const live = Astro.props.mode === 'live';
+---
+
+<div class="pilot-form">
+  <form
+    name={live ? leadForm.name : undefined}
+    method={live ? 'POST' : 'dialog'}
+    action={live ? leadForm.successPath : undefined}
+    data-netlify={live ? 'true' : undefined}
+    netlify-honeypot={live ? leadForm.honeypot : undefined}
+    autocomplete="on"
+    aria-label={live ? 'Pilotplatz anfragen' : 'Vorschau der Pilotanfrage'}
+  >
+    {live && <input type="hidden" name="form-name" value={leadForm.name} />}
+    {live && (
+      <p class="pilot-form__trap" aria-hidden="true">
+        <label>
+          Bitte leer lassen
+          <input type="text" name={leadForm.honeypot} tabindex="-1" autocomplete="off" />
+        </label>
+      </p>
+    )}
+
+    <div class="pilot-form__fields">
+      <Input
+        id="pilot-contact"
+        name={leadForm.fields.contactName}
+        label="Kontaktperson"
+        autocomplete="name"
+        minlength={2}
+        maxlength={90}
+        required
+      />
+      <Input
+        id="pilot-business"
+        name={leadForm.fields.restaurantName}
+        label="Name des Gastronomiebetriebs"
+        autocomplete="organization"
+        minlength={2}
+        maxlength={120}
+        required
+      />
+      <Input
+        id="pilot-email"
+        name={leadForm.fields.email}
+        label="Geschäftliche E-Mail-Adresse"
+        type="email"
+        autocomplete="email"
+        maxlength={254}
+        required
+      />
+      <Input
+        id="pilot-phone"
+        name={leadForm.fields.phone}
+        label="Telefonnummer (optional)"
+        type="tel"
+        autocomplete="tel"
+        maxlength={40}
+      />
+      <Input
+        id="pilot-city"
+        name={leadForm.fields.city}
+        label="Ort"
+        autocomplete="address-level2"
+        minlength={2}
+        maxlength={100}
+        required
+      />
+      <Select
+        id="pilot-type"
+        name={leadForm.fields.businessType}
+        label="Art des Betriebs"
+        options={[...businessTypeOptions]}
+        placeholder="Bitte auswählen"
+        required
+      />
+    </div>
+
+    <div class="pilot-form__consent">
+      <input
+        type="checkbox"
+        id="pilot-privacy"
+        name={leadForm.fields.privacyRead}
+        value="gelesen"
+        required={live}
+        disabled={!live}
+      />
+      <div>
+        <label for="pilot-privacy">
+          {live
+            ? 'Ich habe die Informationen zur Bearbeitung meiner Anfrage zur Kenntnis genommen.'
+            : 'Die Datenschutzhinweise werden vor dem Live-Start ergänzt.'}
+        </label>
+        {live && (
+          <p>
+            Die Angaben werden zur Bearbeitung Ihrer Pilotanfrage verwendet. Details finden Sie in
+            unserer <a href="/datenschutz/">Datenschutzerklärung</a>.
+          </p>
+        )}
+      </div>
+    </div>
+
+    <div class="pilot-form__submit">
+      {live ? (
+        <button class="pilot-form__button" type="submit">
+          Pilotplatz anfragen
+        </button>
+      ) : (
+        <button class="pilot-form__button" type="button" disabled>
+          Anfrage noch nicht verfügbar
+        </button>
+      )}
+    </div>
+    <p class="pilot-form__notice">
+      {live
+        ? 'Wir prüfen Ihre Anfrage und melden uns über die von Ihnen angegebenen Kontaktdaten. Eine Anfrage verpflichtet nicht zum Vertragsabschluss.'
+        : 'Designvorschau: Es werden keine Angaben gesendet oder gespeichert. Diese Seite ist öffentlich erreichbar und dient ausschliesslich der internen Abnahme.'}
+    </p>
+  </form>
+</div>
+
+<style>
+  .pilot-form {
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .pilot-form form {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .pilot-form__fields {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .pilot-form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .pilot-form__consent > input {
+    flex: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 0.2rem;
+    accent-color: var(--color-action);
+  }
+
+  .pilot-form__consent label {
+    color: var(--color-text);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+  }
+
+  .pilot-form__consent p {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .pilot-form__button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: var(--control-height-lg);
+    width: 100%;
+    padding-inline: var(--space-6);
+    border: 1px solid transparent;
+    border-radius: var(--control-radius);
+    background-color: var(--color-action);
+    color: var(--color-action-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .pilot-form__button:not(:disabled):hover {
+    background-color: var(--color-action-hover);
+  }
+
+  .pilot-form__button:disabled {
+    cursor: not-allowed;
+    background-color: var(--color-disabled-bg);
+    color: var(--color-disabled-text);
+  }
+
+  .pilot-form__notice {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .pilot-form__trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 640px) {
+    .pilot-form__fields {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
