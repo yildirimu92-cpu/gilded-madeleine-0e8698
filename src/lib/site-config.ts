@@ -27,9 +27,9 @@ export const ROBOTS_NOINDEX = 'noindex, nofollow';
 export function robotsTxt(env: BuildEnv = {}): string {
   // Crawling bleibt erlaubt, um den noindex-Meta-Tag und Header lesen zu können.
   // /intern/, /styleguide/ und /prototyp/ bleiben auch nach Launch noindex.
-  const base = 'User-agent: *\\nAllow: /\\n';
+  const base = 'User-agent: *\nAllow: /\n';
   if (!isIndexable(env)) return base;
-  return `${base}Sitemap: ${resolveSiteUrl(env)}/sitemap.xml\\n`;
+  return `${base}Sitemap: ${resolveSiteUrl(env)}/sitemap.xml\n`;
 }
 
 /** Inhalt der generierten Netlify-Datei `_headers` (nur für nicht indexierbare Builds). */
