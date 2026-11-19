@@ -1,0 +1,657 @@
+---
+/**
+ * Interaktiver Kostenvergleich. Standardwerte sind reine Rechenbeispiele.
+ * Keine Datenübermittlung und keine externen Services. 
+ * Ohne JS bleibt die Beispielrechnung lesbar.
+ */
+import { pricingDraft } from '../../config/pricing';
+import { calculateCommissionScenario, sampleScenario, scenarioLimits } from '../../lib/commission-calculator';
+import { formatChf } from '../../lib/format';
+
+const initial = calculateCommissionScenario(sampleScenario);
+const monthlyIsPositive = initial.monthlyDifferenceCHF > 0;
+---
+
+<section class="commission-calc" data-commission-calculator aria-labelledby="calc-heading">
+  <div class="commission-calc__intro">
+    <p class="commission-calc__eyebrow">Kostenvergleich · Rechenbeispiel</p>
+    <h2 id="calc-heading">Was könnte ein eigener Bestellkanal verändern?</h2>
+    <p class="text-lead">
+      Ersetzen Sie die Beispielwerte durch Ihre eigenen Annahmen. Der Rechner berücksichtigt
+      nur den Anteil der heutigen Plattformbestellungen, der künftig direkt eingehen würde.
+      Es ist keine Prognose.
+    </p>
+  </div>
+  <div class="commission-calc__grid">
+    <div class="commission-calc__settings">
+      <div class="commission-calc__panel-head">
+        <div>
+          <p class="commission-calc__overline">01 / Ihre Annahmen</p>
+          <h3>Berechnung anpassen</h3>
+        </div>
+        <button type="button" class="commission-calc__reset" data-calc-reset>Zurücksetzen</button>
+      </div>
+
+      <div class="commission-calc__fields">
+        <div class="commission-calc__field">
+          <label for="calc-orders">Heutige Marktplatzbestellungen pro Monat</label>
+          <div class="commission-calc__input">
+            <input
+              id="calc-orders"
+              data-field="monthlyMarketplaceOrders"
+              type="number"
+              inputmode="numeric"
+              min={scenarioLimits.monthlyMarketplaceOrders.min}
+              max={scenarioLimits.monthlyMarketplaceOrders.max}
+              step="1"
+              value={sampleScenario.monthlyMarketplaceOrders}
+              required
+            />
+            <span>Bestellungen</span>
+          </div>
+        </div>
+
+        <div class="commission-calc__field">
+          <label for="calc-basket">Durchschnittlicher Warenkorb</label>
+          <div class="commission-calc__input">
+            <span>CHF</span>
+            <input
+              id="calc-basket"
+              data-field="averageBasketCHF"
+              type="number"
+              inputmode="decimal"
+              min={scenarioLimits.averageBasketCHF.min}
+              max={scenarioLimits.averageBasketCHF.max}
+              step="0.01"
+              value={sampleScenario.averageBasketCHF}
+              required
+            />
+          </div>
+        </div>
+
+        <div class="commission-calc__field">
+          <label for="calc-marketplace">Heutige Plattformprovision</label>
+          <div class="commission-calc__input">
+            <input
+              id="calc-marketplace"
+              data-field="marketplaceCommissionPercent"
+              type="number"
+              inputmode="decimal"
+              min={scenarioLimits.marketplaceCommissionPercent.min}
+              max={scenarioLimits.marketplaceCommissionPercent.max}
+              step="0.1"
+              value={sampleScenario.marketplaceCommissionPercent}
+              required
+            />
+            <span>%</span>
+          </div>
+        </div>
+
+        <div class="commission-calc__field">
+          <label for="calc-redirect">Davon künftig direkt bestellt (Annahme)</label>
+          <div class="commission-calc__input">
+            <input
+              id="calc-redirect"
+              data-field="redirectedPercent"
+              type="number"
+              inputmode="decimal"
+              min={scenarioLimits.redirectedPercent.min}
+              max={scenarioLimits.redirectedPercent.max}
+              step="0.1"
+              value={sampleScenario.redirectedPercent}
+              required
+            />
+            <span>%</span>
+          </div>
+          <p class="commission-calc__hint">
+            Nur umgeleitete Bestellungen werden verglichen. Zusätzliche Neukunden sind nicht
+            eingerechnet.
+          </p>
+        </div>
+
+        <div class="commission-calc__field">
+          <label for="calc-payment-percent">Angenommene Zahlungsgebühr, variabel</label>
+          <div class="commission-calc__input">
+            <input
+              id="calc-payment-percent"
+              data-field="paymentPercent"
+              type="number"
+              inputmode="decimal"
+              min={scenarioLimits.paymentPercent.min}
+              max={scenarioLimits.paymentPercent.max}
+              step="0.1"
+              value={sampleScenario.paymentPercent}
+              required
+            />
+            <span>%</span>
+          </div>
+        </div>
+
+        <div class="commission-calc__field">
+          <label for="calc-payment-fixed">Angenommene Zahlungsgebühr, fix</label>
+          <div class="commission-calc__input">
+            <span>CHF</span>
+            <input
+              id="calc-payment-fixed"
+              data-field="paymentFixedCHF"
+              type="number"
+              inputmode="decimal"
+              min={scenarioLimits.paymentFixedCHF.min}
+              max={scenarioLimits.paymentFixedCHF.max}
+              step="0.01"
+              value={sampleScenario.paymentFixedCHF}
+              required
+            />
+            <span>/ Bestellung</span>
+          </div>
+        </div>
+
+        <div class="commission-calc__field commission-calc__field--wide">
+          <label for="calc-plan">IzyOrder-Tarif (unverbindlicher Entwurf)</label>
+          <div class="commission-calc__select">
+            <select id="calc-plan" data-field="planId">
+              {pricingDraft.plans.map((plan) => (
+                <option value={plan.id} selected={plan.id === sampleScenario.planId}>
+                  {plan.name} – {formatChf(plan.monthlyCHF)}/Monat
+                </option>
+              ))}
+            </select>
+          </div>
+          <p class="commission-calc__hint">
+            Tarife sind noch nicht buchbar; sämtliche Preisangaben exkl. MWST. Ein allfälliger
+            Jahresrabatt wird hier bewusst nicht berücksichtigt.
+          </p>
+        </div>
+      </div>
+      <noscript>
+        <p class="commission-calc__warning">
+          Ohne JavaScript wird das unveränderte Rechenbeispiel angezeigt. Zum Anpassen der Werte
+          aktivieren Sie JavaScript in Ihrem Browser.
+        </p>
+      </noscript>
+      <p class="commission-calc__warning" data-calc-error role="alert" hidden></p>
+    </div>
+
+    <div class="commission-calc__results">
+      <div class="commission-calc__result-head">
+        <p class="commission-calc__overline">02 / Ihr Szenario</p>
+        <span class="commission-calc__result-pill">Unverbindliche Beispielrechnung</span>
+      </div>
+      <div class="commission-calc__hero-result" data-calc-mood={monthlyIsPositive ? 'positive' : 'negative'}>
+        <span data-calc-result-label>
+          {monthlyIsPositive ? 'Rechnerischer Kostenvorteil pro Monat' : 'Rechnerische Mehrkosten pro Monat'}
+        </span>
+        <strong data-calc-monthly>{formatChf(Math.abs(initial.monthlyDifferenceCHF))}</strong>
+        <p>
+          Auf zwölf identische Monate hochgerechnet:
+          <b data-calc-annual>{formatChf(initial.annualDifferenceCHF)}</b>
+        </p>
+      </div>
+
+      <div class="commission-calc__breakdown">
+        <h3>Kostenvergleich pro Monat</h3>
+        <dl>
+          <div>
+            <dt>Angenommen direkt bestellte Aufträge</dt>
+            <dd data-calc-orders>{initial.redirectedOrders}</dd>
+          </div>
+          <div>
+            <dt>Bestellvolumen dieser Aufträge</dt>
+            <dd data-calc-volume>{formatChf(initial.redirectedOrderVolumeCHF)}</dd>
+          </div>
+          <div>
+            <dt>Wegfallende Plattformprovision</dt>
+            <dd data-calc-avoided>{formatChf(initial.avoidedMarketplaceCommissionCHF)}</dd>
+          </div>
+          <div>
+            <dt>Abzüglich angenommener Zahlungsgebühren</dt>
+            <dd data-calc-payment>− {formatChf(initial.assumedDirectPaymentFeesCHF)}</dd>
+          </div>
+          <div>
+            <dt>Abzüglich IzyOrder-Monatsabo</dt>
+            <dd data-calc-subscription>− {formatChf(initial.subscriptionCHF)}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="commission-calc__break-even">
+        <p class="commission-calc__overline">Rechnerischer Break-even</p>
+        <p data-calc-break-even>
+          {initial.breakEvenRedirectedOrders === null
+            ? 'Unter diesen Annahmen mit den vorhandenen Bestellungen nicht erreichbar.'
+            : `Ab ${initial.breakEvenRedirectedOrders} umgeleiteten Bestellungen pro Monat (rund ${initial.breakEvenRedirectedPercent} % der heutigen Plattformbestellungen).`}
+        </p>
+      </div>
+      <p class="commission-calc__live" role="status" aria-live="polite" aria-atomic="true" data-calc-live></p>
+    </div>
+  </div>
+
+  <div class="commission-calc__notes">
+    <h3>Was diese Berechnung berücksichtigt – und was nicht</h3>
+    <p>
+      Der Rechner vergleicht ausschliesslich die angenommene Marktplatzprovision auf
+      <strong>verlagerte bestehende Bestellungen</strong> mit den angenommenen direkten
+      Zahlungsgebühren und einem IzyOrder-Monatsabo. Er geht davon aus, dass die bisherige
+      Marktplatzprovision alle hier ersetzten plattformseitigen Bestellgebühren umfasst.
+    </p>
+    <p>
+      <strong>Nicht berücksichtigt:</strong> zusätzliche Lieferkosten, Marketing und
+      Kundengewinnung, Personalkosten, Einrichtungsgebühren, Steuern, Retouren, weitere Gebühren,
+      Änderungen der Bestellmenge sowie allfällige Vertragsbedingungen bestehender Plattformen.
+      Die voreingestellten Gebühren sind frei gewählte Beispiele, <strong>keine verifizierten
+      Anbieterpreise</strong>. Der Vergleich erlaubt keine Aussage über tatsächliche
+      Kundenabwanderung, Umsatzwachstum oder erzielbaren Gewinn.
+    </p>
+  </div>
+</section>
+
+<script>
+  import { calculateCommissionScenario, sampleScenario, type CommissionScenario } from '../../lib/commission-calculator';
+  import { formatChf } from '../../lib/format';
+
+  function initCalculator(): void {
+    document.querySelectorAll<HTMLElement>('[data-commission-calculator]').forEach((root) => {
+      if (root.dataset.calculatorReady === 'true') return;
+      root.dataset.calculatorReady = 'true';
+      const fields = [...root.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-field]')];
+      const error = root.querySelector<HTMLElement>('[data-calc-error]');
+      const live = root.querySelector<HTMLElement>('[data-calc-live]');
+      const monthly = root.querySelector<HTMLElement>('[data-calc-monthly]');
+      const annual = root.querySelector<HTMLElement>('[data-calc-annual]');
+      const label = root.querySelector<HTMLElement>('[data-calc-result-label]');
+      const mood = root.querySelector<HTMLElement>('[data-calc-mood]');
+      const el = (key: string) => root.querySelector<HTMLElement>(`[data-calc-${key}]`);
+
+      const recalculate = () => {
+        const invalid = fields.find((field) => !field.validity.valid || field.value.trim() === '');
+        if (invalid) {
+          if (error) {
+            error.hidden = false;
+            error.textContent = 'Bitte verwenden Sie für alle Felder gültige Werte innerhalb der angegebenen Grenzen.';
+          }
+          if (live) live.textContent = 'Die Berechnung wurde wegen ungültiger Eingaben angehalten.';
+          return;
+        }
+
+        const get = (key: keyof CommissionScenario): string =>
+          fields.find((field) => field.dataset.field === key)?.value ?? '';
+        try {
+          const scenario: CommissionScenario = {
+            monthlyMarketplaceOrders: Number(get('monthlyMarketplaceOrders')),
+            averageBasketCHF: Number(get('averageBasketCHF')),
+            marketplaceCommissionPercent: Number(get('marketplaceCommissionPercent')),
+            redirectedPercent: Number(get('redirectedPercent')),
+            paymentPercent: Number(get('paymentPercent')),
+            paymentFixedCHF: Number(get('paymentFixedCHF')),
+            planId: get('planId') as CommissionScenario['planId'],
+          };
+          const result = calculateCommissionScenario(scenario);
+          if (error) {
+            error.hidden = true;
+            error.textContent = '';
+          }
+
+          const isPositive = result.monthlyDifferenceCHF > 0;
+          const isNeutral = result.monthlyDifferenceCHF === 0;
+          if (mood) mood.dataset.calcMood = isNeutral ? 'neutral' : isPositive ? 'positive' : 'negative';
+          if (label) label.textContent = isNeutral
+            ? 'Rechnerisch ausgeglichene Kosten pro Monat'
+            : isPositive ? 'Rechnerischer Kostenvorteil pro Monat' : 'Rechnerische Mehrkosten pro Monat';
+          if (monthly) monthly.textContent = formatChf(Math.abs(result.monthlyDifferenceCHF));
+          if (annual) annual.textContent = formatChf(result.annualDifferenceCHF);
+          if (el('orders')) el('orders')!.textContent = String(result.redirectedOrders);
+          if (el('volume')) el('volume')!.textContent = formatChf(result.redirectedOrderVolumeCHF);
+          if (el('avoided')) el('avoided')!.textContent = formatChf(result.avoidedMarketplaceCommissionCHF);
+          if (el('payment')) el('payment')!.textContent = `− ${formatChf(result.assumedDirectPaymentFeesCHF)}`;
+          if (el('subscription')) el('subscription')!.textContent = `− ${formatChf(result.subscriptionCHF)}`;
+          if (el('break-even')) {
+            el('break-even')!.textContent = result.breakEvenRedirectedOrders === null
+              ? 'Unter diesen Annahmen mit den vorhandenen Bestellungen nicht erreichbar.'
+              : `Ab ${result.breakEvenRedirectedOrders} umgeleiteten Bestellungen pro Monat (rund ${result.breakEvenRedirectedPercent} % der heutigen Plattformbestellungen).`;
+          }
+          if (live) live.textContent = `Neu berechnet: ${result.redirectedOrders} Direktbestellungen; ${isPositive ? 'Kostenvorteil' : isNeutral ? 'ausgeglichene Kosten' : 'Mehrkosten'} von ${formatChf(Math.abs(result.monthlyDifferenceCHF))} monatlich.`;
+        } catch {
+          if (error) {
+            error.hidden = false;
+            error.textContent = 'Diese Kombination liegt ausserhalb des berechenbaren Bereichs.';
+          }
+          if (live) live.textContent = 'Bitte korrigieren Sie Ihre Eingaben.';
+        }
+      };
+
+      for (const field of fields) {
+        field.addEventListener('input', recalculate);
+        field.addEventListener('change', recalculate);
+      }
+
+      root.querySelector<HTMLButtonElement>('[data-calc-reset]')?.addEventListener('click', () => {
+        for (const field of fields) {
+          const key = field.dataset.field as keyof CommissionScenario | undefined;
+          if (key) field.value = String(sampleScenario[key]);
+        }
+        recalculate();
+      });
+    });
+  }
+
+  initCalculator();
+  document.addEventListener('astro:page-load', initCalculator);
+</script>
+
+<style>
+  .commission-calc {
+    display: grid;
+    gap: var(--space-10);
+  }
+
+  .commission-calc__intro {
+    display: grid;
+    gap: var(--space-5);
+    max-width: var(--container-md);
+  }
+
+  .commission-calc__intro h2 {
+    max-width: 24ch;
+  }
+
+  .commission-calc__eyebrow,
+  .commission-calc__overline {
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
+    letter-spacing: var(--tracking-overline);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+  }
+
+  .commission-calc__grid {
+    display: grid;
+    align-items: start;
+    gap: var(--space-6);
+  }
+
+  .commission-calc__settings,
+  .commission-calc__results {
+    display: grid;
+    gap: var(--space-6);
+    min-width: 0;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+  }
+
+  .commission-calc__panel-head,
+  .commission-calc__result-head {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .commission-calc__panel-head > div {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .commission-calc__panel-head h3 {
+    font-size: var(--text-h4);
+  }
+
+  .commission-calc__reset {
+    min-height: var(--touch-target);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+  }
+
+  .commission-calc__reset:hover {
+    background-color: var(--color-action-secondary-hover);
+  }
+
+  .commission-calc__fields {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .commission-calc__field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: var(--space-2);
+  }
+
+  .commission-calc__field label {
+    color: var(--color-text);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-compact);
+  }
+
+  .commission-calc__hint {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .commission-calc__input {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-height-lg);
+    padding-inline: var(--space-4);
+    border: 1px solid var(--color-border-control);
+    border-radius: var(--control-radius);
+    background-color: var(--color-bg);
+  }
+
+  .commission-calc__input:focus-within {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .commission-calc__input input {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    padding-block: var(--space-3);
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    outline: none;
+  }
+
+  .commission-calc__input span {
+    flex: none;
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .commission-calc__select select {
+    width: 100%;
+    min-height: var(--control-height-lg);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border-control);
+    border-radius: var(--control-radius);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .commission-calc__result-pill {
+    max-width: 13rem;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-bg-subtle);
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+  }
+
+  .commission-calc__hero-result {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  .commission-calc__hero-result[data-calc-mood='negative'] {
+    background-color: var(--color-warning-bg);
+    color: var(--color-warning);
+  }
+
+  .commission-calc__hero-result[data-calc-mood='neutral'] {
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text);
+  }
+
+  .commission-calc__hero-result > span {
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .commission-calc__hero-result strong {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: var(--tracking-h2);
+    line-height: var(--leading-heading);
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .commission-calc__hero-result p {
+    font-size: var(--text-body-sm);
+  }
+
+  .commission-calc__hero-result p b {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .commission-calc__breakdown h3 {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-h5);
+  }
+
+  .commission-calc__breakdown dl {
+    display: grid;
+    gap: 0;
+  }
+
+  .commission-calc__breakdown dl > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-5);
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .commission-calc__breakdown dt {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  .commission-calc__breakdown dd {
+    margin: 0;
+    flex: none;
+    color: var(--color-text);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .commission-calc__break-even {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .commission-calc__break-even p:last-child {
+    color: var(--color-text);
+    font-size: var(--text-body-sm);
+  }
+
+  .commission-calc__live {
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .commission-calc__live:empty {
+    display: none;
+  }
+
+  .commission-calc__warning {
+    padding: var(--space-4);
+    border: 1px solid var(--color-warning-border);
+    border-radius: var(--radius-md);
+    color: var(--color-warning);
+    background-color: var(--color-warning-bg);
+    font-size: var(--text-body-sm);
+  }
+
+  .commission-calc__warning[hidden] {
+    display: none;
+  }
+
+  .commission-calc__notes {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--container-lg);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .commission-calc__notes h3 {
+    font-size: var(--text-h5);
+  }
+
+  .commission-calc__notes p {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  @media (min-width: 640px) {
+    .commission-calc__fields {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .commission-calc__field--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .commission-calc__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .commission-calc__breakdown dl > div {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-1);
+    }
+
+    .commission-calc__breakdown dd {
+      text-align: left;
+    }
+  }
+</style>
