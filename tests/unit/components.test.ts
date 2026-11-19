@@ -46,9 +46,19 @@ describe('UI-Komponenten', () => {
     for (const f of files) expect(styleOf(read(f)), f).not.toMatch(/(?<!-)color:\s*var\(--mint-/);
   });
 
-  it('JavaScript nur in Dialog und Form (gezielt geladen)', () => {
+  it('JavaScript nur in Button (Ladesperre), Dialog und Form (gezielt geladen)', () => {
     const withScript = files.filter((f) => /<script/.test(read(f)));
-    expect(withScript.sort()).toEqual(['Dialog.astro', 'Form.astro']);
+    expect(withScript.sort()).toEqual(['Button.astro', 'Dialog.astro', 'Form.astro']);
+  });
+
+  it('Demo-Formulare nutzen method="dialog" (kein Versand ohne JavaScript)', () => {
+    const form = read('Form.astro');
+    expect(form).toMatch(/const effectiveMethod = demo \? 'dialog' : method;/);
+    expect(form).toMatch(/const effectiveAction = demo \? undefined : action;/);
+  });
+
+  it('ladende Submit-Buttons werden ohne JavaScript als type="button" gerendert', () => {
+    expect(read('Button.astro')).toMatch(/loading && type !== 'button' \? 'button' : type/);
   });
 
   it('Bedienelemente verwenden die Kontrollhöhen-Tokens', () => {

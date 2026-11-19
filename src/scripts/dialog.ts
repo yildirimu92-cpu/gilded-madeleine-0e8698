@@ -2,7 +2,8 @@
  * Dialog-Steuerung für native <dialog class="dialog">:
  * - Öffnen über [data-dialog-open="id"], Schliessen über [data-dialog-close]
  * - Escape schliesst (nativ), Klick auf den Hintergrund schliesst (optional)
- * - Fokus: [autofocus] bzw. erstes Bedienelement im Inhalt; Tab bleibt im Dialog
+ * - Fokus: Titel (data-initial-focus="title"), sonst [autofocus] bzw. erste Aktion; Tab bleibt im Dialog
+ * - data-dismissible="false" sperrt nur den Hintergrund-Klick – Escape und X bleiben aktiv
  * - Fokus-Rückgabe an das auslösende Element, Seiten-Scroll gesperrt
  */
 
@@ -23,6 +24,9 @@ export function openDialog(dialog: HTMLDialogElement, opener?: HTMLElement | nul
   dialog.showModal();
   document.documentElement.classList.add('has-dialog');
   const preferred =
+    (dialog.dataset.initialFocus === 'title'
+      ? dialog.querySelector<HTMLElement>('.dialog__title')
+      : null) ??
     dialog.querySelector<HTMLElement>('[autofocus]') ??
     focusables(dialog).find((el) => !el.classList.contains('dialog__close')) ??
     focusables(dialog)[0];
@@ -46,6 +50,13 @@ function trapTab(this: HTMLDialogElement, e: KeyboardEvent): void {
   if (!items.length) return;
   const first = items[0]!;
   const last = items[items.length - 1]!;
+  const active = document.activeElement as HTMLElement | null;
+  // Fokus ausserhalb der Tab-Reihenfolge (z. B. Titel mit tabindex=-1): im Dialog halten.
+  if (!active || !items.includes(active)) {
+    e.preventDefault();
+    (e.shiftKey ? last : first).focus();
+    return;
+  }
   if (e.shiftKey && document.activeElement === first) {
     e.preventDefault();
     last.focus();

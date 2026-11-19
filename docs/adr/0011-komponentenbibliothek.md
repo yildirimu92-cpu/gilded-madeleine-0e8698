@@ -21,6 +21,7 @@ Die Marketing-Website braucht wiederverwendbare, barrierefreie Bausteine für sp
    - Radio-Gruppe in `<fieldset>` für das Segmented Control (Pfeiltasten nativ)
    - `<dialog>` mit `showModal()` (Inert-Hintergrund und Escape nativ)
 3. **JavaScript nur, wo nötig, und nur auf Seiten, die es verwenden:**
+   - `Button`: Ladesperre (ca. 0.5 KB).
    - `Dialog`: Fokus beim Öffnen, Tab-Schleife, Fokus-Rückgabe, Scroll-Sperre, Hintergrund-Klick.
    - `Form`: progressive Validierung mit Meldungen direkt am Feld.
    - Astro liefert die Skripte inline mit SHA-256-Hash in der CSP aus (ca. 5 KB, nur `/styleguide/`). Seiten ohne diese Komponenten laden kein JavaScript (per Test geprüft).
@@ -51,7 +52,21 @@ Die Marketing-Website braucht wiederverwendbare, barrierefreie Bausteine für sp
 
    - SEO wird bis zum Launch nicht bewertet, weil die Seiten bewusst `noindex` sind.
    - Berichte bleiben als CI-Artefakt und werden nicht an Dritte übermittelt.
-7. **Favicon:** leerer Platzhalter (`data:,`) bis zum freigegebenen IO-Monogramm. Das verhindert 404-Fehler. Ein Favicon wird nicht improvisiert.
+7. **Robuste Zustände:**
+   - Ladende Buttons sind per Capture-Sperre blockiert, ohne JavaScript `type="button"`.
+   - Demo-Formulare verwenden `method="dialog"` (kein Versand auf HTML-Ebene).
+   - Reset stellt den vollständigen Ausgangszustand her. Ein Regressionstest gibt es je Fall.
+8. **Favicon:** leerer Platzhalter (`data:,`) bis zum freigegebenen IO-Monogramm. Das verhindert 404-Fehler. Ein Favicon wird nicht improvisiert.
+
+## Verbindliche UI/UX-Entscheide (19.11.2026)
+
+- Favicon erst mit dem finalen Logo.
+- Eigenständige Text-Link-Buttons mit 44 px Touch-Ziel, Links im Fliesstext kompakt.
+- Dialog-Fokus auf die erste ungefährliche Aktion, bei umfangreichen Textdialogen konfigurierbar auf den Titel (`initialFocus="title"`).
+- `dismissible={false}` sperrt nur den Hintergrund-Klick. Escape und Schliessen-Schaltfläche bleiben aktiv.
+- Validierung nach Benutzerinteraktion bzw. Absenden, danach live.
+- Hervorgehobene Karten mit Mint-Akzent und dunklem Rahmen.
+- FAQ-Akkordeon erst mit der B2B-Homepage, möglichst nativ (`<details>`).
 
 ## Konsequenzen
 

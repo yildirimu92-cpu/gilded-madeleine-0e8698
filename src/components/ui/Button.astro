@@ -2,9 +2,16 @@
 /**
  * Button – rendert <button> oder, mit `href`, einen Link im Button-Stil.
  *
- * Varianten: primary · secondary · ghost · link (Text-Link-Stil)
- * Zustände: disabled · loading (aria-busy, bleibt fokussierbar, Breite stabil)
- * Weitere Attribute (z. B. data-dialog-open, form, name) werden durchgereicht.
+ * Varianten: primary · secondary · ghost · link (Text-Link-Stil; eigenständig, 44 px Touch-Ziel)
+ * Zustände: disabled · loading
+ *
+ * Ladezustand (robust gegen Doppelaktionen):
+ * - aria-busy + aria-disabled, Button bleibt fokussierbar, Beschriftung bleibt im Namen
+ * - Sperre in der Capture-Phase (src/scripts/button-state.ts) blockiert Klick, Enter,
+ *   Leertaste und implizites Absenden
+ * - ohne JavaScript: ladende Submit-Buttons werden als type="button" gerendert und
+ *   können kein Formular absenden
+ * - zur Laufzeit: setButtonLoading(button, true|false)
  */
 import type { HTMLAttributes } from 'astro/types';
 import Icon from './Icon.astro';
@@ -52,6 +59,8 @@ const classes = [
 ];
 const inactive = disabled || loading;
 const iconSize = size === 'lg' ? 20 : 18;
+// Ohne JavaScript darf ein ladender Button kein Formular absenden.
+const effectiveType = loading && type !== 'button' ? 'button' : type;
 ---
 
 {href ? (
@@ -60,6 +69,7 @@ const iconSize = size === 'lg' ? 20 : 18;
     href={inactive ? undefined : href}
     aria-disabled={inactive ? 'true' : undefined}
     aria-busy={loading ? 'true' : undefined}
+    data-disabled={disabled ? '' : undefined}
     role={inactive ? 'link' : undefined}
     {...(rest as HTMLAttributes<'a'>)}
   >
@@ -70,20 +80,19 @@ const iconSize = size === 'lg' ? 20 : 18;
       </span>
       {iconEnd && <Icon name={iconEnd} size={iconSize} class="btn__icon-end" />}
     </span>
-    {loading && (
-      <span class="btn__spinner">
-        <Spinner />
-        <span class="visually-hidden">{loadingLabel}</span>
-      </span>
-    )}
+    <span class="btn__spinner" hidden={!loading}>
+      <Spinner />
+      <span class="visually-hidden">{loadingLabel}</span>
+    </span>
   </a>
 ) : (
   <button
     class:list={classes}
-    type={type}
+    type={effectiveType}
     disabled={disabled || undefined}
     aria-disabled={loading ? 'true' : undefined}
     aria-busy={loading ? 'true' : undefined}
+    data-type={loading && effectiveType !== type ? type : undefined}
     {...rest}
   >
     <span class="btn__content">
@@ -93,15 +102,16 @@ const iconSize = size === 'lg' ? 20 : 18;
       </span>
       {iconEnd && <Icon name={iconEnd} size={iconSize} class="btn__icon-end" />}
     </span>
-    {loading && (
-      <span class="btn__spinner">
-        <Spinner />
-        <span class="visually-hidden">{loadingLabel}</span>
-      </span>
-    )}
+    <span class="btn__spinner" hidden={!loading}>
+      <Spinner />
+      <span class="visually-hidden">{loadingLabel}</span>
+    </span>
   </button>
 )}
 
+<script>
+  import '../../scripts/button-state';
+</script>
 <style>
   .btn {
     position: relative;
@@ -265,6 +275,10 @@ const iconSize = size === 'lg' ? 20 : 18;
   /* opacity statt visibility: Beschriftung bleibt Teil des zugänglichen Namens */
   .is-loading .btn__content {
     opacity: 0;
+  }
+
+  .btn__spinner[hidden] {
+    display: none;
   }
 
   .btn__spinner {

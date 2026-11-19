@@ -3,6 +3,16 @@
  * Modaler Dialog auf Basis von <dialog> (Fokus-Isolation und Escape nativ).
  * Öffnen: beliebiges Element mit data-dialog-open="<id>" (z. B. <Button>).
  * Slots: default (Inhalt) · footer (Aktionen; Buttons mit data-dialog-close schliessen).
+ *
+ * initialFocus:
+ *  - 'action' (Standard): erstes Element mit [autofocus], sonst die erste Aktion im Inhalt
+ *    bzw. Fuss – Aktionen in Reihenfolge «ungefährlich zuerst» anordnen (z. B. Abbrechen).
+ *  - 'title': der Titel erhält den Fokus (für umfangreiche Textdialoge, damit der Inhalt
+ *    von Anfang an gelesen wird).
+ *
+ * dismissible={false} verhindert NUR das Schliessen per Klick auf den Hintergrund.
+ * Escape und die Schliessen-Schaltfläche bleiben bewusst aktiv (Tastatur- und
+ * Screenreader-Nutzer dürfen nie eingeschlossen werden).
  */
 import Icon from './Icon.astro';
 
@@ -11,8 +21,10 @@ interface Props {
   title: string;
   description?: string;
   size?: 'sm' | 'md';
-  /** Schliessen per Klick auf den Hintergrund erlauben */
+  /** Schliessen per Klick auf den Hintergrund erlauben (Escape/X bleiben immer aktiv) */
   dismissible?: boolean;
+  /** Anfangsfokus: erste ungefährliche Aktion (Standard) oder Titel */
+  initialFocus?: 'action' | 'title';
   closeLabel?: string;
 }
 
@@ -22,6 +34,7 @@ const {
   description,
   size = 'md',
   dismissible = true,
+  initialFocus = 'action',
   closeLabel = 'Dialog schliessen',
 } = Astro.props;
 ---
@@ -32,10 +45,15 @@ const {
   aria-labelledby={`${id}-title`}
   aria-describedby={description ? `${id}-desc` : undefined}
   data-dismissible={dismissible ? undefined : 'false'}
+  data-initial-focus={initialFocus === 'title' ? 'title' : undefined}
 >
   <div class="dialog__panel">
     <header class="dialog__header">
-      <h2 class="dialog__title" id={`${id}-title`}>
+      <h2
+        class="dialog__title"
+        id={`${id}-title`}
+        tabindex={initialFocus === 'title' ? '-1' : undefined}
+      >
         {title}
       </h2>
       <button type="button" class="dialog__close" data-dialog-close aria-label={closeLabel}>
@@ -125,6 +143,16 @@ const {
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-4);
+  }
+
+  .dialog__title:focus {
+    outline: none;
+  }
+
+  .dialog__title:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+    border-radius: var(--radius-xs);
   }
 
   .dialog__title {

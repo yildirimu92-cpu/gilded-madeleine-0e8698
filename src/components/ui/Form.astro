@@ -1,8 +1,13 @@
 ---
 /**
  * Formular-Wrapper mit progressiver Validierung und Statusregion.
- * `demo`: verhindert jeden Versand (nur Styleguide). Produktive Lead-Formulare
- * ergänzen später Netlify Forms (ADR 0007) – Feldnamen bleiben stabil.
+ *
+ * `demo` (nur Styleguide): sendet unter keinen Umständen Daten. Bereits auf HTML-Ebene
+ * gilt method="dialog" – ausserhalb eines <dialog> bewirkt Absenden weder eine Anfrage
+ * noch eine Navigation, auch ohne JavaScript. `action` wird ignoriert.
+ *
+ * Produktive Formulare (ohne `demo`) funktionieren ohne JavaScript nativ (method="post");
+ * Lead-Formulare ergänzen später Netlify Forms (ADR 0007) – Feldnamen bleiben stabil.
  */
 import type { HTMLAttributes } from 'astro/types';
 
@@ -11,12 +16,15 @@ interface Props extends Omit<HTMLAttributes<'form'>, 'class'> {
   class?: string;
 }
 
-const { demo = false, class: className, method = 'post', ...rest } = Astro.props;
+const { demo = false, class: className, method = 'post', action, ...rest } = Astro.props;
+const effectiveMethod = demo ? 'dialog' : method;
+const effectiveAction = demo ? undefined : action;
 ---
 
 <form
   class:list={['form', className]}
-  method={method}
+  method={effectiveMethod}
+  action={effectiveAction}
   data-validate
   data-demo={demo ? '' : undefined}
   {...rest}

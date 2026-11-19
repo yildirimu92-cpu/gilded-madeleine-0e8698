@@ -102,6 +102,21 @@ const betriebsarten = [
         Speichern
       </Button>
     </Demo>
+    <Demo label="Ladezustand blockiert jede Aktion (Maus, Enter, Leertaste)">
+      <Form
+        demo
+        aria-label="Formular mit ladendem Button"
+        id="sg-loading-form"
+        class="sg-inline-form"
+      >
+        <Button type="submit" loading>
+          Absenden
+        </Button>
+      </Form>
+      <Button variant="secondary" loading data-dialog-open="sg-dialog-info" aria-haspopup="dialog">
+        Dialog-Auslöser (lädt)
+      </Button>
+    </Demo>
     <Demo label="Grössen und Icons">
       <Button size="sm">Klein</Button>
       <Button iconEnd="arrow-right">Mittel</Button>
@@ -365,6 +380,9 @@ const betriebsarten = [
       <Button variant="secondary" data-dialog-open="sg-dialog-form" aria-haspopup="dialog">
         Dialog mit Formular
       </Button>
+      <Button variant="ghost" data-dialog-open="sg-dialog-long" aria-haspopup="dialog">
+        Dialog mit längerem Text
+      </Button>
     </Demo>
   </DocSection>
 
@@ -423,7 +441,28 @@ const betriebsarten = [
     </Fragment>
   </Dialog>
 
+  <Dialog id="sg-dialog-long" title="Dialog mit längerem Text" initialFocus="title">
+    <div class="stack">
+      <p>
+        Bei umfangreichen Texten erhält der Titel den Fokus (initialFocus="title"). So beginnen
+        Screenreader am Anfang, und der Inhalt wird nicht übersprungen.
+      </p>
+      <p>
+        Dieser Beispieltext steht für Hinweise, Erläuterungen oder Bedingungen, die vor einer
+        Entscheidung vollständig gelesen werden sollen. Mit der Tab-Taste gelangen Sie zu den
+        Aktionen; Escape schliesst den Dialog.
+      </p>
+    </div>
+    <Fragment slot="footer">
+      <Button data-dialog-close="close">Verstanden</Button>
+    </Fragment>
+  </Dialog>
+
   <Dialog id="sg-dialog-form" title="Dialog mit Formular" dismissible={false}>
+    <p class="text-body-sm text-muted sg-dialog-note">
+      dismissible=&#123;false&#125;: Ein Klick auf den Hintergrund schliesst nicht. Escape und die
+      Schliessen-Schaltfläche bleiben bewusst aktiv.
+    </p>
     <Form demo aria-label="Formular im Dialog" id="sg-dialog-form-el">
       <Input name="dialog-email" type="email" label="E-Mail-Adresse" required autofocus />
       <SegmentedControl
@@ -552,6 +591,10 @@ const betriebsarten = [
 
   .sg-cards {
     --grid-min: 15rem;
+  }
+
+  .sg-dialog-note {
+    margin-bottom: var(--space-4);
   }
 
   .sg-card-cta {
