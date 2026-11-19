@@ -1,0 +1,297 @@
+---
+/**
+ * Statische, semantische Konzeptansicht der geplanten Bestellverwaltung.
+ * Keine echten Restaurants, Bestellungen oder Produkt-Screenshots.
+ * Ohne JavaScript, externe Bilder, Tracker oder Datenabrufe.
+ */
+---
+
+<figure class="order-preview surface-inverse">
+  <div class="order-preview__top">
+    <div class="order-preview__dots" aria-hidden="true">
+      <i></i>
+      <i></i>
+      <i></i>
+    </div>
+    <span class="order-preview__product">IzyOrder · Bestellübersicht</span>
+    <span class="order-preview__tag">Konzept</span>
+  </div>
+
+  <div class="order-preview__body">
+    <div class="order-preview__heading">
+      <div>
+        <p class="order-preview__eyebrow">Für Ihr Restaurant</p>
+        <h2 class="order-preview__title">Alles im Blick.</h2>
+      </div>
+      <span class="order-preview__day">Heute</span>
+    </div>
+
+    <div class="order-preview__stats" aria-label="Beispielhafte Funktionsübersicht">
+      <div class="order-preview__stat">
+        <span class="order-preview__stat-icon" aria-hidden="true">
+          ↗
+        </span>
+        <span class="order-preview__stat-label">Direktbestellungen</span>
+        <strong>Ihr Shop</strong>
+      </div>
+      <div class="order-preview__stat">
+        <span class="order-preview__stat-icon" aria-hidden="true">
+          ⌘
+        </span>
+        <span class="order-preview__stat-label">Bestellarten</span>
+        <strong>2 Wege</strong>
+      </div>
+    </div>
+
+    <div class="order-preview__list">
+      <div class="order-preview__list-heading">
+        <span>Beispielbestellungen</span>
+        <span class="order-preview__list-count">Vorschau</span>
+      </div>
+      <div class="order-preview__order">
+        <span class="order-preview__glyph" aria-hidden="true">
+          01
+        </span>
+        <div class="order-preview__order-info">
+          <strong>Abholung</strong>
+          <span>Pizza Margherita · Beispiel</span>
+        </div>
+        <span class="order-preview__status">Neu</span>
+      </div>
+      <div class="order-preview__order">
+        <span class="order-preview__glyph" aria-hidden="true">
+          02
+        </span>
+        <div class="order-preview__order-info">
+          <strong>Lieferung</strong>
+          <span>Vegi Bowl · Beispiel</span>
+        </div>
+        <span class="order-preview__status order-preview__status--soft">In Arbeit</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="order-preview__caption">
+    Schematische Produktidee. Keine Live-Daten oder fertige Produktoberfläche.
+  </figcaption>
+</figure>
+
+<style>
+  .order-preview {
+    width: 100%;
+    max-width: 36rem;
+    margin-inline: auto;
+    overflow: hidden;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-bg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .order-preview__top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 3rem;
+    padding-inline: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .order-preview__dots {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .order-preview__dots i {
+    display: block;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-border-strong);
+  }
+
+  .order-preview__product {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+  }
+
+  .order-preview__tag {
+    margin-inline-start: auto;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text);
+    font-size: var(--text-caption);
+    white-space: nowrap;
+  }
+
+  .order-preview__body {
+    display: grid;
+    gap: var(--space-5);
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  .order-preview__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .order-preview__eyebrow {
+    font-size: var(--text-caption);
+    color: var(--color-text-accent);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .order-preview__title {
+    margin-top: var(--space-1);
+    font-size: var(--text-h4);
+    letter-spacing: var(--tracking-h4);
+  }
+
+  .order-preview__day {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .order-preview__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .order-preview__stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .order-preview__stat-icon {
+    align-self: flex-start;
+    color: var(--color-text-accent);
+    font-size: var(--text-body-lg);
+  }
+
+  .order-preview__stat-label {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+  }
+
+  .order-preview__stat strong {
+    font-size: var(--text-h5);
+    color: var(--color-text);
+  }
+
+  .order-preview__list {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .order-preview__list-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .order-preview__list-count {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .order-preview__order {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    min-width: 0;
+    padding: var(--space-4);
+  }
+
+  .order-preview__order + .order-preview__order {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .order-preview__glyph {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-accent);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .order-preview__order-info {
+    display: grid;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .order-preview__order-info strong {
+    font-size: var(--text-label);
+  }
+
+  .order-preview__order-info span {
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+  }
+
+  .order-preview__status {
+    margin-inline-start: auto;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-action);
+    color: var(--color-action-text);
+    font-size: var(--text-caption);
+    white-space: nowrap;
+  }
+
+  .order-preview__status--soft {
+    border: 1px solid var(--color-border-strong);
+    background-color: transparent;
+    color: var(--color-text);
+  }
+
+  .order-preview__caption {
+    padding: var(--space-3) var(--space-5);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  @media (max-width: 480px) {
+    .order-preview__stat {
+      padding: var(--space-3);
+    }
+
+    .order-preview__status {
+      font-size: 0.7rem;
+    }
+
+    .order-preview__top {
+      padding-inline: var(--space-3);
+    }
+
+    .order-preview__product {
+      font-size: 0.7rem;
+    }
+  }
+</style>

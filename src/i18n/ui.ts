@@ -4,13 +4,13 @@ const de = {
   'site.name': 'IzyOrder',
   'site.tagline': 'Online-Bestellsystem für die Schweizer Gastronomie',
   'nav.skip': 'Zum Inhalt springen',
-  'home.title': 'IzyOrder – Online-Bestellsystem für die Schweizer Gastronomie',
+  'home.title': 'Online-Bestellshop ohne Plattformprovision – IzyOrder',
   'home.description':
-    'IzyOrder ist das Online-Bestellsystem für Restaurants, Takeaways und Gastronomiebetriebe in der Schweiz. Die neue Website entsteht gerade.',
-  'home.eyebrow': 'Neue Website in Arbeit',
-  'home.heading': 'Online-Bestellungen für die Schweizer Gastronomie.',
+    'IzyOrder entwickelt einen Online-Bestellshop für Schweizer Restaurants und Takeaways: Direktbestellungen für Abholung und Lieferung, 0 % Plattformprovision. Gebühren von Zahlungsanbietern können anfallen.',
+  'home.eyebrow': 'Für die Schweizer Gastronomie – in Entwicklung',
+  'home.heading': 'Ihr Bestellshop. Ohne Plattformprovision.',
   'home.lead':
-    'Hier entsteht der neue Auftritt von IzyOrder – dem Bestellsystem für Restaurants, Takeaways und Gastronomiebetriebe.',
+    'IzyOrder entsteht für Schweizer Restaurants und Takeaways: Online-Bestellungen für Abholung und Lieferung über den eigenen Shop.',
   'notFound.title': 'Seite nicht gefunden',
   'notFound.text': 'Die gewünschte Seite existiert nicht oder wurde verschoben.',
   'notFound.back': 'Zur Startseite',
