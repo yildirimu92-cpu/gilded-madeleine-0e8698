@@ -15,9 +15,21 @@ const plans = pricingDraft.plans.map((plan) => ({
   calculation: draftPlanPrice(plan.id),
 }));
 const principles = [
-  { number: '01', title: 'Keine Plattformprovision', copy: '0 % auf Direktbestellungen. Externe Zahlungsgebühren sind davon unabhängig.' },
-  { number: '02', title: 'Unbegrenzte Bestellungen', copy: 'Im vorgesehenen Abo-Modell ist keine mengenbasierte Bestellprovision geplant.' },
-  { number: '03', title: 'Abholung und Lieferung', copy: 'Beide Bestellarten und die Onlinezahlung sind Bestandteil der geplanten Online-Lösung.' },
+  {
+    number: '01',
+    title: 'Keine Plattformprovision',
+    copy: '0 % auf Direktbestellungen. Externe Zahlungsgebühren sind davon unabhängig.',
+  },
+  {
+    number: '02',
+    title: 'Unbegrenzte Bestellungen',
+    copy: 'Im vorgesehenen Abo-Modell ist keine mengenbasierte Bestellprovision geplant.',
+  },
+  {
+    number: '03',
+    title: 'Abholung und Lieferung',
+    copy: 'Beide Bestellarten und die Onlinezahlung sind Bestandteil der geplanten Online-Lösung.',
+  },
 ] as const;
 ---
 
@@ -31,10 +43,12 @@ const principles = [
       <header class="pricing-study__hero">
         <div class="pricing-study__hero-copy">
           <p class="pricing-study__eyebrow">IzyOrder / Tarifstrategie</p>
-          <h1 class="text-display">Einfach kalkuliert.<span>Für Wachstum gedacht.</span></h1>
+          <h1 class="text-display">
+            Einfach kalkuliert.<span>Für Wachstum gedacht.</span>
+          </h1>
           <p class="text-lead">
-            Drei mögliche Online-Tarife, ein provisionsfreies Grundmodell. Hier vergleichen wir
-            die Preisstruktur, bevor Leistungen und Vertragsbedingungen freigegeben werden.
+            Drei mögliche Online-Tarife, ein provisionsfreies Grundmodell. Hier vergleichen wir die
+            Preisstruktur, bevor Leistungen und Vertragsbedingungen freigegeben werden.
           </p>
         </div>
         <aside class="pricing-study__approval" aria-label="Status der Tarifstudie">
@@ -88,7 +102,10 @@ const principles = [
                   <h3>{plan.name}</h3>
                 </div>
                 <span class="pricing-study__plan-index">
-                  {String(pricingDraft.plans.findIndex((item) => item.id === plan.id) + 1).padStart(2, '0')}
+                  {String(pricingDraft.plans.findIndex((item) => item.id === plan.id) + 1).padStart(
+                    2,
+                    '0',
+                  )}
                 </span>
               </div>
 
@@ -128,8 +145,8 @@ const principles = [
           <p class="pricing-study__eyebrow">Gemeinsame Grundlage</p>
           <h2 id="pricing-principles-heading">Ein Modell. Keine versteckten Plattformprozente.</h2>
           <p>
-            Diese Grundsätze sind vorgesehen, aber noch kein verbindlicher Leistungsumfang
-            eines bestimmten Tarifs.
+            Diese Grundsätze sind vorgesehen, aber noch kein verbindlicher Leistungsumfang eines
+            bestimmten Tarifs.
           </p>
         </div>
         <div class="pricing-study__principles">
@@ -149,15 +166,23 @@ const principles = [
           <h2 id="pricing-decisions-heading">Was wir noch entscheiden müssen.</h2>
         </div>
         <ul>
-          <li>Welcher Funktionsumfang unterscheidet Starter, Professional und Business tatsächlich?</li>
+          <li>
+            Welcher Funktionsumfang unterscheidet Starter, Professional und Business tatsächlich?
+          </li>
           <li>Welche optionalen Einrichtungsleistungen und Gebühren sind vorgesehen?</li>
-          <li>Wie werden Abonnement, Zahlungsausfall, Kündigung und Live-Aktivierung verbindlich geregelt?</li>
-          <li>Welche Beträge und Rabatte werden nach kaufmännischer und rechtlicher Prüfung freigegeben?</li>
+          <li>
+            Wie werden Abonnement, Zahlungsausfall, Kündigung und Live-Aktivierung verbindlich
+            geregelt?
+          </li>
+          <li>
+            Welche Beträge und Rabatte werden nach kaufmännischer und rechtlicher Prüfung
+            freigegeben?
+          </li>
         </ul>
         <p>
-          IzyOrder Online ist unabhängig von der geplanten KI-Telefonassistenz.
-          Die Voice- und Complete-Tarife sind nicht Teil dieser Preisstudie.
-          Diese Seite bleibt <strong>noindex</strong>, ist aber über die Direktadresse erreichbar.
+          IzyOrder Online ist unabhängig von der geplanten KI-Telefonassistenz. Die Voice- und
+          Complete-Tarife sind nicht Teil dieser Preisstudie. Diese Seite bleibt{' '}
+          <strong>noindex</strong>, ist aber über die Direktadresse erreichbar.
         </p>
       </section>
     </div>
@@ -178,7 +203,9 @@ const principles = [
           const amount = card.querySelector<HTMLElement>('[data-pricing-amount]');
           const period = card.querySelector<HTMLElement>('[data-pricing-period]');
           if (amount) {
-            amount.textContent = annual ? card.dataset.annualMonthly || '' : card.dataset.monthlyPrice || '';
+            amount.textContent = annual
+              ? card.dataset.annualMonthly || ''
+              : card.dataset.monthlyPrice || '';
           }
           if (period) {
             period.textContent = annual
