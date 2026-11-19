@@ -48,6 +48,11 @@
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
 
+[[headers]]
+  for = "/styleguide/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 # --- Caching ----------------------------------------------------------------
 [[headers]]
   for = "/_astro/*"

@@ -25,4 +25,6 @@
 2. In `src/config/brand.ts` `logo.status` auf `'final'` setzen.
 3. `npm run verify` ausführen und die Designvorschau `/intern/design/` prüfen.
 
+4. Favicon und App-Icons aus dem Monogramm ableiten und den Platzhalter `<link rel="icon" href="data:,">` in `src/layouts/BaseLayout.astro` ersetzen.
+
 Alle Verwendungsstellen nutzen `src/components/brand/Logo.astro` und müssen nicht angepasst werden.

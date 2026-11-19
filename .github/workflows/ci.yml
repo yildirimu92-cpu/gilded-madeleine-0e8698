@@ -55,6 +55,18 @@ jobs:
       - name: E2E- und Accessibility-Tests
         run: npm run test:e2e
 
+      - name: Lighthouse CI (Performance-Budgets)
+        run: npm run lighthouse
+
+      - name: Lighthouse-Berichte hochladen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          retention-days: 14
+          if-no-files-found: ignore
+
       - name: Testbericht hochladen
         if: failure()
         uses: actions/upload-artifact@v4

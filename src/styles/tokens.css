@@ -151,6 +151,7 @@
 
   --color-link: var(--forest-600);
   --color-link-hover: var(--forest-800);
+  --color-text-accent: var(--forest-600); /* Overlines, Akzenttext */
 
   --color-border: var(--sand-200);
   --color-border-strong: var(--sand-300);
@@ -188,6 +189,30 @@
 }
 
 /*
+ * Ebene 3 – Komponenten-Tokens: gemeinsame Masse für Bedienelemente.
+ * Nur Ableitungen aus Ebene 1/2, keine neuen Farben.
+ */
+:root {
+  --control-height-sm: 2.5rem; /* 40 – auf Touch-Geräten 44 */
+  --control-height-md: 2.75rem; /* 44 */
+  --control-height-lg: 3.25rem; /* 52 */
+  --control-radius: var(--radius-sm);
+  --control-padding-x: var(--space-5);
+  --control-border-width: 1px;
+  --touch-target: 2.75rem; /* 44 × 44 px (WCAG 2.5.8 / Apple HIG) */
+  --card-radius: var(--radius-lg);
+  --card-padding: clamp(1.25rem, 1.0739rem + 0.7512vw, 1.75rem);
+  --color-overlay: rgb(15 46 34 / 0.48); /* Forest 950, transparent */
+  --dialog-width-sm: 26rem;
+  --dialog-width-md: 36rem;
+}
+
+/* ::backdrop erbt in älteren Browsern keine Custom Properties – dort explizit setzen. */
+::backdrop {
+  --color-overlay: rgb(15 46 34 / 0.48);
+}
+
+/*
  * Inverse Markenfläche (Forest 950). Komponenten innerhalb übernehmen die
  * semantischen Tokens automatisch – keine eigenen Dunkelvarianten nötig.
  */
@@ -202,6 +227,7 @@
   --color-heading: var(--sand-50);
   --color-link: var(--mint-300);
   --color-link-hover: var(--mint-100);
+  --color-text-accent: var(--mint-300);
   --color-border: rgb(247 244 238 / 0.14);
   --color-border-strong: rgb(247 244 238 / 0.28);
   --color-focus: var(--mint-300);
@@ -211,6 +237,8 @@
   --color-action-text: var(--forest-950);
   --color-action-secondary-hover: rgb(247 244 238 / 0.08);
   --color-action-secondary-active: rgb(247 244 238 / 0.14);
+  --color-disabled-bg: rgb(247 244 238 / 0.12);
+  --color-disabled-text: var(--sand-300);
 
   background-color: var(--color-bg);
   color: var(--color-text);

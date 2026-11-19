@@ -1,0 +1,77 @@
+---
+/**
+ * Tag – Schlagwort oder Filterkategorie. Mit `href` als Link (Touch-Ziel 44 px),
+ * mit `pressed` als Umschalter (aria-pressed, für spätere Filter).
+ */
+interface Props {
+  href?: string;
+  pressed?: boolean;
+  class?: string;
+}
+const { href, pressed, class: className } = Astro.props;
+const interactive = href !== undefined || pressed !== undefined;
+---
+
+{href ? (
+  <a class:list={['tag', 'tag--interactive', className]} href={href}>
+    <slot />
+  </a>
+) : pressed !== undefined ? (
+  <button
+    type="button"
+    class:list={['tag', 'tag--interactive', className]}
+    aria-pressed={pressed ? 'true' : 'false'}
+  >
+    <slot />
+  </button>
+) : (
+  <span class:list={['tag', { 'tag--interactive': interactive }, className]}>
+    <slot />
+  </span>
+)}
+
+<style>
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    background-color: transparent;
+    color: var(--color-text);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .tag--interactive {
+    position: relative;
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* Touch-Ziel auf 44 px erweitern, ohne die Optik zu vergrössern */
+  .tag--interactive::after {
+    content: '';
+    position: absolute;
+    inset: -6px 0;
+  }
+
+  .tag--interactive:hover {
+    background-color: var(--color-action-secondary-hover);
+    border-color: var(--color-text-muted);
+    color: var(--color-text);
+  }
+
+  .tag[aria-pressed='true'] {
+    background-color: var(--color-action);
+    border-color: var(--color-action);
+    color: var(--color-action-text);
+  }
+</style>

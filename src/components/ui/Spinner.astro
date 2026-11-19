@@ -1,0 +1,51 @@
+---
+/** Dezenter Ladeindikator (rein dekorativ – Status wird per Text kommuniziert). */
+interface Props {
+  size?: number;
+}
+const { size = 18 } = Astro.props;
+---
+
+<svg
+  class="spinner"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <circle
+    cx="12"
+    cy="12"
+    r="9"
+    stroke="currentColor"
+    stroke-opacity="0.25"
+    stroke-width="2.5"
+  ></circle>
+  <path
+    d="M21 12a9 9 0 0 0-9-9"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  ></path>
+</svg>
+
+<style>
+  .spinner {
+    flex: none;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      animation: none;
+    }
+  }
+</style>

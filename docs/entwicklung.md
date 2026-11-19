@@ -18,6 +18,7 @@ npm run preview     # dist/ mit den Netlify-Headern ausliefern (http://localhost
 | `npm run check` | Typprüfung (`astro check`) |
 | `npm test` | Unit-Tests (Vitest): Indexierungslogik, `netlify.toml`, Integrität des Prototyps |
 | `npm run test:e2e` | Playwright gegen `dist/` mit Netlify-Headern: Rendering, CSP, noindex, axe (WCAG 2.2 AA), Smartphone-Ansicht, Funktionen des Prototyps |
+| `npm run lighthouse` | Lighthouse CI gegen `dist/` mit Budgets (`lighthouserc.cjs`). Lokal ggf. `CHROME_PATH` auf eine Chrome/Chromium-Binary setzen |
 | `npm run verify` | Alles der Reihe nach, wie in der CI |
 
 Vor dem ersten E2E-Lauf: `npx playwright install chromium`.
@@ -38,5 +39,7 @@ Vor dem ersten E2E-Lauf: `npx playwright install chromium`.
 - `src/styles/`: Design-Tokens, Schriften, Basis, Typografie, Layout (siehe `docs/design/designsystem.md`)
 - `src/design/palette.ts`: Farbwerte und Kontrastregeln (Single Source of Truth)
 - `/intern/design/`: interne Designvorschau (immer noindex)
+- `src/components/ui/`: Komponentenbibliothek (siehe `docs/design/komponenten.md`), Vorschau `/styleguide/` (immer noindex)
+- `src/scripts/`: clientseitige Skripte (Dialog, Formularvalidierung), nur auf Seiten geladen, die sie verwenden
 - `src/i18n/`: Sprachkonfiguration und UI-Texte
 - `scripts/serve-dist.mjs`: lokaler Server mit den Netlify-Headern und -Redirects

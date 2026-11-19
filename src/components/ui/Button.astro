@@ -1,0 +1,290 @@
+---
+/**
+ * Button – rendert <button> oder, mit `href`, einen Link im Button-Stil.
+ *
+ * Varianten: primary · secondary · ghost · link (Text-Link-Stil; eigenständig, 44 px Touch-Ziel)
+ * Zustände: disabled · loading
+ *
+ * Ladezustand (robust gegen Doppelaktionen):
+ * - aria-busy + aria-disabled, Button bleibt fokussierbar, Beschriftung bleibt im Namen
+ * - Sperre in der Capture-Phase (src/scripts/button-state.ts) blockiert Klick, Enter,
+ *   Leertaste und implizites Absenden
+ * - ohne JavaScript: ladende Submit-Buttons werden als type="button" gerendert und
+ *   können kein Formular absenden
+ * - zur Laufzeit: setButtonLoading(button, true|false)
+ */
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+import Spinner from './Spinner.astro';
+
+type Variant = 'primary' | 'secondary' | 'ghost' | 'link';
+type Size = 'sm' | 'md' | 'lg';
+
+interface Props extends Omit<HTMLAttributes<'button'>, 'type' | 'class'> {
+  variant?: Variant;
+  size?: Size;
+  type?: 'button' | 'submit' | 'reset';
+  href?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  loadingLabel?: string;
+  iconStart?: IconName;
+  iconEnd?: IconName;
+  fullWidth?: boolean;
+  class?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  href,
+  disabled = false,
+  loading = false,
+  loadingLabel = 'Wird geladen …',
+  iconStart,
+  iconEnd,
+  fullWidth = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = [
+  'btn',
+  `btn--${variant}`,
+  `btn--${size}`,
+  { 'btn--full': fullWidth, 'is-loading': loading },
+  className,
+];
+const inactive = disabled || loading;
+const iconSize = size === 'lg' ? 20 : 18;
+// Ohne JavaScript darf ein ladender Button kein Formular absenden.
+const effectiveType = loading && type !== 'button' ? 'button' : type;
+---
+
+{href ? (
+  <a
+    class:list={classes}
+    href={inactive ? undefined : href}
+    aria-disabled={inactive ? 'true' : undefined}
+    aria-busy={loading ? 'true' : undefined}
+    data-disabled={disabled ? '' : undefined}
+    role={inactive ? 'link' : undefined}
+    {...(rest as HTMLAttributes<'a'>)}
+  >
+    <span class="btn__content">
+      {iconStart && <Icon name={iconStart} size={iconSize} />}
+      <span class="btn__label">
+        <slot />
+      </span>
+      {iconEnd && <Icon name={iconEnd} size={iconSize} class="btn__icon-end" />}
+    </span>
+    <span class="btn__spinner" hidden={!loading}>
+      <Spinner />
+      <span class="visually-hidden">{loadingLabel}</span>
+    </span>
+  </a>
+) : (
+  <button
+    class:list={classes}
+    type={effectiveType}
+    disabled={disabled || undefined}
+    aria-disabled={loading ? 'true' : undefined}
+    aria-busy={loading ? 'true' : undefined}
+    data-type={loading && effectiveType !== type ? type : undefined}
+    {...rest}
+  >
+    <span class="btn__content">
+      {iconStart && <Icon name={iconStart} size={iconSize} />}
+      <span class="btn__label">
+        <slot />
+      </span>
+      {iconEnd && <Icon name={iconEnd} size={iconSize} class="btn__icon-end" />}
+    </span>
+    <span class="btn__spinner" hidden={!loading}>
+      <Spinner />
+      <span class="visually-hidden">{loadingLabel}</span>
+    </span>
+  </button>
+)}
+
+<script>
+  import '../../scripts/button-state';
+</script>
+<style>
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--control-height-md);
+    padding-inline: var(--control-padding-x);
+    border: var(--control-border-width) solid transparent;
+    border-radius: var(--control-radius);
+    font-family: inherit;
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard),
+      transform var(--duration-instant) var(--ease-standard);
+  }
+
+  .btn__content {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .btn__icon-end {
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  /* Grössen */
+  .btn--sm {
+    min-height: var(--control-height-sm);
+    padding-inline: var(--space-4);
+  }
+
+  .btn--lg {
+    min-height: var(--control-height-lg);
+    padding-inline: var(--space-6);
+    font-size: var(--text-body);
+  }
+
+  @media (pointer: coarse) {
+    .btn--sm {
+      min-height: var(--touch-target);
+    }
+  }
+
+  .btn--full {
+    display: flex;
+    width: 100%;
+  }
+
+  /* Primary */
+  .btn--primary {
+    background-color: var(--color-action);
+    color: var(--color-action-text);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .btn--primary:hover {
+    background-color: var(--color-action-hover);
+    color: var(--color-action-text);
+  }
+
+  /* Secondary */
+  .btn--secondary {
+    background-color: var(--color-surface);
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  .surface-inverse .btn--secondary {
+    background-color: transparent;
+  }
+
+  .btn--secondary:hover {
+    background-color: var(--color-action-secondary-hover);
+    border-color: var(--color-text-muted);
+    color: var(--color-text);
+  }
+
+  .btn--secondary:active {
+    background-color: var(--color-action-secondary-active);
+  }
+
+  /* Ghost */
+  .btn--ghost {
+    background-color: transparent;
+    color: var(--color-text);
+  }
+
+  .btn--ghost:hover {
+    background-color: var(--color-action-secondary-hover);
+    color: var(--color-text);
+  }
+
+  .btn--ghost:active {
+    background-color: var(--color-action-secondary-active);
+  }
+
+  /* Text-Link-Stil (Mindesthöhe bleibt für Touch erhalten) */
+  .btn--link {
+    padding-inline: var(--space-1);
+    background-color: transparent;
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 0.07em;
+    text-underline-offset: 0.2em;
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  }
+
+  .btn--link:hover {
+    color: var(--color-link-hover);
+    text-decoration-color: currentColor;
+  }
+
+  /* Bewegung */
+  .btn:hover .btn__icon-end {
+    transform: translateX(2px);
+  }
+
+  .btn:active:not([aria-disabled='true']):not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  /* Deaktiviert */
+  .btn:disabled,
+  .btn[aria-disabled='true']:not(.is-loading) {
+    background-color: var(--color-disabled-bg);
+    border-color: transparent;
+    color: var(--color-disabled-text);
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn--ghost:disabled,
+  .btn--link:disabled,
+  .btn--ghost[aria-disabled='true']:not(.is-loading),
+  .btn--link[aria-disabled='true']:not(.is-loading) {
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+  /* Laden: Beschriftung bleibt für stabile Breite, Spinner liegt darüber */
+  .is-loading {
+    cursor: progress;
+    pointer-events: none;
+  }
+
+  /* opacity statt visibility: Beschriftung bleibt Teil des zugänglichen Namens */
+  .is-loading .btn__content {
+    opacity: 0;
+  }
+
+  .btn__spinner[hidden] {
+    display: none;
+  }
+
+  .btn__spinner {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+</style>

@@ -21,7 +21,9 @@ h6,
   font-weight: var(--font-weight-bold);
   text-wrap: balance;
   overflow-wrap: break-word;
-  hyphens: manual;
+  /* Nur sehr lange Wörter trennen (z. B. «Formularfelder» in schmalen Spalten) */
+  hyphens: auto;
+  hyphenate-limit-chars: 12 6 5;
 }
 
 .text-display {

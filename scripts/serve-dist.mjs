@@ -4,6 +4,7 @@ import { createReadStream } from 'node:fs';
 import { readFile, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve } from 'node:path';
+import { createBrotliCompress, createGzip } from 'node:zlib';
 import { parse } from 'smol-toml';
 
 const root = resolve('dist');
@@ -103,11 +104,26 @@ createServer(async (req, res) => {
   const file = await resolveFile(pathname);
   const status = file ? 200 : 404;
   const served = file ?? join(root, '404.html');
+  const type = types[extname(served)] ?? 'application/octet-stream';
+  // Wie Netlify: Text-Ressourcen komprimiert ausliefern (realistische Lighthouse-Messung).
+  const accept = String(req.headers['accept-encoding'] ?? '');
+  const compressible = /^(text\/|application\/(json|xml)|image\/svg)/.test(type);
+  const encoding = !compressible
+    ? null
+    : accept.includes('br')
+      ? 'br'
+      : accept.includes('gzip')
+        ? 'gzip'
+        : null;
   res.writeHead(status, {
-    'Content-Type': types[extname(served)] ?? 'application/octet-stream',
+    'Content-Type': type,
+    ...(encoding ? { 'Content-Encoding': encoding, Vary: 'Accept-Encoding' } : {}),
     ...headersFor(pathname),
   });
-  createReadStream(served).pipe(res);
+  const stream = createReadStream(served);
+  if (encoding === 'br') stream.pipe(createBrotliCompress()).pipe(res);
+  else if (encoding === 'gzip') stream.pipe(createGzip()).pipe(res);
+  else stream.pipe(res);
 }).listen(port, () => {
   console.log(`dist/ mit Netlify-Headern auf http://localhost:${port}`);
 });
