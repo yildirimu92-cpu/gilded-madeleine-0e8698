@@ -26,7 +26,8 @@
 | 12 | B2C-Logik | Suchlogik aus dem Prototyp als getestetes TypeScript-Modul, Datenschema, Escaping | Technisch erledigt (#12), keine freigegebenen Restaurants |
 | 13 | B2C-Oberfläche | `/bestellen/` mit Suche und ehrlichem Leerzustand. Ortsseiten nur für reale, freigegebene Restaurants | Technisch erledigt (#13), echte Partner und Aktivierung offen |
 | 14 | B2C-UX-Polish | Premium-Hero und klarer Sucheinstieg ohne Scheinkatalog | Erledigt (#14) |
-| 15 | Premium-Tarifstudie | Interne Monats-/Jahresansicht mit transparenten Grundlagen und offenen Geschäftsentscheiden | In Review (#15), nicht für Verkauf freigegeben |
+| 15 | Premium-Tarifstudie | Interne Monats-/Jahresansicht mit transparenten Grundlagen und offenen Geschäftsentscheiden | Erledigt (#15), weiterhin nicht für Verkauf freigegeben |
+| 16 | Takeaway-Zielgruppenseite | `/fuer-takeaways/` mit branchenspezifischer Positionierung, Konzept-Ablauf, ehrlichem Kostenvergleich und FAQ | In Review (#16); vor Launch noindex, keine Kontakt-Datenerhebung |
 | später | Launch-Vorbereitung | Domain, Redirects, Rechts- und SEO-Abnahme, `SITE_INDEXING=true` | **Nur nach separater Freigabe** |
 
 ## Später
