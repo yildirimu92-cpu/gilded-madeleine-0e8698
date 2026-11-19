@@ -32,7 +32,9 @@ test.describe('PR16 – Takeaway-Landingpage (vor Launch)', () => {
     await firstQuestion.focus();
     await page.keyboard.press('Enter');
     const faq = page.locator('.takeaway-faq__items details').first();
-    await expect(faq.locator('p')).toContainText('Ein eigener Bestellkanal kann als zusätzliche');
+    await expect(faq.locator('p')).toContainText(
+      'Ein eigener Bestellkanal kann als zusätzliche',
+    );
     await expect(faq).toHaveAttribute('open', '');
   });
 
