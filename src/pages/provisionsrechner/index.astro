@@ -1,0 +1,66 @@
+---
+import CommissionCalculator from '../../components/marketing/CommissionCalculator.astro';
+import PublicLayout from '../../layouts/PublicLayout.astro';
+---
+
+<PublicLayout
+  title="Provisionsrechner – IzyOrder"
+  description="Vergleichen Sie hypothetische Kosten von Marktplatzbestellungen und einem eigenen Online-Bestellshop. Unverbindliches Rechenbeispiel mit transparenten Annahmen."
+  noindex
+>
+  <section class="calculator-page" aria-labelledby="calculator-page-title">
+    <div class="container container--xl">
+      <div class="calculator-page__hero">
+        <p class="calculator-page__eyebrow">IzyOrder · Interaktive Kostenübersicht</p>
+        <h1 id="calculator-page-title" class="text-h1">
+          Weniger Provision? Rechnen Sie selbst.
+        </h1>
+        <p class="text-lead">
+          Erfahren Sie, wie sich ein eigener Bestellkanal in einem selbst gewählten Szenario auf die
+          monatlichen Plattformkosten auswirken könnte.
+        </p>
+        <p class="calculator-page__status">
+          IzyOrder befindet sich in Entwicklung. Alle angezeigten Ergebnisse sind hypothetische
+          Vergleiche und keine individuelle Wirtschaftlichkeitsprognose.
+        </p>
+      </div>
+      <CommissionCalculator />
+    </div>
+  </section>
+</PublicLayout>
+
+<style>
+  .calculator-page {
+    padding-block: var(--section-y-sm) var(--section-y);
+  }
+
+  .calculator-page__hero {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-5);
+    max-width: var(--container-md);
+    margin-bottom: var(--space-12);
+  }
+
+  .calculator-page__hero h1 {
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+
+  .calculator-page__eyebrow {
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+    text-transform: uppercase;
+  }
+
+  .calculator-page__status {
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+</style>
