@@ -1,0 +1,379 @@
+---
+/**
+ * Gemeinsam genutztes Layout der PR10-Funktionsseiten.
+ * Zeigt ausschliesslich textlich als Konzept deklarierte Elemente.
+ * Kein echter Screenshot und keine behauptete Live-Verfügbarkeit.
+ */
+import type { Feature } from '../../config/features';
+import Button from '../ui/Button.astro';
+import Section from '../ui/Section.astro';
+import PublicLayout from '../../layouts/PublicLayout.astro';
+
+interface Props {
+  feature: Feature;
+}
+
+const { feature } = Astro.props;
+---
+
+<PublicLayout title={feature.label} description={feature.intro} noindex>
+  <section class="feature-hero" aria-labelledby="feature-heading">
+    <div class="container container--xl">
+      <nav class="feature-hero__crumb" aria-label="Brotkrumennavigation">
+        <a href="/">Startseite</a>
+        <span aria-hidden="true">/</span>
+        <a href="/funktionen/">Funktionen</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{feature.label}</span>
+      </nav>
+      <div class="feature-hero__grid">
+        <div class="feature-hero__copy">
+          <p class="feature-hero__kicker">{feature.kicker} · In Entwicklung</p>
+          <h1 id="feature-heading" class="text-h1">{feature.title}</h1>
+          <p class="text-lead">{feature.intro}</p>
+          <div class="feature-hero__actions">
+            <Button href="#vorteile" iconEnd="arrow-right">Konzept entdecken</Button>
+            <Button href="/funktionen/" variant="secondary">Alle Funktionen</Button>
+          </div>
+        </div>
+        <div class="concept" aria-label={`Schematische Darstellung: ${feature.label}`}>
+          <div class="concept__top">
+            <span>IZY / KONZEPT</span>
+            <span class="concept__pill">In Entwicklung</span>
+          </div>
+          <div class="concept__body">
+            <span class="concept__index">{feature.icon}</span>
+            <strong>{feature.label}</strong>
+            <p>{feature.pitch}</p>
+            <div class="concept__lines" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="concept__bottom">
+            Illustration · keine freigegebene Produktoberfläche
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Section id="vorteile" tone="subtle" size="xl" labelledby="benefits-heading">
+    <div class="feature-section__intro">
+      <p class="feature-section__overline">So ist die Funktion geplant</p>
+      <h2 id="benefits-heading">Durchdacht für den Betriebsalltag.</h2>
+      <p class="text-lead">{feature.pitch}</p>
+    </div>
+    <div class="feature-benefits">
+      {feature.highlights.map((highlight, index) => (
+        <article class="benefit">
+          <span class="benefit__index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <h3>{highlight.title}</h3>
+          <p>{highlight.text}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section id="ablauf" size="xl" labelledby="flow-heading">
+    <div class="feature-section__intro">
+      <p class="feature-section__overline">Das Nutzungskonzept</p>
+      <h2 id="flow-heading">Einfach vom ersten bis zum letzten Schritt.</h2>
+      <p>Der folgende Ablauf beschreibt die Produktidee, nicht einen bereits verfügbaren Dienst.</p>
+    </div>
+    <ol class="workflow">
+      {feature.steps.map((step, index) => (
+        <li>
+          <span class="workflow__index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section tone="inverse" spacing="sm" labelledby="feature-next">
+    <div class="feature-next">
+      <div>
+        <p class="feature-next__eyebrow">Transparenter Entwicklungsstand</p>
+        <h2 id="feature-next">Noch vor dem Marktstart.</h2>
+        <p>{feature.disclaimer}</p>
+      </div>
+      <Button href="/funktionen/" variant="secondary" iconEnd="arrow-right">
+        Zur Funktionsübersicht
+      </Button>
+    </div>
+  </Section>
+</PublicLayout>
+
+<style>
+  .feature-hero {
+    overflow: hidden;
+    padding-block: var(--space-8) var(--section-y);
+  }
+
+  .feature-hero__crumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-12);
+    color: var(--color-text-muted);
+    font-size: var(--text-caption);
+  }
+
+  .feature-hero__crumb a {
+    color: var(--color-link);
+    text-underline-offset: 0.2em;
+  }
+
+  .feature-hero__grid {
+    display: grid;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .feature-hero__copy {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-6);
+  }
+
+  .feature-hero__kicker,
+  .feature-section__overline,
+  .feature-next__eyebrow {
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+    text-transform: uppercase;
+  }
+
+  .feature-hero h1 {
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+
+  .feature-hero__copy > p.text-lead {
+    max-width: var(--measure-lead);
+  }
+
+  .feature-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .concept {
+    overflow: hidden;
+    min-width: 0;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .concept__top,
+  .concept__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6);
+    font-size: var(--text-caption);
+    color: var(--color-text-muted);
+  }
+
+  .concept__top {
+    border-bottom: 1px solid var(--color-border);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+  }
+
+  .concept__pill {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface-accent);
+    color: var(--color-text-on-accent);
+    letter-spacing: normal;
+    white-space: nowrap;
+  }
+
+  .concept__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    min-height: 21rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .concept__index {
+    font-size: var(--text-caption);
+    color: var(--color-text-accent);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .concept__body strong {
+    max-width: 16ch;
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .concept__body p {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+  }
+
+  .concept__lines {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: auto;
+  }
+
+  .concept__lines span {
+    height: 0.5rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface-accent);
+  }
+
+  .concept__lines span:nth-child(2) {
+    width: 76%;
+  }
+
+  .concept__lines span:nth-child(3) {
+    width: 50%;
+  }
+
+  .concept__bottom {
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-caption);
+  }
+
+  .feature-section__intro {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-5);
+    max-width: var(--container-md);
+    margin-bottom: var(--space-12);
+  }
+
+  .feature-section__intro h2 {
+    max-width: 20ch;
+  }
+
+  .feature-section__intro > p:not(.feature-section__overline) {
+    color: var(--color-text-muted);
+  }
+
+  .feature-benefits {
+    display: grid;
+    gap: var(--grid-gap);
+  }
+
+  .benefit {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    min-width: 0;
+    padding: clamp(1.5rem, 2.8vw, 2.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+  }
+
+  .benefit__index {
+    color: var(--color-text-accent);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .benefit h3 {
+    max-width: 18ch;
+    font-size: var(--text-h4);
+  }
+
+  .benefit p,
+  .workflow p {
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  .workflow {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    gap: var(--grid-gap);
+    list-style: none;
+  }
+
+  .workflow li {
+    display: flex;
+    gap: var(--space-5);
+    min-width: 0;
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .workflow__index {
+    font-size: var(--text-h4);
+    color: var(--color-text-accent);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .workflow h3 {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-h4);
+  }
+
+  .feature-next {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+  }
+
+  .feature-next > div {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 39rem;
+  }
+
+  .feature-next h2 {
+    font-size: var(--text-h3);
+  }
+
+  .feature-next p:not(.feature-next__eyebrow) {
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .feature-benefits,
+    .workflow {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .workflow li {
+      flex-direction: column;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .feature-hero__grid {
+      grid-template-columns: minmax(0, 1.07fr) minmax(0, 0.93fr);
+    }
+  }
+
+  @media (max-width: 479px) {
+    .feature-hero__actions {
+      width: 100%;
+    }
+
+    .feature-hero__actions :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>
