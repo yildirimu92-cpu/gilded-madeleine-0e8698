@@ -39,6 +39,21 @@ Alle Komponenten liegen in `src/components/ui/` und verwenden ausschliesslich se
 </Form>
 ```
 
+## Layout (PR #5)
+
+| Komponente | Zweck |
+|---|---|
+| `layouts/PublicLayout.astro` | Layout aller öffentlichen Seiten: Header und Footer aus `config/navigation.ts`, nur `live`-Einträge |
+| `layout/SiteHeader.astro` | Wortmarke, Desktop-Navigation ab 1024 px, CTA (nur mit freigegebener Adresse), Mobile-Menü (`<details>`, progressiv). Props: `items`, `cta`, `currentPath`, `sticky`, `navLabel`, `id` |
+| `layout/SiteFooter.astro` | Dunkle Markenfläche: Wortmarke, Claim, Navigationsgruppen, © Jahr, rechtliche Links (nur live). Props: `groups`, `legal`, `year`, `labelPrefix` |
+
+**Neue Seite freischalten:**
+1. Seite unter `src/pages/` anlegen.
+2. In `src/config/navigation.ts` den Status des Eintrags auf `'live'` setzen.
+3. Die Tests prüfen, dass das Ziel existiert.
+
+**Live-Demo freischalten:** `liveDemo.url` mit der freigegebenen Adresse setzen.
+
 ## Verhalten im Detail
 
 ### Ladezustand (`Button loading`)

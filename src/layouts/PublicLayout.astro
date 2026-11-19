@@ -1,0 +1,39 @@
+---
+/**
+ * Layout aller öffentlichen Seiten: BaseLayout + globaler Header und Footer.
+ * Navigation, CTA und Footer kommen zentral aus src/config/navigation.ts –
+ * nur freigegebene (live) Einträge werden angezeigt.
+ * Interne Seiten (/styleguide/, /intern/…) verwenden weiterhin BaseLayout.
+ */
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import {
+  footerNavigation,
+  legalNavigation,
+  liveGroups,
+  liveItems,
+  mainNavigation,
+  primaryCta,
+} from '../config/navigation';
+import type { Locale } from '../i18n/config';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: Locale;
+  noindex?: boolean;
+}
+
+const props = Astro.props;
+---
+
+<BaseLayout {...props}>
+  <SiteHeader slot="header" items={liveItems(mainNavigation)} cta={primaryCta()} />
+  <slot />
+  <SiteFooter
+    slot="footer"
+    groups={liveGroups(footerNavigation)}
+    legal={liveItems(legalNavigation)}
+  />
+</BaseLayout>

@@ -32,6 +32,9 @@ interface Props extends Omit<HTMLAttributes<'button'>, 'type' | 'class'> {
   iconStart?: IconName;
   iconEnd?: IconName;
   fullWidth?: boolean;
+  /** Nur mit `href`: Linkziel (z. B. externe Demo in neuem Tab) */
+  target?: '_blank' | '_self';
+  rel?: string;
   class?: string;
 }
 
@@ -109,9 +112,13 @@ const effectiveType = loading && type !== 'button' ? 'button' : type;
   </button>
 )}
 
-<script>
-  import '../../scripts/button-state';
-</script>
+{
+  /* Sperre nur laden, wenn ein Button statisch im Ladezustand gerendert wird.
+     Formulare laden sie über form-validation.ts selbst (setButtonLoading). */
+  loading && <script>
+    import '../../scripts/button-state';
+  </script>
+}
 <style>
   .btn {
     position: relative;

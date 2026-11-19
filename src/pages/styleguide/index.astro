@@ -7,6 +7,9 @@
 import Demo from '../../components/internal/Demo.astro';
 import DocSection from '../../components/internal/DocSection.astro';
 import Logo from '../../components/brand/Logo.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import type { NavGroup, NavItem } from '../../config/navigation';
 import Badge from '../../components/ui/Badge.astro';
 import Button from '../../components/ui/Button.astro';
 import Card from '../../components/ui/Card.astro';
@@ -31,8 +34,26 @@ const sections = [
   ['formular', 'Formularfelder'],
   ['segmented', 'Segmented Control'],
   ['dialog', 'Dialog'],
+  ['layout-global', 'Header und Footer'],
   ['architektur', 'Wiederverwendung'],
 ] as const;
+
+// Beispiel-Navigation: verweist nur auf Abschnitte dieser Seite (keine Scheinziele).
+const demoNav: NavItem[] = [
+  { id: 'buttons', label: 'Buttons', href: '#buttons', status: 'live' },
+  { id: 'karten', label: 'Karten', href: '#karten', status: 'live' },
+  { id: 'formular', label: 'Formulare', href: '#formular', status: 'live' },
+  { id: 'dialog', label: 'Dialog', href: '#dialog', status: 'live' },
+];
+const demoCta = { label: 'Live-Demo ansehen', href: '#layout-global', external: false };
+const demoGroups: NavGroup[] = [
+  { id: 'bausteine', title: 'Bausteine', items: demoNav.slice(0, 2) },
+  { id: 'interaktion', title: 'Interaktion', items: demoNav.slice(2) },
+];
+const demoLegal: NavItem[] = [
+  { id: 'links', label: 'Links', href: '#links', status: 'live' },
+  { id: 'badges', label: 'Badges', href: '#badges', status: 'live' },
+];
 
 const betriebsarten = [
   { value: 'restaurant', label: 'Restaurant' },
@@ -386,8 +407,42 @@ const betriebsarten = [
     </Demo>
   </DocSection>
 
-  <!-- 09 Wiederverwendung -->
-  <DocSection id="architektur" number="09" title="Wiederverwendung">
+  <!-- 09 Header und Footer -->
+  <DocSection id="layout-global" number="09" title="Header und Footer">
+    <p slot="intro">
+      Globale Navigation und Footer. Öffentlich erscheinen nur freigegebene Einträge; der CTA
+      «Live-Demo ansehen» erst mit freigegebener Demo-Adresse. Hier mit Beispieleinträgen, die auf
+      Abschnitte dieser Seite zeigen. Das Mobile-Menü erscheint unter 1024 px.
+    </p>
+    <Demo label="Header (Beispiel)" stack class="sg-chrome sg-chrome--top">
+      <SiteHeader
+        id="demo-header"
+        items={demoNav}
+        cta={demoCta}
+        currentPath="#karten"
+        sticky={false}
+        navLabel="Beispielnavigation"
+      />
+    </Demo>
+    <Demo
+      label="Header ohne freigegebene Einträge (aktueller öffentlicher Zustand)"
+      stack
+      class="sg-chrome"
+    >
+      <SiteHeader
+        id="demo-header-empty"
+        items={[]}
+        sticky={false}
+        navLabel="Leere Beispielnavigation"
+      />
+    </Demo>
+    <Demo label="Footer (Beispiel)" stack class="sg-chrome">
+      <SiteFooter groups={demoGroups} legal={demoLegal} labelPrefix="Beispiel: " />
+    </Demo>
+  </DocSection>
+
+  <!-- 10 Wiederverwendung -->
+  <DocSection id="architektur" number="10" title="Wiederverwendung">
     <p slot="intro">
       Geplante Bausteine, die auf diesen Komponenten aufbauen (noch nicht umgesetzt).
     </p>
@@ -595,6 +650,26 @@ const betriebsarten = [
 
   .sg-dialog-note {
     margin-bottom: var(--space-4);
+  }
+
+  :global(.sg-chrome .demo__stage) {
+    padding: 0;
+    overflow: visible;
+  }
+
+  /* Mehrere Header untereinander: geöffnetes Menü des ersten liegt oben */
+  :global(.sg-chrome--top) {
+    position: relative;
+    z-index: calc(var(--z-sticky) + 1);
+  }
+
+  :global(.sg-chrome .site-header),
+  :global(.sg-chrome .site-footer) {
+    border-radius: var(--radius-lg);
+  }
+
+  :global(.sg-chrome .site-footer) {
+    overflow: hidden;
   }
 
   .sg-card-cta {

@@ -40,6 +40,9 @@ Vor dem ersten E2E-Lauf: `npx playwright install chromium`.
 - `src/design/palette.ts`: Farbwerte und Kontrastregeln (Single Source of Truth)
 - `/intern/design/`: interne Designvorschau (immer noindex)
 - `src/components/ui/`: Komponentenbibliothek (siehe `docs/design/komponenten.md`), Vorschau `/styleguide/` (immer noindex)
+- `src/layouts/PublicLayout.astro`: Layout aller öffentlichen Seiten (Header, Footer)
+- `src/config/navigation.ts`: Navigation (Status `planned`/`live`) und Live-Demo-Adresse
+- `src/lib/seo.ts`: Titel, Canonical, hreflang, JSON-LD
 - `src/scripts/`: clientseitige Skripte (Dialog, Formularvalidierung), nur auf Seiten geladen, die sie verwenden
 - `src/i18n/`: Sprachkonfiguration und UI-Texte
 - `scripts/serve-dist.mjs`: lokaler Server mit den Netlify-Headern und -Redirects

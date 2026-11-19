@@ -1,0 +1,183 @@
+---
+/**
+ * Globaler Footer auf dunkler Markenfläche (PR #5).
+ * Enthält nur belegte Angaben: Wortmarke, Claim, aktive Navigation, Jahr.
+ * Keine Kontakt-, Adress-, Firmen- oder Social-Media-Angaben. Rechtliche Links
+ * erscheinen erst, wenn die Seiten existieren (status: 'live').
+ */
+import Logo from '../brand/Logo.astro';
+import { brand } from '../../config/brand';
+import type { NavGroup, NavItem } from '../../config/navigation';
+
+interface Props {
+  groups: NavGroup[];
+  legal: NavItem[];
+  /** Für Tests/Vorschau überschreibbar; Standard: Jahr des Builds */
+  year?: number;
+  /** Eindeutige Beschriftung (mehrere Footer auf einer Seite) */
+  labelPrefix?: string;
+}
+
+const { groups, legal, year = new Date().getFullYear(), labelPrefix = '' } = Astro.props;
+---
+
+<footer class="site-footer surface-inverse">
+  <div class="container site-footer__inner">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <Logo href="/" tone="inverse" size="lg" />
+        <p class="site-footer__claim">
+          {brand.claim.split(/(?<=\.)\s+/).map((part) => (
+            <span>{part}</span>
+          ))}
+        </p>
+      </div>
+
+      {groups.length > 0 && (
+        <nav class="site-footer__nav" aria-label={`${labelPrefix}Fusszeilen-Navigation`}>
+          {groups.map((group) => (
+            <div class="site-footer__group">
+              <h2
+                class="site-footer__heading"
+                id={`${labelPrefix ? 'demo-' : ''}footer-${group.id}`}
+              >
+                {group.title}
+              </h2>
+              <ul aria-labelledby={`${labelPrefix ? 'demo-' : ''}footer-${group.id}`}>
+                {group.items.map((item) => (
+                  <li>
+                    <a href={item.href}>{item.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      )}
+    </div>
+
+    <div class="site-footer__bottom">
+      <p class="site-footer__copy">
+        <span>© </span>
+        <span class="numeric" data-footer-year>
+          {year}
+        </span>
+        <span> {brand.name}</span>
+      </p>
+      {legal.length > 0 && (
+        <nav aria-label={`${labelPrefix}Rechtliches`}>
+          <ul class="site-footer__legal">
+            {legal.map((item) => (
+              <li>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding-block: var(--section-y-sm) var(--space-8);
+  }
+
+  .site-footer__top {
+    display: grid;
+    gap: var(--space-10);
+  }
+
+  .site-footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .site-footer__claim {
+    max-width: 18ch;
+    color: var(--color-text);
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-h4);
+    hyphens: manual;
+  }
+
+  .site-footer__claim span {
+    display: block;
+  }
+
+  .site-footer__nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--space-8);
+  }
+
+  .site-footer__heading {
+    margin-bottom: var(--space-3);
+    color: var(--color-text-accent);
+    font-size: var(--text-overline);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-overline);
+    text-transform: uppercase;
+  }
+
+  .site-footer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__group a,
+  .site-footer__legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    color: var(--color-text);
+    text-decoration-color: transparent;
+  }
+
+  .site-footer__group a:hover,
+  .site-footer__legal a:hover {
+    color: var(--color-link);
+    text-decoration-color: currentColor;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  .site-footer__copy {
+    max-width: none;
+  }
+
+  .site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-6);
+  }
+
+  .site-footer__legal a {
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__top {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: start;
+    }
+  }
+</style>

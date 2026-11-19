@@ -1,6 +1,6 @@
 # ADR 0011 – UI-Komponentenbibliothek und Performance-Budgets
 
-- **Status:** Zur Freigabe (PR #4)
+- **Status:** Angenommen (PR #4)
 - **Datum:** 2026-11-19
 - **Baut auf:** ADR 0001 (Astro, scoped CSS), ADR 0002 (CSP), ADR 0009 (QS), ADR 0010 (Designsystem)
 
