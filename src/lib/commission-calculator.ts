@@ -119,14 +119,11 @@ export function calculateCommissionScenario(input: CommissionScenario): Commissi
     redirectedOrders * paymentFixedCents;
   const monthlyDifferenceCents = marketplaceCents - directFeesCents - subscriptionCents;
 
-  // Kein suggerierter Break-even, wenn jede weitere Direktbestellung mehr kostet.
-  const contributionCents =
-    percentageFeeCents(basketCents, input.marketplaceCommissionPercent) -
-    percentageFeeCents(basketCents, input.paymentPercent) -
-    paymentFixedCents;
-
+  // Auch bei Cent-Rundungen keine falsche Unmöglichkeits-Aussage: statt
+  // gerundetem Einzelauftrag den vollständigen Vergleich am maximal
+  // vorhandenen Bestellvolumen prüfen.
   let breakEvenRedirectedOrders: number | null = null;
-  if (contributionCents > 0 && differenceFor(input.monthlyMarketplaceOrders) >= 0) {
+  if (differenceFor(input.monthlyMarketplaceOrders) >= 0) {
     let lo = 0;
     let hi = input.monthlyMarketplaceOrders;
     while (lo < hi) {
