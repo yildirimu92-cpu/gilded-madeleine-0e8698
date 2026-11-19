@@ -12,7 +12,9 @@ test.describe('PR13 – IzyOrder Gästesuche ohne freigegebene Restaurants', () 
     await expect(page.locator('[data-finder-results] > li')).toHaveCount(0);
     await expect(page.locator('[data-finder-empty]')).toBeVisible();
     await expect(page.getByText(/Keine Demo-Restaurants/)).toBeVisible();
-    await expect(page.getByText(/Der öffentliche Bestellbetrieb ist noch nicht gestartet/)).toBeVisible();
+    await expect(
+      page.getByText(/Der öffentliche Bestellbetrieb ist noch nicht gestartet/),
+    ).toBeVisible();
 
     for (const fictional of [
       'Pizzeria Lindenhof',
@@ -40,9 +42,15 @@ test.describe('PR13 – IzyOrder Gästesuche ohne freigegebene Restaurants', () 
     await expect(page.locator('[data-finder-heading]')).toContainText('Meggen');
 
     await page.getByRole('button', { name: 'Pizza' }).click();
-    await expect(page.getByRole('button', { name: 'Pizza' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'Pizza' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
     await page.getByRole('button', { name: 'Alle', exact: true }).click();
-    await expect(page.getByRole('button', { name: 'Alle', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'Alle', exact: true })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
   });
 
   test('unbekannte PLZ zeigt Warnung ohne alte Ortsresultate', async ({ page }) => {
@@ -108,9 +116,7 @@ test.describe('PR13 – IzyOrder Gästesuche ohne freigegebene Restaurants', () 
   });
 
   for (const width of [375, 768, 1440]) {
-    test(`bei ${width} px: zugänglich und ohne horizontalen Scroll`, async ({
-      page,
-    }, testInfo) => {
+    test(`bei ${width} px: zugänglich und ohne horizontalen Scroll`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 900 });
       const problems = await trackProblems(page);
       await page.goto('/bestellen/');

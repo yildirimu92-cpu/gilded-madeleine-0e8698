@@ -17,9 +17,9 @@ import {
   type SupportedPlace,
 } from '../lib/restaurant-search';
 
-const approvedRestaurants = restaurants.map(parseRestaurantListing).filter(
-  (restaurant) => restaurant.listingStatus === 'approved',
-);
+const approvedRestaurants = restaurants
+  .map(parseRestaurantListing)
+  .filter((restaurant) => restaurant.listingStatus === 'approved');
 
 function restaurantCard(restaurant: RestaurantListing): HTMLLIElement {
   const item = document.createElement('li');
@@ -66,8 +66,19 @@ function initRestaurantFinder(): void {
   const fallback = root.querySelector<HTMLButtonElement>('[data-finder-pickup]');
   const cuisineButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-finder-cuisine]')];
 
-  if (!place || !query || !search || !heading || !count || !list || !empty ||
-      !emptyTitle || !emptyCopy || !fallback) return;
+  if (
+    !place ||
+    !query ||
+    !search ||
+    !heading ||
+    !count ||
+    !list ||
+    !empty ||
+    !emptyTitle ||
+    !emptyCopy ||
+    !fallback
+  )
+    return;
 
   let selection: SearchSelection = {
     place: 'Luzern',
@@ -82,9 +93,10 @@ function initRestaurantFinder(): void {
     const combined = [...results.orderable, ...results.directory];
     const amount = combined.length;
 
-    heading.textContent = selection.mode === 'pickup'
-      ? 'Restaurants zum Abholen in ' + selection.place
-      : 'Restaurants mit Lieferung nach ' + selection.place;
+    heading.textContent =
+      selection.mode === 'pickup'
+        ? 'Restaurants zum Abholen in ' + selection.place
+        : 'Restaurants mit Lieferung nach ' + selection.place;
     count.textContent = amount + (amount === 1 ? ' Restaurant' : ' Restaurants');
 
     const cards = combined.map(restaurantCard);
@@ -105,13 +117,17 @@ function initRestaurantFinder(): void {
         'Passe deine Suche an oder wähle Abholung in ' + selection.place + '.';
     } else {
       emptyTitle.textContent = 'Keine Restaurants für diese Auswahl.';
-      emptyCopy.textContent = 'Versuche einen anderen Ort, eine Küche oder einen anderen Suchbegriff.';
+      emptyCopy.textContent =
+        'Versuche einen anderen Ort, eine Küche oder einen anderen Suchbegriff.';
     }
 
     fallback.hidden = amount !== 0 || selection.mode !== 'delivery' || selection.unknownPostal;
     place.value = selection.place;
     for (const button of cuisineButtons) {
-      button.setAttribute('aria-pressed', String(button.dataset.finderCuisine === selection.cuisine));
+      button.setAttribute(
+        'aria-pressed',
+        String(button.dataset.finderCuisine === selection.cuisine),
+      );
     }
   };
 
@@ -119,7 +135,9 @@ function initRestaurantFinder(): void {
     selection = interpretRestaurantQuery(query.value, selection);
     render();
     root.querySelector<HTMLElement>('#ergebnisse')?.focus({ preventScroll: true });
-    root.querySelector<HTMLElement>('#ergebnisse')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    root
+      .querySelector<HTMLElement>('#ergebnisse')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   search.addEventListener('click', submitQuery);
@@ -157,7 +175,9 @@ function initRestaurantFinder(): void {
 
   fallback.addEventListener('click', () => {
     selection = pickupFallback(selection);
-    const pickup = root.querySelector<HTMLInputElement>('input[name="restaurant-mode"][value="pickup"]');
+    const pickup = root.querySelector<HTMLInputElement>(
+      'input[name="restaurant-mode"][value="pickup"]',
+    );
     if (pickup) pickup.checked = true;
     query.value = '';
     render();
