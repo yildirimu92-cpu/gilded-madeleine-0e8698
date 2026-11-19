@@ -137,7 +137,8 @@ export function filterRestaurantListings(
 }
 
 export function pickupFallback(selection: SearchSelection): SearchSelection {
-  return { ...selection, mode: 'pickup', unknownPostal: false, query: '' };
+  // Bei unbekannter PLZ nicht stillschweigend auf den vorherigen Ort zurückfallen.
+  return { ...selection, mode: 'pickup', query: '' };
 }
 
 export function changeSearchPlace(
