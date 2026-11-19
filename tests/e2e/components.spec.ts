@@ -42,7 +42,8 @@ test('Startseite lädt kein JavaScript', async ({ page }) => {
   page.on('request', (r) => r.resourceType() === 'script' && scripts.push(r.url()));
   await page.goto('/');
   expect(scripts).toEqual([]);
-  expect(await page.locator('script').count()).toBe(0);
+  // Einziges Script: JSON-LD (Daten, kein JavaScript)
+  expect(await page.locator('script:not([type="application/ld+json"])').count()).toBe(0);
 });
 
 test.describe('Buttons und Links', () => {

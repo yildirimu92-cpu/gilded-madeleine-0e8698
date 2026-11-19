@@ -1,0 +1,300 @@
+---
+/**
+ * Globaler Header (PR #5).
+ * - Wortmarke als Logo (bis zum finalen SVG über Logo.astro)
+ * - Desktop-Navigation ab 1024 px, darunter Mobile-Menü (<details>, progressiv erweitert)
+ * - Primärer CTA nur, wenn eine freigegebene Adresse vorliegt (`cta`)
+ * - Nur übergebene Einträge werden gerendert – öffentliche Seiten übergeben
+ *   ausschliesslich `live`-Einträge (src/config/navigation.ts)
+ */
+import Logo from '../brand/Logo.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import Link from '../ui/Link.astro';
+import type { Cta, NavItem } from '../../config/navigation';
+
+interface Props {
+  items: NavItem[];
+  cta?: Cta | null;
+  /** Aktueller Pfad für aria-current */
+  currentPath?: string;
+  sticky?: boolean;
+  /** Eindeutiger Name der Navigation (bei mehreren Headern auf einer Seite) */
+  navLabel?: string;
+  id?: string;
+}
+
+const {
+  items,
+  cta = null,
+  currentPath = Astro.url.pathname,
+  sticky = true,
+  navLabel = 'Hauptnavigation',
+  id = 'site-header',
+} = Astro.props;
+
+const isCurrent = (href: string) => href === currentPath;
+const hasMenu = items.length > 0 || !!cta;
+const panelId = `${id}-menu`;
+---
+
+<header class:list={['site-header', { 'site-header--sticky': sticky }]} id={id} data-site-header>
+  <div class="container site-header__bar">
+    <Logo href="/" />
+
+    {items.length > 0 && (
+      <nav class="site-header__nav" aria-label={navLabel}>
+        <ul class="site-header__list">
+          {items.map((item) => (
+            <li>
+              <Link href={item.href} variant="nav" current={isCurrent(item.href)}>
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    {cta && (
+      <div class="site-header__cta">
+        <Button
+          href={cta.href}
+          size="sm"
+          iconEnd={cta.external ? 'arrow-up-right' : 'arrow-right'}
+          target={cta.external ? '_blank' : undefined}
+          rel={cta.external ? 'noopener noreferrer' : undefined}
+        >
+          {cta.label}
+          {cta.external && <span class="visually-hidden"> (öffnet in neuem Tab)</span>}
+        </Button>
+      </div>
+    )}
+
+    {hasMenu && (
+      <details class="mnav">
+        <summary class="mnav__toggle" aria-controls={panelId}>
+          <span class="mnav__icon mnav__icon--open">
+            <Icon name="menu" size={22} />
+          </span>
+          <span class="mnav__icon mnav__icon--close">
+            <Icon name="close" size={22} />
+          </span>
+          <span class="mnav__label">Menü</span>
+        </summary>
+        <div class="mnav__panel" id={panelId}>
+          <div class="container">
+            {items.length > 0 && (
+              <nav aria-label={`${navLabel} (mobil)`}>
+                <ul class="mnav__list">
+                  {items.map((item) => (
+                    <li>
+                      <a
+                        class="mnav__link"
+                        href={item.href}
+                        aria-current={isCurrent(item.href) ? 'page' : undefined}
+                      >
+                        {item.label}
+                        <Icon name="arrow-right" size={18} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+            {cta && (
+              <div class="mnav__cta">
+                <Button
+                  href={cta.href}
+                  fullWidth
+                  size="lg"
+                  target={cta.external ? '_blank' : undefined}
+                  rel={cta.external ? 'noopener noreferrer' : undefined}
+                >
+                  {cta.label}
+                  {cta.external && <span class="visually-hidden"> (öffnet in neuem Tab)</span>}
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </details>
+    )}
+  </div>
+</header>
+
+{hasMenu && <script>
+  import '../../scripts/mobile-nav';
+</script>}
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: var(--z-sticky);
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .site-header--sticky {
+    position: sticky;
+    top: 0;
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    min-height: var(--header-height);
+  }
+
+  .site-header__nav {
+    display: none;
+    margin-inline-start: auto;
+  }
+
+  .site-header__list {
+    display: flex;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-header__list :global(.link--nav) {
+    padding-inline: var(--space-3);
+    font-size: var(--text-body-sm);
+  }
+
+  .site-header__cta {
+    display: none;
+  }
+
+  .site-header__nav + .site-header__cta {
+    margin-inline-start: var(--space-2);
+  }
+
+  .site-header__cta:first-of-type {
+    margin-inline-start: auto;
+  }
+
+  /* --- Mobile-Menü -------------------------------------------------------- */
+  .mnav {
+    margin-inline-start: auto;
+  }
+
+  .mnav__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: var(--touch-target);
+    min-height: var(--touch-target);
+    margin-inline-end: calc(var(--space-2) * -1);
+    padding-inline: var(--space-3);
+    border-radius: var(--control-radius);
+    color: var(--color-text);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .mnav__toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .mnav__toggle:hover {
+    background-color: var(--color-action-secondary-hover);
+  }
+
+  .mnav__icon {
+    display: inline-flex;
+  }
+
+  .mnav__icon--close,
+  .mnav[open] .mnav__icon--open {
+    display: none;
+  }
+
+  .mnav[open] .mnav__icon--close {
+    display: inline-flex;
+  }
+
+  .mnav__panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: calc(100dvh - var(--header-height));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-block: var(--space-2) var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .mnav[open] .mnav__panel {
+    animation: mnav-in var(--duration-base) var(--ease-out);
+  }
+
+  @keyframes mnav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+
+  .mnav__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mnav__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3.5rem;
+    padding-inline: var(--space-1);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-size: var(--text-h5);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .mnav__link :global(.icon) {
+    color: var(--color-text-muted);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .mnav__link:hover {
+    color: var(--color-link);
+  }
+
+  .mnav__link:hover :global(.icon) {
+    transform: translateX(3px);
+  }
+
+  .mnav__link[aria-current='page'] {
+    color: var(--color-link);
+  }
+
+  .mnav__cta {
+    margin-top: var(--space-6);
+  }
+
+  @media (min-width: 1024px) {
+    .site-header__nav,
+    .site-header__cta {
+      display: block;
+    }
+
+    .mnav {
+      display: none;
+    }
+  }
+</style>

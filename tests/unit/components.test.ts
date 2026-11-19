@@ -49,6 +49,15 @@ describe('UI-Komponenten', () => {
   it('JavaScript nur in Button (Ladesperre), Dialog und Form (gezielt geladen)', () => {
     const withScript = files.filter((f) => /<script/.test(read(f)));
     expect(withScript.sort()).toEqual(['Button.astro', 'Dialog.astro', 'Form.astro']);
+    // Ladesperre nur bei statischem Ladezustand
+    expect(read('Button.astro')).toMatch(/loading &&\s*\(?\s*<script>/);
+  });
+
+  it('Layout: JavaScript nur im Header und nur mit Menü', () => {
+    const header = readFileSync('src/components/layout/SiteHeader.astro', 'utf8');
+    const footer = readFileSync('src/components/layout/SiteFooter.astro', 'utf8');
+    expect(header).toMatch(/hasMenu &&\s*\(?\s*<script>/);
+    expect(footer).not.toMatch(/<script/);
   });
 
   it('Demo-Formulare nutzen method="dialog" (kein Versand ohne JavaScript)', () => {

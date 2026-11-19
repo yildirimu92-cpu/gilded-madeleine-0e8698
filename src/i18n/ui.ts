@@ -19,8 +19,9 @@ const de = {
 
 export type UiKey = keyof typeof de;
 
-const dictionaries: Record<Locale, Partial<Record<UiKey, string>>> = { de };
+// Weitere Sprachen ergänzen ihr Wörterbuch hier; fehlende Texte fallen auf de-CH zurück.
+const dictionaries: Partial<Record<Locale, Partial<Record<UiKey, string>>>> = { de };
 
 export function t(key: UiKey, locale: Locale = defaultLocale): string {
-  return dictionaries[locale][key] ?? de[key];
+  return dictionaries[locale]?.[key] ?? de[key];
 }

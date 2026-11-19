@@ -200,11 +200,18 @@
   --control-padding-x: var(--space-5);
   --control-border-width: 1px;
   --touch-target: 2.75rem; /* 44 × 44 px (WCAG 2.5.8 / Apple HIG) */
+  --header-height: 4rem; /* 64 – ab 1024 px 72 */
   --card-radius: var(--radius-lg);
   --card-padding: clamp(1.25rem, 1.0739rem + 0.7512vw, 1.75rem);
   --color-overlay: rgb(15 46 34 / 0.48); /* Forest 950, transparent */
   --dialog-width-sm: 26rem;
   --dialog-width-md: 36rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-height: 4.5rem;
+  }
 }
 
 /* ::backdrop erbt in älteren Browsern keine Custom Properties – dort explizit setzen. */

@@ -10,7 +10,7 @@ test.describe('Startseite (Platzhalter)', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'de-CH');
     await expect(page).toHaveTitle(/IzyOrder/);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByRole('link', { name: /IzyOrder/ })).toBeVisible();
+    await expect(page.getByRole('banner').getByRole('link', { name: /IzyOrder/ })).toBeVisible();
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https:\/\//);
     await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.{50,}/);
 
